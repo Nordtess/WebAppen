@@ -6,38 +6,33 @@
     ViewData["Title"] = "Login";
 }
 
+<div class="page">
+    <h1>Logga in</h1>
 
-<div class="login-container">
-    <h1 class="login-title">Logga in</h1>
-
-    <form method="post" class="login-form">
-        <div class="form-group">
-            <label class="form-label" for="username">Användarnamn</label>
-            <input type="text" id="username" class="form-input" />
+    <form method="post">
+        <div>
+            <label for="username">Användarnamn</label><br />
+            <input type="text" id="username" name="Username" />
         </div>
 
-        <div class="form-group">
-            <label class="form-label" for="password">Lösenord</label>
-            <input type="password" id="password" class="form-input" />
+        <br />
+
+        <div>
+            <label for="password">Lösenord</label><br />
+            <input type="password" id="password" name="Password" />
         </div>
 
-        <button type="submit" class="btn-submit">
+        <br />
+
+        <button class="" type="submit">
             Logga in
         </button>
     </form>
 
-    <div class="newuser-group">
-        <span>Ny användare?</span>
-
-        <a asp-controller="NewUser"
-           asp-action="Index"
-           class="btn-newuser">
-            Ny användare
-        </a>
-
-    </div>
-
-
+    <p>
+        Ny användare?
+        <a asp-controller="NewUser" asp-action="Index">Ny användare</a>
+    </p>
 </div>
 
 
