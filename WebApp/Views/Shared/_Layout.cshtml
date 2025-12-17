@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - WebApp</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/WebApp.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
 
@@ -16,36 +16,52 @@
 
     @RenderSection("Styles", required: false)
 </head>
+
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm">
+        <nav class="navbar navbar-expand-sm nl-navbar">
             <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+
+                <!-- Bootstrap toggler (mobil) -->
+                <button class="navbar-toggler nl-toggler" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#mainNav"
+                        aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-center">
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
 
+                <!-- Center links (Bootstrap collapse) -->
+                <div class="collapse navbar-collapse justify-content-center" id="mainNav">
+                    <ul class="navbar-nav nl-nav-center">
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Login" asp-action="Index">Logga in</a>
+                            <a class="nav-link nl-link" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="NewUser" asp-action="Index">Bli medlem</a>
+                            <a class="nav-link nl-link" asp-controller="Login" asp-action="Index">Logga in</a>
                         </li>
-
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="MyCV" asp-action="Index">Mitt CV</a>
+                            <a class="nav-link nl-link" asp-controller="NewUser" asp-action="Index">Bli medlem</a>
                         </li>
                     </ul>
                 </div>
+
+                <!-- Right account menu (hamburger) -->
+                <div class="nl-account">
+                    <button class="nl-menu-btn" type="button" aria-label="Öppna meny" aria-expanded="false">
+                        <span class="nl-menu-lines" aria-hidden="true">
+                            <span></span><span></span><span></span>
+                        </span>
+                    </button>
+
+                    <div class="nl-menu-panel" aria-hidden="true">
+                        <a class="nl-menu-item" asp-controller="MyCV" asp-action="Index">Mitt CV</a>
+                        <a class="nl-menu-item" asp-controller="Messages" asp-action="Index">Mina meddelanden</a>
+                    </div>
+                </div>
+
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -57,6 +73,7 @@
             &copy; 2025 - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

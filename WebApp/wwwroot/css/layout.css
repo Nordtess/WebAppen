@@ -1,3 +1,178 @@
-﻿body {
+﻿:root {
+    --nl-nav-h: 76px;
+}
 
+/* Gör plats för fixed navbar */
+body {
+    padding-top: var(--nl-nav-h);
+}
+
+/* ===== Base template stuff (ok att ha) ===== */
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+}
+
+/* ===== NotLinkedIn navbar (Bootstrap-friendly) ===== */
+.nl-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nl-nav-h);
+    z-index: 2000;
+    background: rgba(255, 255, 255, 0.88) !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 2px solid #111;
+    box-shadow: none !important;
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
+
+/* Center links spacing */
+.nl-nav-center {
+    gap: 26px;
+}
+
+/* Link typography + hover underline */
+.nl-link {
+    font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    color: #111 !important;
+    opacity: 0.85;
+    letter-spacing: 0.2px;
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 6px;
+    transition: opacity 0.2s ease;
+}
+
+    .nl-link:hover {
+        opacity: 0.55;
+    }
+
+    .nl-link::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #111;
+        transform: scaleX(0);
+        transform-origin: center;
+        transition: transform 0.25s ease;
+    }
+
+    .nl-link:hover::after {
+        transform: scaleX(1);
+    }
+
+/* Bootstrap toggler - matcha stilen lite */
+.nl-toggler {
+    border: 1px solid rgba(0,0,0,0.18);
+    border-radius: 999px;
+    padding: 8px 10px;
+}
+
+/* ===== Right hamburger menu (account menu) ===== */
+.nl-account {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.nl-menu-btn {
+    border: 1px solid rgba(0,0,0,0.18);
+    background: rgba(255,255,255,0.85);
+    border-radius: 999px;
+    padding: 10px 12px;
+    cursor: pointer;
+}
+
+    .nl-menu-btn:hover {
+        background: rgba(0,0,0,0.04);
+    }
+
+.nl-menu-lines {
+    width: 18px;
+    height: 12px;
+    display: grid;
+    gap: 3px;
+}
+
+    .nl-menu-lines span {
+        height: 2px;
+        background: #111;
+        border-radius: 2px;
+        opacity: 0.9;
+    }
+
+/* Dropdown */
+.nl-menu-panel {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    min-width: 220px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(0,0,0,0.10);
+    border-radius: 14px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.10);
+    padding: 10px;
+    display: none;
+    z-index: 2500;
+}
+
+    .nl-menu-panel.open {
+        display: block;
+    }
+
+.nl-menu-item {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #111;
+    font-weight: 650;
+}
+
+    .nl-menu-item:hover {
+        background: rgba(0,0,0,0.05);
+    }
+
+/* Mobil: när collapse öppnas, ge lite luft */
+@media (max-width: 575.98px) {
+    .nl-navbar {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        height: auto;
+    }
+
+    body {
+        padding-top: 86px; /* lite extra för mobil */
+    }
+
+    .nl-nav-center {
+        gap: 12px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    /* account-menyn ska fortfarande ligga höger */
+    .nl-account {
+        top: 18px;
+        transform: none;
+    }
 }
