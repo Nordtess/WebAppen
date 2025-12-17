@@ -1,1 +1,139 @@
-﻿
+﻿.logo img {
+    width: 400px;
+    max-width: 90%;
+    height: auto;
+    display: block;
+    margin: 40px auto 20px;
+}
+
+.home-title {
+    text-align: center;
+    margin: 30px auto;
+}
+
+.home-title .title {
+        font-weight: 800;
+        font-size: 40px;
+        margin: 0;
+}
+
+.home-text {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 24px 28px;
+    border: 2px solid #111;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    
+}
+
+.home-text p {
+        font-size: 20px;
+        line-height: 1.7;
+        margin: 0 0 16px;
+        font-weight: 450;
+        text-align: justify;
+}
+
+.home-text p:last-child {
+        margin-bottom: 0;
+}
+
+
+.home-title2 {
+    margin: 30px auto;
+    text-align: center;
+}
+
+.home-title2 h2 {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.home-message {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 24px 28px;
+    border: 2px solid #111;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.home-message p {
+    font-size: 20px;
+    line-height: 1.7;
+    margin: 0 0 16px;
+    font-weight: 450;
+    text-align: justify;
+}
+
+.home-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+
+
+.customer-story {
+    display: flex;
+    align-items: flex-start;
+    gap: 3rem;
+    margin: 3rem auto 4rem;
+}
+
+
+
+.story-image img {
+    width: 340px;
+    border-radius: 16px;
+    display: block;
+}
+
+.story-text {
+    max-width: 420px;
+}
+
+.story-text h3 {
+        margin-top: 0;
+        font-size: 1.5rem;
+}
+
+.story-text p {
+        margin-top: 0.75rem;
+        line-height: 1.6;
+        color: #444;
+        font-size: 18px;
+}
+
+.story-quote {
+    margin: 1rem 0 0;
+    padding: 1rem 1.25rem;
+    border-left: 4px solid #111;
+    background: #f6f6f6;
+    border-radius: 12px;
+    color: #222;
+    line-height: 1.6;
+    font-style: italic;
+    font-size: 20px;
+}
+
+.customer-story.reverse {
+    flex-direction: row-reverse;
+}
+
+
+
+
+@media (max-width: 800px) {
+    .customer-story {
+        flex-direction: column;
+    }
+
+    .story-text {
+        text-align: center;
+    }
+}
+

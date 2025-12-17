@@ -1,1 +1,31 @@
 ﻿
+
+.page {
+    justify-items: center;
+}
+
+.page h1 {
+    margin-top: 100px;
+    margin-bottom: 50px;
+}
+
+.page form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+}
+
+.page button {
+    margin: 30px auto;
+}
+
+    .page label {
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+.page p {
+    margin-top: 30px;
+    font-size: 25px;
+    font-weight: bold;
+}

@@ -1,1 +1,42 @@
-﻿
+﻿.btn-primary-custom {
+    cursor: pointer;
+    padding: 0.75em 1.5em;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: #212121;
+    border: none;
+    border-radius: 10px;
+    outline: 1px solid #353535;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, outline 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+    
+.btn-primary-custom:hover {
+        transform: scale(1.06);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        background: radial-gradient( circle at bottom, rgba(50, 100, 180, 0.45) 10%, #212121 70% );
+        outline: none;
+}
+
+    
+.btn-primary-custom:active {
+        transform: scale(0.98);
+}
+
+    
+.btn-primary-custom:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+}
+
+    
+.btn-primary-custom svg {
+        width: 1em;
+        height: 1em;
+        fill: white;
+}
