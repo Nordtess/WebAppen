@@ -12,6 +12,8 @@
     --side-x: 320px;
     --side-tilt: 0deg;
     --card-border-strong: 2px solid rgba(0,0,0,.92);
+    /* ✅ NYTT: finjustera pilarnas höjd (minus = upp) */
+    --nav-offset-y: -26px;
 }
 
 /* Page wrapper */
@@ -302,7 +304,8 @@
 /* Edge fade zones (behind buttons only) */
 .carousel-nav-zone {
     position: absolute;
-    top: 50%;
+    /* ✅ ÄNDRAT: flytta hela nav-zonen lite uppåt */
+    top: calc(50% + var(--nav-offset-y));
     transform: translateY(-50%);
     width: 140px;
     height: 120px;
@@ -323,8 +326,9 @@
 /* Nav buttons (pill with strong black ring) */
 .cv-nav {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    /* ✅ ÄNDRAT: flytta knapparna uppåt, matchar zonen */
+    top: calc(50% + var(--nav-offset-y));
+    transform: translateY(-5%);
     width: 48px;
     height: 48px;
     border-radius: 999px;
@@ -341,11 +345,32 @@
     user-select: none;
     pointer-events: auto;
     transition: transform .2s ease, box-shadow .2s ease;
+    /* ✅ NYTT: ta bort "vit ring"/tap highlight/outline artefakter */
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    background-clip: padding-box;
 }
 
     .cv-nav:hover {
         transform: translateY(-50%) scale(1.08);
         box-shadow: 0 6px 18px rgba(0,0,0,.22);
+    }
+
+    .cv-nav:focus,
+    .cv-nav:active {
+        outline: none;
+    }
+
+    /* ✅ NYTT: Apple-ish focus när man tabbar (inte på klick) */
+    .cv-nav:focus-visible {
+        box-shadow: 0 0 0 3px rgba(0,0,0,.18), 0 6px 18px rgba(0,0,0,.22);
+    }
+
+    /* ✅ NYTT: om någon pseudo-ring råkat finnas */
+    .cv-nav::before,
+    .cv-nav::after {
+        content: none !important;
+        display: none !important;
     }
 
 .cv-nav--prev {
@@ -537,6 +562,8 @@
         --side-x: 230px;
         --slide-w: 440px;
         --side-scale: 0.82;
+        /* ✅ NYTT: egen offset på mobil om du vill */
+        --nav-offset-y: -18px;
     }
 
     .home-page {
