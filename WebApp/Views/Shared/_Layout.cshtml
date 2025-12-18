@@ -4,6 +4,9 @@
         var current = ViewContext.RouteData.Values["controller"]?.ToString();
         return string.Equals(current, controller, StringComparison.OrdinalIgnoreCase) ? "active" : "";
     }
+    
+    // Placeholder for unread messages - replace with real data later
+    int unreadCount = 3;
 }
 
 <!DOCTYPE html>
@@ -29,32 +32,39 @@
         
         <header class="app-header">
             <div class="header-content">
-                <div class="header-logo">
-                    <img src="~/images/logos/loggamini.png"
-                         asp-append-version="true"
-                         alt="NotLinkedIn" 
-                         class="logo-img" />
-                </div>
-                <div class="header-user">
-                    <div class="user-menu">
-                        <button class="user-menu-toggle" type="button"
-                                aria-label="Öppna användarmeny" aria-expanded="false" aria-controls="user-dropdown">
-                            <span class="burger-line"></span>
-                            <span class="burger-line"></span>
-                            <span class="burger-line"></span>
-                        </button>
-
-                        <div class="user-dropdown" id="user-dropdown" aria-hidden="true" role="menu">
-                            <a class="dropdown-item" asp-controller="MyCV" asp-action="Index" role="menuitem">Mitt CV</a>
-                            <a class="dropdown-item" asp-controller="Messages" asp-action="Index" role="menuitem">Mina meddelanden</a>
-                        </div>
+                <div class="header-left">
+                    <button class="hamburger-btn" 
+                            type="button"
+                            aria-label="Öppna navigation" 
+                            aria-expanded="false" 
+                            aria-controls="appSidebar">
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                    </button>
+                    
+                    <div class="header-logo">
+                        <img src="~/images/logos/loggamini.png"
+                             asp-append-version="true"
+                             alt="NotLinkedIn" 
+                             class="logo-img" />
                     </div>
-                    <span class="user-email" title="jamie@example.se">jamie@example.se</span>
                 </div>
+                
+                @if (User?.Identity?.IsAuthenticated == true)
+                {
+                    <div class="header-user-area">
+                        <img src="~/images/svg/mail.svg" 
+                             alt="Meddelanden" 
+                             class="icon-mail" />
+                        <span class="unread-text">Du har <strong>@unreadCount</strong> olästa meddelanden</span>
+                        <span class="user-email">jamie@example.se</span>
+                    </div>
+                }
             </div>
         </header>
 
-        <aside class="app-sidebar">
+        <aside class="app-sidebar" id="appSidebar">
             <nav class="sidebar-nav" role="navigation" aria-label="Huvudnavigation">
                 <a class="sidebar-link @Active("Home")" asp-controller="Home" asp-action="Index">
                     <span class="link-icon">🏠</span>
@@ -68,14 +78,6 @@
                     <span class="link-icon">📁</span>
                     <span class="link-text">Alla projekt</span>
                 </a>
-                <a class="sidebar-link @Active("Login")" asp-controller="Login" asp-action="Index">
-                    <span class="link-icon">🔑</span>
-                    <span class="link-text">Logga in</span>
-                </a>
-                <a class="sidebar-link @Active("NewUser")" asp-controller="NewUser" asp-action="Index">
-                    <span class="link-icon">✨</span>
-                    <span class="link-text">Bli medlem</span>
-                </a>
                 <a class="sidebar-link @Active("MyCV")" asp-controller="MyCV" asp-action="Index">
                     <span class="link-icon">👤</span>
                     <span class="link-text">Mitt CV</span>
@@ -84,8 +86,18 @@
                     <span class="link-icon">💬</span>
                     <span class="link-text">Meddelanden</span>
                 </a>
+                <a class="sidebar-link @Active("Login")" asp-controller="Login" asp-action="Index">
+                    <span class="link-icon">🔑</span>
+                    <span class="link-text">Logga in</span>
+                </a>
+                <a class="sidebar-link @Active("NewUser")" asp-controller="NewUser" asp-action="Index">
+                    <span class="link-icon">✨</span>
+                    <span class="link-text">Bli medlem</span>
+                </a>
             </nav>
         </aside>
+
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
         <main class="app-main" role="main">
             @RenderBody()

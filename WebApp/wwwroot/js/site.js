@@ -152,3 +152,87 @@ window.addEventListener("resize", () => {
         }
     }, 250);
 });
+
+// ===== OFF-CANVAS SIDEBAR FOR MOBILE =====
+
+(function() {
+    // Get elements
+    const hamburger = document.querySelector('.hamburger-btn');
+    const sidebar = document.querySelector('.app-sidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+    // Exit if elements don't exist
+    if (!hamburger || !sidebar || !overlay) return;
+
+    // Toggle sidebar open/close
+    function toggleSidebar() {
+        const isOpen = sidebar.classList.contains('open');
+        
+        if (isOpen) {
+            closeSidebar();
+        } else {
+            openSidebar();
+        }
+    }
+
+    // Open sidebar
+    function openSidebar() {
+        sidebar.classList.add('open');
+        overlay.classList.add('active');
+        hamburger.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden'; // Prevent background scroll
+    }
+
+    // Close sidebar
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = ''; // Restore scroll
+    }
+
+    // Hamburger click
+    hamburger.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleSidebar();
+    });
+
+    // Overlay click closes sidebar
+    overlay.addEventListener('click', function() {
+        closeSidebar();
+    });
+
+    // ESC key closes sidebar
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' || e.keyCode === 27) {
+            if (sidebar.classList.contains('open')) {
+                closeSidebar();
+            }
+        }
+    });
+
+    // Clicking any sidebar link closes sidebar (mobile)
+    sidebarLinks.forEach(function(link) {
+        link.addEventListener('click', function() {
+            // Only close if sidebar is actually open (mobile mode)
+            if (sidebar.classList.contains('open')) {
+                closeSidebar();
+            }
+        });
+    });
+
+    // Close sidebar on window resize if open
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            // If viewport is now wider than 800px and sidebar is open, close it
+            if (window.innerWidth > 800 && sidebar.classList.contains('open')) {
+                closeSidebar();
+            }
+        }, 250);
+    });
+
+})();
