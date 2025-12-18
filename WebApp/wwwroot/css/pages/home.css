@@ -71,12 +71,12 @@
     line-height: 1.75;
     font-weight: 450;
     color: rgba(0,0,0,.84);
-    text-align: justify; /* 👈 du ville ha justify */
+    text-align: justify;
 }
 
-    .home-card--text p:last-child {
-        margin-bottom: 0;
-    }
+.home-card--text p:last-child {
+    margin-bottom: 0;
+}
 
 /* Message card with banner */
 .home-message-card {
@@ -96,12 +96,11 @@
     height: 100%;
     display: block;
     object-fit: cover;
-    /* 👇 “skjut ned” motivet så ansiktet syns mer */
     object-position: center 35%;
 }
 
 .home-message-body {
-    padding: 18px 18px 18px; /* lite mer “luft” för texten */
+    padding: 18px 18px 18px;
 }
 
 /* Feature cards (CV carousel + latest project) */
@@ -129,6 +128,8 @@
 .cv-carousel {
     margin-top: 10px;
     position: relative;
+    /* FIX #2: Fixed height prevents layout shift */
+    min-height: calc(var(--carousel-h) + 56px);
 }
 
 /* Stage: give space, no grey overlays, no clipping */
@@ -137,7 +138,6 @@
     height: var(--carousel-h);
     display: block;
     overflow: visible;
-    padding-bottom: 32px;
 }
 
 /* Slides */
@@ -153,7 +153,7 @@
     z-index: 1;
     pointer-events: none;
     cursor: default;
-    text-decoration: none !important; /* 👈 remove underline completely */
+    text-decoration: none !important;
     color: inherit;
     transition: transform .28s ease, opacity .22s ease, filter .22s ease, box-shadow .28s ease;
 }
@@ -194,10 +194,10 @@
 }
 
 .cv-slide.is-active:hover .cv-mini {
-    border: 3px solid #000; /* 👈 stronger black border */
+    border: 3px solid #000;
     box-shadow: 
-        0 0 0 4px rgba(0,0,0,.08), /* 👈 outer ring/glow */
-        0 20px 40px rgba(0,0,0,.16); /* 👈 nicer shadow */
+        0 0 0 4px rgba(0,0,0,.08),
+        0 20px 40px rgba(0,0,0,.16);
 }
 
 /* Left / Right */
@@ -213,11 +213,6 @@
     z-index: 2;
     transform: translate(calc(-50% + var(--side-x)), -50%) scale(var(--side-scale)) rotate(var(--side-tilt));
     filter: saturate(.95) contrast(.98);
-}
-
-/* Hover animation on active card */
-.cv-slide.is-active:hover {
-    transform: translate(-50%, -50%) scale(1.02);
 }
 
 /* Mini CV content */
@@ -289,52 +284,53 @@
     color: rgba(0,0,0,.72);
 }
 
-/* Edge fade zones for nav buttons */
+/* FIX #1: Edge fade zones - only as tall as buttons, centered vertically */
 .carousel-nav-zone {
     position: absolute;
-    top: 0;
-    width: 140px; /* 👈 fade zone width */
-    height: 100%;
-    pointer-events: none; /* 👈 zone doesn't block interaction */
-    z-index: 19; /* 👈 behind buttons but above cards */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 140px;
+    height: 120px;
+    pointer-events: none;
+    z-index: 19;
 }
 
 .carousel-nav-zone.left {
     left: 0;
-    background: linear-gradient(to right, rgba(255,255,255,.95), rgba(255,255,255,0));
+    background: linear-gradient(to right, rgba(255,255,255,.9) 0%, rgba(255,255,255,.5) 50%, rgba(255,255,255,0) 100%);
 }
 
 .carousel-nav-zone.right {
     right: 0;
-    background: linear-gradient(to left, rgba(255,255,255,.95), rgba(255,255,255,0));
+    background: linear-gradient(to left, rgba(255,255,255,.9) 0%, rgba(255,255,255,.5) 50%, rgba(255,255,255,0) 100%);
 }
 
 /* Nav buttons (pill style with strong black ring) */
 .cv-nav {
     position: absolute;
-    top: calc(var(--carousel-h) / 2);
+    top: 50%;
     transform: translateY(-50%);
     width: 48px;
     height: 48px;
-    border-radius: 999px; /* 👈 pill/circular shape */
-    border: 2px solid #000; /* 👈 strong black border */
-    background: rgba(255,255,255,.98); /* 👈 white background */
-    box-shadow: 0 4px 12px rgba(0,0,0,.15); /* 👈 soft shadow */
+    border-radius: 999px;
+    border: 2px solid #000;
+    background: rgba(255,255,255,.98);
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
     display: grid;
     place-items: center;
     font-size: 26px;
     line-height: 1;
     color: rgba(0,0,0,.88);
     cursor: pointer;
-    z-index: 20; /* 👈 always on top */
+    z-index: 20;
     user-select: none;
-    pointer-events: auto; /* 👈 button captures clicks */
+    pointer-events: auto;
     transition: transform .2s ease, box-shadow .2s ease;
 }
 
 .cv-nav:hover {
-    transform: translateY(-50%) scale(1.08); /* 👈 lift on hover */
-    box-shadow: 0 6px 18px rgba(0,0,0,.22); /* 👈 stronger shadow */
+    transform: translateY(-50%) scale(1.08);
+    box-shadow: 0 6px 18px rgba(0,0,0,.22);
 }
 
 .cv-nav--prev {
@@ -350,15 +346,16 @@
     display: flex;
     justify-content: center;
     gap: 10px;
-    margin-top: 24px;
+    margin-top: 32px;
+    padding-bottom: 8px;
 }
 
 .cv-dot {
     width: 10px;
     height: 10px;
     border-radius: 999px;
-    border: 1.5px solid rgba(0,0,0,.30); /* 👈 visible border */
-    background: rgba(0,0,0,.25); /* 👈 subtle gray */
+    border: 1.5px solid rgba(0,0,0,.30);
+    background: rgba(0,0,0,.25);
     cursor: pointer;
     transition: all .2s ease;
 }
@@ -369,47 +366,59 @@
 }
 
 .cv-dot.is-active {
-    width: 12px; /* 👈 slightly larger */
+    width: 12px;
     height: 12px;
-    background: #000; /* 👈 true black */
-    border: 1.5px solid #000; /* 👈 matching black border */
+    background: #000;
+    border: 1.5px solid #000;
 }
 
 /* =========================
-   Latest project spotlight
+   FIX #3: Latest project spotlight
+   OUTER card (GREEN) + INNER paper card (BLUE)
    ========================= */
+
+/* Outer section card - taller with more padding */
+.home-feature-card.home-feature-card--project {
+    padding: 28px 22px;
+    margin-top: 16px;
+}
+
+/* Inner "paper" card - centered, narrower, more spacing */
 .project-spotlight {
+    max-width: 720px;
+    margin: 0 auto;
     border: 1px solid rgba(0,0,0,.14);
     border-radius: 16px;
-    padding: 16px;
-    background: rgba(255,255,255,.96);
-    box-shadow: 0 10px 26px rgba(0,0,0,.06);
+    padding: 24px;
+    background: rgba(255,255,255,.98);
+    box-shadow: 0 8px 20px rgba(0,0,0,.08);
 }
 
 .project-title {
-    font-size: 18px;
+    font-size: 19px;
     font-weight: 880;
     letter-spacing: -0.01em;
+    margin: 0;
 }
 
 .project-sub {
-    margin-top: 3px;
+    margin-top: 6px;
     font-size: 13px;
     font-weight: 650;
     color: rgba(0,0,0,.60);
 }
 
 .project-chips {
-    margin-top: 10px;
+    margin-top: 18px;
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
 }
 
 .project-desc {
-    margin: 12px 0 0;
+    margin: 18px 0 0;
     font-size: 14px;
-    line-height: 1.65;
+    line-height: 1.7;
     font-weight: 560;
     color: rgba(0,0,0,.74);
 }
@@ -417,7 +426,7 @@
 .project-actions {
     display: flex;
     gap: 10px;
-    margin-top: 14px;
+    margin-top: 20px;
     flex-wrap: wrap;
 }
 
@@ -425,7 +434,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 14px;
+    padding: 11px 16px;
     border-radius: 12px;
     border: 1px solid rgba(0,0,0,.22);
     background: rgba(255,255,255,.95);
@@ -434,11 +443,12 @@
     font-weight: 750;
     font-size: 14px;
     box-shadow: 0 10px 22px rgba(0,0,0,.06);
+    transition: transform .2s ease;
 }
 
-    .btn-ghost:hover {
-        transform: translateY(-1px);
-    }
+.btn-ghost:hover {
+    transform: translateY(-1px);
+}
 
 /* Stories */
 .home-stories {
@@ -466,13 +476,13 @@
     grid-template-columns: 1fr 280px;
 }
 
-    .story-card--reverse .story-media {
-        order: 2;
-    }
+.story-card--reverse .story-media {
+    order: 2;
+}
 
-    .story-card--reverse .story-content {
-        order: 1;
-    }
+.story-card--reverse .story-content {
+    order: 1;
+}
 
 /* Media */
 .story-media img {
@@ -537,6 +547,40 @@
         object-position: center 38%;
     }
 
+    /* Carousel fixes for mobile */
+    .cv-carousel {
+        min-height: calc(var(--carousel-h) + 60px);
+    }
+
+    .carousel-nav-zone {
+        width: 100px;
+        height: 100px;
+    }
+
+    .cv-nav {
+        width: 44px;
+        height: 44px;
+        font-size: 24px;
+    }
+
+    .cv-nav--prev {
+        left: 12px;
+    }
+
+    .cv-nav--next {
+        right: 12px;
+    }
+
+    /* Project section mobile adjustments */
+    .home-feature-card.home-feature-card--project {
+        padding: 22px 16px;
+    }
+
+    .project-spotlight {
+        padding: 20px;
+    }
+
+    /* Stories mobile */
     .story-card,
     .story-card--reverse {
         grid-template-columns: 1fr;
@@ -546,26 +590,5 @@
     .story-lead,
     .story-quote {
         text-align: center;
-    }
-
-    /* Adjust fade zones for mobile */
-    .carousel-nav-zone {
-        width: 100px;
-    }
-
-    /* Make nav buttons slightly smaller but still easy */
-    .cv-nav {
-        width: 44px;
-        height: 44px;
-        font-size: 24px;
-        top: calc(var(--carousel-h) / 2);
-    }
-
-    .cv-nav--prev {
-        left: 12px;
-    }
-
-    .cv-nav--next {
-        right: 12px;
     }
 }
