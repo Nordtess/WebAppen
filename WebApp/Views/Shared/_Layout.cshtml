@@ -46,6 +46,12 @@
                                 <a class="nav-link nl-link @Active("Home")" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link nl-link @Active("SearchCv")" asp-controller="SearchCv" asp-action="Index">Sök CV</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nl-link @Active("Projects")" asp-controller="Projects" asp-action="Index">Alla projekt</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link nl-link @Active("Login")" asp-controller="Login" asp-action="Index">Logga in</a>
                             </li>
                             <li class="nav-item">
@@ -78,11 +84,12 @@
                     </div>
 
                     <!-- Mail notification (med era bilder) -->
-                    <div class="nl-mail"
-                         data-unread="3"
-                         data-closed-src="@Url.Content("~/images/bannersandicons/mail.png")"
-                         data-open-src="@Url.Content("~/images/bannersandicons/mailopen.png")"
-                         title="Meddelanden">
+                    <a class="nl-mail"
+                       asp-controller="Messages" asp-action="Index"
+                       data-unread="3"
+                       data-closed-src="@Url.Content("~/images/bannersandicons/mail.png")"
+                       data-open-src="@Url.Content("~/images/bannersandicons/mailopen.png")"
+                       title="Meddelanden">
                         <img class="nl-mail-img"
                              src="~/images/bannersandicons/mail.png"
                              asp-append-version="true"
@@ -90,7 +97,7 @@
                         <span class="nl-mail-text">
                             Du har <strong class="nl-unread-count">3</strong> olästa meddelanden
                         </span>
-                    </div>
+                    </a>
 
                 </div>
 
