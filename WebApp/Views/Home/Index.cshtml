@@ -14,15 +14,21 @@
         <h1 class="home-h1">Välkommen till NotLinkedIn!</h1>
     </div>
 
-    <!-- WELCOME TEXT (NOW WITH BANNER LIKE MESSAGE CARD) -->
-    <section class="home-card home-welcome-card">
-        <div class="home-welcome-banner" aria-hidden="true">
-            <img class="home-welcome-banner-img"
+    <!-- WELCOME (TITLE OUTSIDE CARD) -->
+    <h2 class="home-h2">Vad är NotLinkedIn?</h2>
+    <p class="home-sub">
+        En CV-plattform byggd för tydlighet, fart och struktur – med en design som känns premium och lätt att skanna.
+    </p>
+
+    <section class="home-card home-split-card home-welcome-card">
+        <div class="home-banner" aria-hidden="true">
+            <!-- BYT BILDEN HÄR -->
+            <img class="home-banner-img home-banner-img--welcome"
                  src="~/images/bannersandicons/welcome.png"
-                 alt="Välkommen banner" />
+                 alt="Welcome banner" />
         </div>
 
-        <div class="home-welcome-body home-card--text">
+        <div class="home-card-body home-card--text">
             <p>
                 NotLinkedIn är en webbaserad plattform där individer kan skapa, designa och presentera sina personliga CV på ett tydligt och visuellt tilltalande sätt.
                 Fokus ligger på att ge användaren full kontroll över hur kompetens, erfarenhet och personlighet visas – utan onödiga titlar, klichéer eller överdrivna formuleringar.
@@ -42,15 +48,20 @@
         </div>
     </section>
 
-    <!-- MESSAGE FEATURE -->
+    <!-- MESSAGE FEATURE (TITLE OUTSIDE CARD) -->
     <h2 class="home-h2">Privat meddelandefunktion</h2>
+    <p class="home-sub">
+        Kontakta rätt person direkt – utan externa verktyg. Snabbt, privat och integrerat i plattformen.
+    </p>
 
-    <section class="home-card home-message-card">
-        <div class="home-message-banner" aria-hidden="true">
-            <img class="home-message-banner-img" src="~/images/bannersandicons/message.png" alt="Meddelanden banner" />
+    <section class="home-card home-split-card home-message-card">
+        <div class="home-banner" aria-hidden="true">
+            <img class="home-banner-img home-banner-img--message"
+                 src="~/images/bannersandicons/message.png"
+                 alt="Meddelanden banner" />
         </div>
 
-        <div class="home-message-body home-card--text">
+        <div class="home-card-body home-card--text">
             <p>
                 Plattformen innehåller även en säker och privat meddelandetjänst som gör det möjligt för användare att kommunicera direkt med varandra.
                 Meddelandefunktionen är utformad för att skydda användarnas integritet och säkerställa att konversationer förblir privata mellan avsändare och mottagare.
@@ -62,158 +73,173 @@
         </div>
     </section>
 
-    <!-- CV CAROUSEL -->
-    <section class="home-card home-feature-card">
-        <header class="home-feature-head">
-            <h2 class="home-h2 home-h2--in-card">Utvalda CV-profiler</h2>
-            <p class="home-feature-sub">
-                Här är ett urval av CV-profiler i vår signaturdesign: tydlig struktur, lättläst hierarki och smarta “chips” som gör kompetenser enkla att upptäcka.
-                Klicka på kortet i fokus för att öppna profilen.
-            </p>
-        </header>
+    <!-- CV CAROUSEL (TITLE OUTSIDE CARD) -->
+    <h2 class="home-h2">Datadriven CV-design för maximal räckvidd</h2>
+    <p class="home-sub">
+        Våra layouter är inte bara snygga – de är framtagna av algoritmer för att 
+        vetenskapligt maximera dina chanser på arbetsmarknaden. Genom en optimerad struktur ser vi 
+        till att arbetsgivare med avancerade sökfunktioner hittar precis din profil 
+        bland tusentals andra. Ge din karriär det tekniska försprång den förtjänar.
+    </p>
 
-        <div class="cv-carousel" data-carousel="cv">
-            <div class="carousel-nav-zone left">
-                <button class="cv-nav cv-nav--prev" type="button" aria-label="Föregående profil">‹</button>
-            </div>
+    <section class="home-card home-cv-card">
+        <div class="home-banner" aria-hidden="true">
+            <!-- BYT BILDEN HÄR -->
+            <img class="home-banner-img home-banner-img--cv"
+                 src="~/images/bannersandicons/cvexample.png"
+                 alt="CV banner" />
+        </div>
 
-            <div class="cv-stage" aria-label="Karusell med CV-profiler">
-                <a class="cv-slide is-active" href="#" data-href="#" aria-label="Öppna profil: Jamie Larsson">
-                    <div class="cv-mini">
-                        <div class="cv-mini-top">
-                            <div class="cv-mini-avatar">JL</div>
-                            <div class="cv-mini-id">
-                                <div class="cv-mini-name">Jamie Larsson</div>
-                                <div class="cv-mini-role">Systemvetenskap • Fullstack</div>
+        <!-- OBS: denna body är overflow: visible så karusellkorten kan gå UTANFÖR ramen -->
+        <div class="home-card-body home-cv-body">
+            <div class="cv-carousel" data-carousel="cv">
+                <div class="carousel-nav-zone left">
+                    <button class="cv-nav cv-nav--prev" type="button" aria-label="Föregående profil">‹</button>
+                </div>
+
+                <div class="cv-stage" aria-label="Karusell med CV-profiler">
+                    <!-- Slide 1 -->
+                    <a class="cv-slide is-active" href="#" data-href="#" aria-label="Öppna profil: Jamie Larsson">
+                        <div class="cv-mini">
+                            <div class="cv-mini-top">
+                                <div class="cv-mini-avatar">JL</div>
+                                <div class="cv-mini-id">
+                                    <div class="cv-mini-name">Jamie Larsson</div>
+                                    <div class="cv-mini-role">Systemvetenskap • Fullstack</div>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="cv-mini-meta">
-                            <span class="cv-mini-dot">📍</span>
-                            <span class="cv-mini-loc">Örebro</span>
-                        </div>
-
-                        <div class="cv-mini-chips">
-                            <span class="cv-chip">ASP.NET</span>
-                            <span class="cv-chip">MVC</span>
-                            <span class="cv-chip">SQL</span>
-                            <span class="cv-chip">C#</span>
-                        </div>
-
-                        <p class="cv-mini-desc">
-                            Ren layout med tydliga sektioner: om mig, utbildning, erfarenhet och projekt – redo att kopplas mot SQL.
-                        </p>
-                    </div>
-                </a>
-
-                <a class="cv-slide" href="#" data-href="#" aria-label="Öppna profil: Alva Svensson">
-                    <div class="cv-mini">
-                        <div class="cv-mini-top">
-                            <div class="cv-mini-avatar">AS</div>
-                            <div class="cv-mini-id">
-                                <div class="cv-mini-name">Alva Svensson</div>
-                                <div class="cv-mini-role">Frontend • UI/UX</div>
+                            <div class="cv-mini-meta">
+                                <span class="cv-mini-dot">📍</span>
+                                <span class="cv-mini-loc">Örebro</span>
                             </div>
-                        </div>
 
-                        <div class="cv-mini-meta">
-                            <span class="cv-mini-dot">📍</span>
-                            <span class="cv-mini-loc">Stockholm</span>
-                        </div>
-
-                        <div class="cv-mini-chips">
-                            <span class="cv-chip">HTML</span>
-                            <span class="cv-chip">CSS</span>
-                            <span class="cv-chip">JavaScript</span>
-                            <span class="cv-chip">Figma</span>
-                        </div>
-
-                        <p class="cv-mini-desc">
-                            Fokus på tydlig presentation och visuell hierarki – lätt att skanna, lätt att minnas.
-                        </p>
-                    </div>
-                </a>
-
-                <a class="cv-slide" href="#" data-href="#" aria-label="Öppna profil: Elias Karlsson">
-                    <div class="cv-mini">
-                        <div class="cv-mini-top">
-                            <div class="cv-mini-avatar">EK</div>
-                            <div class="cv-mini-id">
-                                <div class="cv-mini-name">Elias Karlsson</div>
-                                <div class="cv-mini-role">Backend • Databaser</div>
+                            <div class="cv-mini-chips">
+                                <span class="cv-chip">ASP.NET</span>
+                                <span class="cv-chip">MVC</span>
+                                <span class="cv-chip">SQL</span>
+                                <span class="cv-chip">C#</span>
                             </div>
+
+                            <p class="cv-mini-desc">
+                                Ren layout med tydliga sektioner: om mig, utbildning, erfarenhet och projekt – redo att kopplas mot SQL.
+                            </p>
                         </div>
+                    </a>
 
-                        <div class="cv-mini-meta">
-                            <span class="cv-mini-dot">📍</span>
-                            <span class="cv-mini-loc">Göteborg</span>
+                    <!-- Slide 2 -->
+                    <a class="cv-slide" href="#" data-href="#" aria-label="Öppna profil: Alva Svensson">
+                        <div class="cv-mini">
+                            <div class="cv-mini-top">
+                                <div class="cv-mini-avatar">AS</div>
+                                <div class="cv-mini-id">
+                                    <div class="cv-mini-name">Alva Svensson</div>
+                                    <div class="cv-mini-role">Frontend • UI/UX</div>
+                                </div>
+                            </div>
+
+                            <div class="cv-mini-meta">
+                                <span class="cv-mini-dot">📍</span>
+                                <span class="cv-mini-loc">Stockholm</span>
+                            </div>
+
+                            <div class="cv-mini-chips">
+                                <span class="cv-chip">HTML</span>
+                                <span class="cv-chip">CSS</span>
+                                <span class="cv-chip">JavaScript</span>
+                                <span class="cv-chip">Figma</span>
+                            </div>
+
+                            <p class="cv-mini-desc">
+                                Fokus på tydlig presentation och visuell hierarki – lätt att skanna, lätt att minnas.
+                            </p>
                         </div>
+                    </a>
 
-                        <div class="cv-mini-chips">
-                            <span class="cv-chip">C#</span>
-                            <span class="cv-chip">SQL</span>
-                            <span class="cv-chip">API</span>
-                            <span class="cv-chip">Azure</span>
+                    <!-- Slide 3 -->
+                    <a class="cv-slide" href="#" data-href="#" aria-label="Öppna profil: Elias Karlsson">
+                        <div class="cv-mini">
+                            <div class="cv-mini-top">
+                                <div class="cv-mini-avatar">EK</div>
+                                <div class="cv-mini-id">
+                                    <div class="cv-mini-name">Elias Karlsson</div>
+                                    <div class="cv-mini-role">Backend • Databaser</div>
+                                </div>
+                            </div>
+
+                            <div class="cv-mini-meta">
+                                <span class="cv-mini-dot">📍</span>
+                                <span class="cv-mini-loc">Göteborg</span>
+                            </div>
+
+                            <div class="cv-mini-chips">
+                                <span class="cv-chip">C#</span>
+                                <span class="cv-chip">SQL</span>
+                                <span class="cv-chip">API</span>
+                                <span class="cv-chip">Azure</span>
+                            </div>
+
+                            <p class="cv-mini-desc">
+                                Byggd för rekryterare: snabb överblick, smarta taggar och balanserad fokus på innehåll.
+                            </p>
                         </div>
+                    </a>
+                </div>
 
-                        <p class="cv-mini-desc">
-                            Byggd för rekryterare: snabb överblick, smarta taggar och balanserad fokus på innehåll.
-                        </p>
-                    </div>
-                </a>
-            </div>
+                <div class="carousel-nav-zone right">
+                    <button class="cv-nav cv-nav--next" type="button" aria-label="Nästa profil">›</button>
+                </div>
 
-            <div class="carousel-nav-zone right">
-                <button class="cv-nav cv-nav--next" type="button" aria-label="Nästa profil">›</button>
-            </div>
-
-            <div class="cv-dots" aria-label="Välj profil">
-                <button class="cv-dot is-active" type="button" aria-label="Visa profil 1"></button>
-                <button class="cv-dot" type="button" aria-label="Visa profil 2"></button>
-                <button class="cv-dot" type="button" aria-label="Visa profil 3"></button>
+                <div class="cv-dots" aria-label="Välj profil">
+                    <button class="cv-dot is-active" type="button" aria-label="Visa profil 1"></button>
+                    <button class="cv-dot" type="button" aria-label="Visa profil 2"></button>
+                    <button class="cv-dot" type="button" aria-label="Visa profil 3"></button>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- LATEST PROJECT -->
-    <section class="home-card home-feature-card home-feature-card--project">
-        <header class="home-feature-head">
-            <h2 class="home-h2 home-h2--in-card">Senast upplagda projektet</h2>
-            <p class="home-feature-sub">
-                Projektmodulen är där du verkligen sticker ut. Istället för att bara lista roller och årtal visar du konkreta resultat – snabbt,
-                snyggt och lätt att förstå. Här lyfter vi fram det senaste projektet som lagts upp på plattformen.
-            </p>
-        </header>
+    <!-- PROJECT (TITLE OUTSIDE CARD) -->
+    <h2 class="home-h2">Senast upplagda projektet</h2>
+    <p class="home-sub">
+        Projektmodulen är där du verkligen sticker ut. Istället för att bara låta CV:t prata,
+        visar du resultat – snyggt, konkret och imponerande direkt vid första intrycket.
+    </p>
 
-        <article class="project-spotlight" aria-label="Senast upplagda projektet">
-            <div class="project-top">
-                <div>
-                    <div class="project-title">NotLinkedIn — WebApp</div>
-                    <div class="project-sub">Upplagt: 2025-12-18 • av Jamie Larsson</div>
+    <section class="home-card home-project-card">
+        <div class="home-banner" aria-hidden="true">
+            <!-- BYT BILDEN HÄR -->
+            <img class="home-banner-img home-banner-img--project"
+                 src="~/images/bannersandicons/projectsexample.png"
+                 alt="Projekt banner" />
+        </div>
+
+        <div class="home-card-body home-project-body">
+            <article class="project-spotlight" aria-label="Senast upplagda projektet">
+                <div class="project-title">NotLinkedIn — WebApp</div>
+                <div class="project-sub">Upplagt: 2025-12-18 • av Jamie Larsson</div>
+
+                <div class="project-chips">
+                    <span class="cv-chip">ASP.NET</span>
+                    <span class="cv-chip">MVC</span>
+                    <span class="cv-chip">SQL</span>
                 </div>
-            </div>
 
-            <div class="project-chips">
-                <span class="cv-chip">ASP.NET</span>
-                <span class="cv-chip">MVC</span>
-                <span class="cv-chip">SQL</span>
-            </div>
+                <p class="project-desc">
+                    Ett webbprojekt där användare kan skapa CV-profiler, koppla projekt och kommunicera via privata meddelanden.
+                    Fokus ligger på ren “Apple-ish” design, tydlig struktur och en upplevelse som känns snabb och professionell.
+                </p>
 
-            <p class="project-desc">
-                Ett webbprojekt där användare kan skapa CV-profiler, koppla projekt och kommunicera via privata meddelanden.
-                Fokus ligger på ren "Apple-ish" design, tydlig struktur och en upplevelse som känns snabb och professionell.
-            </p>
-
-            <div class="project-actions">
-                <a class="btn-ghost" href="#">Öppna projekt</a>
-                <a class="btn-ghost" href="#">Se alla projekt</a>
-            </div>
-        </article>
+                <div class="project-actions">
+                    <a class="btn-ghost" href="#">Öppna projekt</a>
+                    <a class="btn-ghost" href="#">Se alla projekt</a>
+                </div>
+            </article>
+        </div>
     </section>
 
     <!-- CUSTOMER STORIES -->
     <div class="home-stories">
-
         <div class="story-card">
             <div class="story-media">
                 <img src="~/images/customers/customer1.png" alt="Anna, småföretagare">
@@ -244,14 +270,11 @@
                 </p>
 
                 <blockquote class="story-quote">
-                    "För mig har det gjort stor skillnad att kunna kontakta kandidater direkt
-                    på plattformen. Jag får en bättre bild av personen bakom CV:t och kan ställa
-                    rätt frågor tidigt i processen. Det sparar tid, minskar missförstånd och gör
-                    rekryteringen betydligt mer mänsklig."
+                    "För mig har det gjort stor skillnad att kunna kontakta kandidater direkt på plattformen. Jag får en bättre bild av personen bakom CV:t och kan ställa
+                    rätt frågor tidigt i processen. Det sparar tid, minskar missförstånd och gör rekryteringen betydligt mer mänsklig."
                 </blockquote>
             </div>
         </div>
-
     </div>
 </div>
 
