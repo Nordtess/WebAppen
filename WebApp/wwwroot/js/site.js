@@ -153,7 +153,7 @@ window.addEventListener("resize", () => {
     }, 250);
 });
 
-// ===== OFF-CANVAS SIDEBAR FOR MOBILE =====
+// ===== OFF-CANVAS SIDEBAR FOR MOBILE (SLIDE-DOWN BELOW HEADER) =====
 
 (function() {
     // Get elements
@@ -181,7 +181,6 @@ window.addEventListener("resize", () => {
         sidebar.classList.add('open');
         overlay.classList.add('active');
         hamburger.setAttribute('aria-expanded', 'true');
-        document.body.style.overflow = 'hidden'; // Prevent background scroll
     }
 
     // Close sidebar
@@ -189,7 +188,6 @@ window.addEventListener("resize", () => {
         sidebar.classList.remove('open');
         overlay.classList.remove('active');
         hamburger.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = ''; // Restore scroll
     }
 
     // Hamburger click
@@ -223,7 +221,7 @@ window.addEventListener("resize", () => {
         });
     });
 
-    // Close sidebar on window resize if open
+    // Close sidebar on window resize if open and viewport is now wider than 800px
     let resizeTimer;
     window.addEventListener('resize', function() {
         clearTimeout(resizeTimer);

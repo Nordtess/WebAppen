@@ -5,7 +5,7 @@
         return string.Equals(current, controller, StringComparison.OrdinalIgnoreCase) ? "active" : "";
     }
     
-    // Placeholder for unread messages - replace with real data later
+    // Placeholder for testing - always shows
     int unreadCount = 3;
 }
 
@@ -42,25 +42,15 @@
                         <span class="hamburger-line"></span>
                         <span class="hamburger-line"></span>
                     </button>
-                    
-                    <div class="header-logo">
-                        <img src="~/images/logos/loggamini.png"
-                             asp-append-version="true"
-                             alt="NotLinkedIn" 
-                             class="logo-img" />
-                    </div>
                 </div>
                 
-                @if (User?.Identity?.IsAuthenticated == true)
-                {
-                    <div class="header-user-area">
-                        <img src="~/images/svg/mail.svg" 
-                             alt="Meddelanden" 
-                             class="icon-mail" />
-                        <span class="unread-text">Du har <strong>@unreadCount</strong> olästa meddelanden</span>
-                        <span class="user-email">jamie@example.se</span>
-                    </div>
-                }
+                <div class="header-user-area">
+                    <img src="~/images/svg/mail.svg" 
+                         alt="Meddelanden" 
+                         class="icon-mail" />
+                    <span class="unread-text">Du har <strong>@unreadCount</strong> olästa meddelanden</span>
+                    <span class="user-email">jamie@example.se</span>
+                </div>
             </div>
         </header>
 
@@ -101,13 +91,13 @@
 
         <main class="app-main" role="main">
             @RenderBody()
+            
+            <footer class="app-footer" role="contentinfo">
+                <div class="footer-content">
+                    &copy; 2025 - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </div>
+            </footer>
         </main>
-
-        <footer class="app-footer" role="contentinfo">
-            <div class="footer-content">
-                &copy; 2025 - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-            </div>
-        </footer>
 
     </div>
 
