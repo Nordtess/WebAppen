@@ -174,7 +174,7 @@ p {
     white-space: nowrap;
 }
 
-/* ===== SIDEBAR (full height) ===== */
+/* ===== SIDEBAR (full height, equal to main) ===== */
 .app-sidebar {
     grid-area: sidebar;
     background: var(--bg-color);
@@ -183,7 +183,6 @@ p {
     padding: 16px 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
     overflow-y: auto;
-    align-self: stretch;
     height: 100%;
 }
 
@@ -234,23 +233,51 @@ p {
     display: none;
 }
 
-/* ===== MAIN CONTENT (scrollable, footer inside) ===== */
+/* ===== MAIN CONTENT (scrollable, equal height to sidebar) ===== */
 .app-main {
     grid-area: main;
     background: var(--bg-color);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
-    padding: 28px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
     overflow-y: auto;
     overflow-x: hidden;
-    min-height: 0;
+    height: 100%;
+    /* Gemini-like scrollbar styling */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 
-/* ===== FOOTER (inside main, scrolls with content) ===== */
+/* Webkit scrollbar styling for Chrome/Safari/Edge */
+.app-main::-webkit-scrollbar {
+    width: 8px;
+}
+
+.app-main::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.app-main::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.app-main::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* Inner wrapper for flexbox layout with footer at bottom */
+.main-inner {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 28px;
+}
+
+/* ===== FOOTER (inside main, at bottom via margin-top: auto) ===== */
 .app-footer {
-    margin-top: 60px;
-    padding-top: 30px;
+    margin-top: auto;
+    padding-top: 40px;
     border-top: 1px solid var(--border-color);
 }
 
@@ -258,6 +285,7 @@ p {
     text-align: center;
     font-size: 13px;
     color: rgba(0, 0, 0, 0.6);
+    padding-bottom: 20px;
 }
 
 .footer-content a {
@@ -336,7 +364,6 @@ p {
         padding: 0;
         border-radius: var(--border-radius);
         transition: max-height 0.3s ease, padding 0.3s ease;
-        align-self: unset;
         height: auto;
     }
 
@@ -365,18 +392,19 @@ p {
         opacity: 1;
     }
 
-    .app-main {
+    .main-inner {
         padding: 20px 14px;
     }
 
     .app-footer {
-        margin-top: 40px;
-        padding-top: 24px;
+        margin-top: auto;
+        padding-top: 30px;
     }
 
     .footer-content {
         font-size: 12px;
         padding: 0 10px;
+        padding-bottom: 16px;
     }
 
     /* Smaller typography on mobile */
