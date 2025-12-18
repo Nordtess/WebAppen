@@ -6,8 +6,8 @@
     --home-pad: 18px;
     --home-gap: 14px;
     /* Carousel knobs */
-    --carousel-h: 260px; /* 👈 gör “gröna kortet” högre här */
-    --slide-w: 620px; /* fokus-kort bredd */
+    --carousel-h: 320px; /* 👈 increased from 260px to give more height */
+    --slide-w: 520px; /* 👈 reduced from 620px to make cards narrower */
     --slide-h: 210px; /* fokus-kort höjd */
     --side-scale: 0.86; /* storlek på sidkort */
     --side-x: 320px; /* hur långt åt sidan sidkort flyttas */
@@ -137,6 +137,7 @@
     height: var(--carousel-h);
     display: block;
     overflow: visible; /* 👈 så sidkorten syns */
+    padding-bottom: 32px; /* 👈 add breathing room before dots */
 }
 
 /* Slides */
@@ -151,6 +152,7 @@
     opacity: 0;
     z-index: 1;
     pointer-events: none; /* 👈 viktigt: sidkort ska inte stjäla klick */
+    cursor: default; /* 👈 no pointer cursor on non-active cards */
     text-decoration: none;
     color: inherit;
     transition: transform .28s ease, opacity .22s ease, filter .22s ease;
@@ -174,6 +176,7 @@
     opacity: 1;
     z-index: 4;
     pointer-events: auto; /* 👈 klicka på kortet i fokus */
+    cursor: pointer; /* 👈 show pointer cursor only on active card */
     transform: translate(-50%, -50%) scale(1);
 }
 
@@ -274,7 +277,7 @@
     width: 48px; /* 👈 större klickyta */
     height: 48px;
     border-radius: 999px;
-    border: 1px solid rgba(0,0,0,.18);
+    border: 2px solid #000; /* 👈 strong black border */
     background: rgba(255,255,255,.92);
     box-shadow: 0 10px 22px rgba(0,0,0,.10);
     display: grid;
@@ -304,7 +307,7 @@
     display: flex;
     justify-content: center;
     gap: 10px;
-    margin-top: 10px;
+    margin-top: 24px; /* 👈 increased from 10px to move dots down */
 }
 
 .cv-dot {
@@ -456,10 +459,10 @@
 /* Mobile */
 @media (max-width: 800px) {
     :root {
-        --carousel-h: 300px; /* lite mer plats i mobile */
+        --carousel-h: 360px; /* 👈 increased from 300px to give more height on mobile */
         --slide-h: 240px;
         --side-x: 230px;
-        --slide-w: 520px;
+        --slide-w: 440px; /* 👈 reduced from 520px to make mobile cards narrower */
         --side-scale: 0.82;
     }
 
