@@ -3,6 +3,7 @@
 :root {
     --header-height: 70px;
     --sidebar-width: 240px;
+    --footer-height: 60px;
     --shell-gap: 16px;
     --shell-padding: 16px;
     --border-radius: 14px;
@@ -59,14 +60,15 @@ p {
     margin-bottom: 0.75rem;
 }
 
-/* APP SHELL - CSS Grid Container */
+/* APP SHELL - CSS Grid Container with 3 rows */
 .app-shell {
     display: grid;
     grid-template-columns: var(--sidebar-width) 1fr;
-    grid-template-rows: var(--header-height) 1fr;
+    grid-template-rows: var(--header-height) 1fr var(--footer-height);
     grid-template-areas:
         "header header"
-        "sidebar main";
+        "sidebar main"
+        "sidebar footer";
     gap: var(--shell-gap);
     height: 100vh;
     padding: var(--shell-padding);
@@ -148,8 +150,8 @@ p {
 }
 
 .icon-mail {
-    width: 20px;
-    height: 20px;
+    width: 26px;
+    height: 26px;
     opacity: 0.85;
     flex-shrink: 0;
 }
@@ -174,7 +176,7 @@ p {
     white-space: nowrap;
 }
 
-/* ===== SIDEBAR ===== */
+/* ===== SIDEBAR (extends full height next to footer) ===== */
 .app-sidebar {
     grid-area: sidebar;
     background: var(--bg-color);
@@ -243,16 +245,18 @@ p {
     overflow-y: auto;
     overflow-x: hidden;
     height: 100%;
-    display: flex;
-    flex-direction: column;
 }
 
-/* ===== FOOTER (inside main, not fixed) ===== */
+/* ===== FOOTER (separate grid area) ===== */
 .app-footer {
-    margin-top: auto;
-    padding-top: 40px;
-    padding-bottom: 20px;
-    border-top: 1px solid var(--border-color);
+    grid-area: footer;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 .footer-content {
@@ -292,15 +296,17 @@ p {
         --shell-padding: 12px;
         --shell-gap: 12px;
         --header-height: 60px;
+        --footer-height: 50px;
     }
 
-    /* Mobile grid: no sidebar column, stack everything */
+    /* Mobile grid: single column, footer at bottom */
     .app-shell {
         grid-template-columns: 1fr;
-        grid-template-rows: var(--header-height) 1fr;
+        grid-template-rows: var(--header-height) 1fr var(--footer-height);
         grid-template-areas:
             "header"
-            "main";
+            "main"
+            "footer";
     }
 
     /* Show hamburger on mobile */
@@ -318,8 +324,8 @@ p {
     }
 
     .icon-mail {
-        width: 18px;
-        height: 18px;
+        width: 22px;
+        height: 22px;
     }
 
     /* Sidebar becomes slide-down panel BELOW header */
