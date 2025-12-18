@@ -74,6 +74,13 @@
     text-align: justify;
 }
 
+.home-welcome-card {
+    padding: 0; /* important: banner touches edges */
+    overflow: hidden; /* rounds banner corners correctly */
+}
+
+
+
 .home-card--text p:last-child {
     margin-bottom: 0;
 }
