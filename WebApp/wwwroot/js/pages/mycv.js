@@ -4,6 +4,6 @@
 
     toggle.addEventListener("click", () => {
         const isOn = toggle.classList.toggle("is-on");
-        toggle.setAttribute("aria-checked", isOn ? "true" : "false");
+        toggle.setAttribute("aria-pressed", isOn ? "true" : "false");
     });
 });
