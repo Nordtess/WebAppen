@@ -219,39 +219,22 @@ p {
     text-decoration: none;
 }
 
+/* Active link: static mint highlight (no animated effects) */
 .sidebar-link.active {
     background: linear-gradient(180deg, rgba(127,255,212,.30) 0%, rgba(127,255,212,.14) 60%, rgba(255,255,255,0) 100%);
-    border: 1px solid rgba(127,255,212,.75);
+    border: 1px solid rgba(127,255,212,.85);
     box-shadow:
-        0 0 0 3px rgba(127,255,212,.16),
+        0 0 0 3px rgba(127,255,212,.12),
         0 10px 22px rgba(0,0,0,.06);
     opacity: 1;
     position: relative;
     overflow: hidden;
 }
 
-/* Subtle moving highlight along the border (no pulsing) */
+/* Remove active mint animations/overlays */
+.sidebar-link.active::before,
 .sidebar-link.active::after {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: 12px;
-    background: conic-gradient(
-        from 180deg,
-        rgba(127,255,212,0) 0deg,
-        rgba(127,255,212,.45) 35deg,
-        rgba(127,255,212,0) 75deg,
-        rgba(127,255,212,0) 360deg
-    );
-    opacity: .55;
-    filter: blur(6px);
-    animation: sidebar-active-sweep 3.6s linear infinite;
-    pointer-events: none;
-}
-
-@keyframes sidebar-active-sweep {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
+    content: none;
 }
 
 /* Ensure no underline ever appears in sidebar links */
