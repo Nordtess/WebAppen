@@ -1,47 +1,38 @@
 ﻿/* =========================
-   MYCV – Apple-ish layout
+   MyCV — Apple-ish, enhetligt med Home
    ========================= */
 
-/* Snabba “knappar” att tweaka */
 :root {
-    /* Samma maxbredd-tänk som Home */
-    --cv-max: 900px;
-    /* Samma bannerhöjd som Home */
-    --cv-banner-h: 190px;
-    /* “kort”-känsla */
+    --cv-max: 900px; /* matchar Home max */
     --cv-radius: 24px;
-    --cv-border: 1px solid rgba(0,0,0,.10);
-    --cv-shadow: 0 18px 38px rgba(0,0,0,.07), 0 2px 6px rgba(0,0,0,.04);
-    /* spacing */
-    --cv-pad: 22px;
-    --cv-gap: 18px;
-    /* Avatar */
-    --cv-avatar-w: 150px;
-    --cv-avatar-h: 210px;
-    /* Typo */
-    --cv-title: 28px;
-    --cv-text: 15px;
+    --cv-border: 1px solid rgba(0,0,0,0.08);
+    --cv-shadow: 0 20px 40px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+    --cv-soft: rgba(255,255,255,0.95);
+    --cv-banner-h: 190px; /* matchar Home banner-höjd */
+    --cv-pad: 18px;
+    --cv-text: 16px;
+    --cv-title: 30px;
 }
 
-/* Sida */
+/* Page wrapper (lik Home) */
 .cv-page {
+    max-width: var(--cv-max);
+    margin: 0 auto;
+    padding: 22px 18px 28px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 26px 18px 34px;
     gap: 14px;
 }
 
-/* Banner (samma “kort”-känsla som Home banners) */
+/* Banner */
 .cv-banner {
     width: 100%;
-    max-width: var(--cv-max);
-    height: var(--cv-banner-h);
     border-radius: var(--cv-radius);
     overflow: hidden;
     border: var(--cv-border);
-    background: rgba(255,255,255,.95);
-    box-shadow: var(--cv-shadow);
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 18px 38px rgba(0,0,0,0.07), 0 2px 6px rgba(0,0,0,0.04);
+    height: var(--cv-banner-h);
 }
 
 .cv-banner-img {
@@ -49,315 +40,62 @@
     height: 100%;
     display: block;
     object-fit: cover;
-    object-position: center 20%; /* justera om du vill se mer topp/botten */
+    object-position: center 20%;
 }
 
-/* Huvudkort */
+/* Main card */
 .cv-card {
     width: 100%;
-    max-width: var(--cv-max);
-    background: rgba(255,255,255,.96);
+    background: var(--cv-soft);
     border: var(--cv-border);
     border-radius: var(--cv-radius);
     box-shadow: var(--cv-shadow);
-    padding: 0; /* vi bygger in padding per-sektion */
-    overflow: hidden;
-}
-
-/* Topbar (toggle-raden) */
-.cv-topbar {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 14px var(--cv-pad);
-    gap: 12px;
-}
-
-.cv-divider {
-    height: 1px;
-    background: rgba(0,0,0,.08);
-    margin: 0;
-}
-
-/* Inre content wrapper */
-.cv-inner {
     padding: var(--cv-pad);
 }
 
-/* Grid */
-.cv-grid {
-    display: grid;
-    grid-template-columns: 340px 1fr;
-    gap: var(--cv-gap);
-    align-items: start;
-}
-
-/* =========================
-   VÄNSTERKOLUMN – “fyll hela området”
-   (det grå/mint som du markerade)
-   ========================= */
-.cv-left {
-    border-radius: 22px;
-    padding: 16px;
-    border: 1px solid rgba(0,0,0,.08);
-    /* Mintgrön accent, men fortfarande Apple-ish */
-    background: linear-gradient( 180deg, rgba(16,185,129,.16) 0%, rgba(16,185,129,.08) 40%, rgba(0,0,0,.02) 100% );
-    /* så den alltid “fyller” sin kolumn när högern blir längre */
-    align-self: stretch;
-}
-
-/* Högerkolumn */
-.cv-right {
-    min-width: 0;
-}
-
-/* =========================
-   PROFILKORT (bild + namn)
-   ========================= */
-.cv-profile-card {
-    background: rgba(255,255,255,.92);
-    border: 1px solid rgba(0,0,0,.10);
-    border-radius: 18px;
-    padding: 14px;
-    box-shadow: 0 10px 22px rgba(0,0,0,.05);
-}
-
-.cv-avatar {
-    width: 100%;
-    height: var(--cv-avatar-h);
-    border-radius: 16px;
-    border: 1px solid rgba(0,0,0,.12);
-    background: rgba(0,0,0,.02);
-    overflow: hidden;
-    display: block;
-}
-
-/* ✅ RIKTIG BILD */
-.cv-avatar-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-/* (om du vill ha placeholder kvar som fallback) */
-.cv-avatar-placeholder {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    place-items: center;
-    font-weight: 900;
-    font-size: 22px;
-    color: rgba(0,0,0,.62);
-}
-
-/* Namn/roll – mindre och mer “safe” för långt namn */
-.cv-hero-text {
-    text-align: center;
-    margin-top: 12px;
-}
-
-.cv-name {
-    font-size: var(--cv-title);
-    font-weight: 900;
-    letter-spacing: -0.02em;
-    line-height: 1.05;
-    /* om namnet blir långt */
-    word-break: break-word;
-}
-
-.cv-role {
-    margin-top: 6px;
-    font-size: 13px;
-    color: rgba(0,0,0,.60);
-    font-weight: 700;
-    word-break: break-word;
-}
-
-/* =========================
-   BOXAR (Kontakt / Kompetenser / Högerkort)
-   ========================= */
-.cv-box {
-    margin-top: 14px;
-    background: rgba(255,255,255,.92);
-    border: 1px solid rgba(0,0,0,.10);
-    border-radius: 18px;
-    padding: 16px;
-    box-shadow: 0 10px 22px rgba(0,0,0,.05);
-}
-
-.cv-box-title {
-    font-size: 15px;
-    font-weight: 900;
-    margin: 0 0 10px;
-}
-
-/* Textstycken */
-.cv-paragraph {
-    margin: 0;
-    font-size: var(--cv-text);
-    color: rgba(0,0,0,.78);
-    font-weight: 600;
-    line-height: 1.55;
-}
-
-.cv-paragraph-muted {
-    margin-top: 6px;
-    color: rgba(0,0,0,.58);
-}
-
-/* Kontakt-lista (små rader) */
-.cv-contact-list {
+/* Topbar */
+.cv-topbar {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.cv-contact-row {
-    display: flex;
-    gap: 12px;
     align-items: center;
-    padding: 10px 12px;
-    border-radius: 14px;
-    border: 1px solid rgba(0,0,0,.08);
-    background: rgba(255,255,255,.95);
+    justify-content: space-between;
+    gap: 14px;
+    padding: 4px 6px 10px;
 }
 
-.cv-contact-ico {
-    width: 34px;
-    height: 34px;
-    border-radius: 12px;
-    border: 1px solid rgba(0,0,0,.10);
-    background: rgba(0,0,0,.02);
-    display: grid;
-    place-items: center;
-    flex: 0 0 auto;
+.cv-visits {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    font-weight: 760;
+    color: rgba(0,0,0,0.72);
 }
 
-.cv-contact-meta {
-    min-width: 0;
-}
-
-.cv-contact-k {
-    font-size: 12px;
-    font-weight: 800;
-    color: rgba(0,0,0,.60);
-    line-height: 1.1;
-}
-
-.cv-contact-v {
-    margin-top: 3px;
+.cv-visits-label {
     font-size: 13px;
-    font-weight: 800;
-    color: rgba(0,0,0,.82);
-    line-height: 1.15;
-    /* om någon skriver superlång e-post */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    font-weight: 760;
+    color: rgba(0,0,0,0.62);
 }
 
-/* =========================
-   CHIPS (enhetlig spacing + inner shadow)
-   ========================= */
-.cv-chips {
-    display: grid;
-    /* ✅ alltid jämna “slots” oavsett textlängd */
-    grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
-    gap: 10px;
+.cv-visits-value {
+    font-size: 14px;
+    font-weight: 900;
+    color: rgba(0,0,0,0.82);
 }
 
-.cv-chips-sm {
-    grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
-}
-
-.cv-chip {
+.cv-privacy {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    /* plattare/lägre piller */
-    padding: 7px 10px;
-    border-radius: 999px;
-    border: 1px solid rgba(0,0,0,.10);
-    background: rgba(255,255,255,.92);
-    /* ✅ “the magic” inner shadow */
-    box-shadow: inset 2px 2px 4px rgba(0,0,0,.10), inset -2px -2px 4px rgba(255,255,255,.70);
-    font-weight: 850;
-    font-size: 12px;
-    color: rgba(0,0,0,.78);
-    /* så de inte hoppar */
-    white-space: nowrap;
+    gap: 10px;
 }
 
-/* =========================
-   HÖGERKORT: items
-   ========================= */
-.cv-item {
-    padding: 12px;
-    border-radius: 14px;
-    border: 1px solid rgba(0,0,0,.08);
-    background: rgba(255,255,255,.95);
-    margin-top: 10px;
-}
-
-.cv-item-title {
-    font-weight: 900;
-    color: rgba(0,0,0,.82);
-}
-
-.cv-item-sub {
-    margin-top: 4px;
-    font-weight: 700;
+.cv-privacy-label {
     font-size: 13px;
-    color: rgba(0,0,0,.62);
+    font-weight: 800;
+    color: rgba(0,0,0,0.72);
 }
 
-/* Projektkort i grid */
-.cv-projects {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 12px;
-}
-
-.cv-project {
-    border: 1px solid rgba(0,0,0,.08);
-    background: rgba(255,255,255,.95);
-    border-radius: 16px;
-    padding: 14px;
-}
-
-.cv-project-title {
-    font-weight: 900;
-    color: rgba(0,0,0,.82);
-}
-
-.cv-project-desc {
-    margin-top: 6px;
-    font-size: 13px;
-    color: rgba(0,0,0,.62);
-    font-weight: 650;
-    line-height: 1.45;
-    /* ✅ lång text växer bara */
-    word-break: break-word;
-}
-
-/* =========================
-   PRIVACY TOGGLE (Apple-ish) – FIXED TEXT CLIP + SHORTER WIDTH
-   ========================= */
-.privacy-toggle {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: 760;
-    color: rgba(0,0,0,.72);
-}
-
-.privacy-label {
-    font-size: 13px;
-}
-
-.privacy-switch {
+/* Toggle */
+.cv-toggle {
     border: 0;
     background: transparent;
     padding: 0;
@@ -365,116 +103,388 @@
     user-select: none;
 }
 
-.privacy-switch-track {
+.cv-toggle-track {
     position: relative;
-    /* 🔧 Lite kortare bredd (höjden oförändrad) */
-    width: 104px;
+    width: 112px;
     height: 34px;
     border-radius: 999px;
-    border: 1px solid rgba(0,0,0,.14);
-    background: rgba(0,0,0,.10);
-    display: block;
-    overflow: hidden;
-    box-shadow: inset 0 2px 6px rgba(0,0,0,.12);
+    border: 1px solid rgba(0,0,0,0.14);
+    background: rgba(0,0,0,0.06);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 0 10px; /* gör att text aldrig klipps */
+    box-shadow: inset 2px 2px 4px rgba(0,0,0,0.10), inset -2px -2px 4px rgba(255,255,255,0.85);
 }
 
-.privacy-switch-state {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+.cv-toggle-text {
     font-size: 12px;
     font-weight: 900;
-    color: rgba(0,0,0,.55);
-    pointer-events: none;
-    z-index: 1;
-}
-
-.privacy-switch-state--off {
-    left: 12px;
-}
-
-.privacy-switch-state--on {
-    right: 12px;
-}
-
-.privacy-switch-thumb {
-    position: absolute;
-    top: 50%;
-    left: 4px;
-    transform: translateY(-50%);
-    width: 26px;
-    height: 26px;
-    border-radius: 999px;
-    background: #fff;
-    box-shadow: 0 6px 14px rgba(0,0,0,.18);
-    transition: left .18s ease;
+    letter-spacing: -0.01em;
+    color: rgba(0,0,0,0.55);
     z-index: 2;
 }
 
+.cv-toggle-text--off {
+    text-align: left;
+}
+
+.cv-toggle-text--on {
+    text-align: right;
+}
+
+.cv-toggle-knob {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.95);
+    border: 1px solid rgba(0,0,0,0.10);
+    box-shadow: 0 10px 18px rgba(0,0,0,0.14);
+    transition: left .18s ease, background .18s ease;
+}
+
 /* ON state */
-.privacy-switch.is-on .privacy-switch-track {
-    background: rgba(34,197,94,.92);
-    border-color: rgba(34,197,94,.45);
+.cv-toggle.is-on .cv-toggle-track {
+    background: rgba(34,197,94,0.92);
+    border-color: rgba(0,0,0,0.10);
 }
 
-.privacy-switch.is-on .privacy-switch-state--on {
-    color: rgba(255,255,255,.95);
+.cv-toggle.is-on .cv-toggle-text--on {
+    color: rgba(255,255,255,0.95);
 }
 
-.privacy-switch.is-on .privacy-switch-state--off {
-    color: rgba(255,255,255,.65);
+.cv-toggle.is-on .cv-toggle-text--off {
+    color: rgba(0,0,0,0.45);
 }
 
-.privacy-switch.is-on .privacy-switch-thumb {
+.cv-toggle.is-on .cv-toggle-knob {
     left: calc(100% - 30px);
 }
 
-/* =========================
-   Edit-knapp under kortet
-   ========================= */
-.cv-edit-button-container {
-    width: 100%;
-    max-width: var(--cv-max);
-    display: flex;
-    justify-content: center;
-    margin-top: 8px;
+/* Divider */
+.cv-divider {
+    height: 1px;
+    background: rgba(0,0,0,0.08);
+    margin: 6px 0 14px;
 }
 
-    .cv-edit-button-container .btn-primary-custom,
-    .cv-edit-button-container .btn-primary-custom:hover,
-    .cv-edit-button-container .btn-primary-custom:visited {
+/* Grid */
+.cv-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 16px;
+    align-items: stretch; /* gör att vänsterpanel fyller hela höjden */
+}
+
+/* LEFT PANEL (fyll hela området) */
+.cv-left {
+    border-radius: 18px;
+    padding: 14px;
+    border: 1px solid rgba(0,0,0,0.06);
+    background: linear-gradient(180deg, rgba(52, 211, 153, 0.14) 0%, rgba(52, 211, 153, 0.08) 35%, rgba(255,255,255,0.0) 100%);
+}
+
+/* Profile card inside left panel */
+.cv-profile-card {
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 18px;
+    background: rgba(255,255,255,0.92);
+    padding: 14px;
+    box-shadow: 0 12px 26px rgba(0,0,0,0.06);
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+/* Avatar */
+.cv-avatar {
+    width: 100%;
+    height: 240px;
+    border-radius: 16px;
+    border: 1px solid rgba(0,0,0,0.10);
+    background: rgba(0,0,0,0.03);
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+}
+
+.cv-avatar-placeholder {
+    font-weight: 900;
+    font-size: 22px;
+    color: rgba(0,0,0,0.60);
+}
+
+.cv-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.cv-profile-name {
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    color: rgba(0,0,0,0.86);
+}
+
+.cv-profile-role {
+    margin-top: 2px;
+    font-size: 13px;
+    font-weight: 750;
+    color: rgba(0,0,0,0.62);
+}
+
+/* Boxes (right + left) */
+.cv-box {
+    background: rgba(255,255,255,0.92);
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+/* Left boxes a bit softer */
+.cv-box--left {
+    background: rgba(255,255,255,0.90);
+}
+
+.cv-box-title {
+    font-size: 15px;
+    font-weight: 900;
+    margin: 0 0 10px;
+    color: rgba(0,0,0,0.86);
+}
+
+/* Paragraph */
+.cv-paragraph {
+    margin: 0;
+    font-size: 14px;
+    color: rgba(0,0,0,0.74);
+    font-weight: 600;
+    line-height: 1.6;
+}
+
+.cv-paragraph-muted {
+    margin-top: 6px;
+    color: rgba(0,0,0,0.58);
+}
+
+/* Contact list */
+.cv-contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cv-contact-row {
+    display: grid;
+    grid-template-columns: 38px 1fr;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 10px;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,0.08);
+    background: rgba(255,255,255,0.94);
+}
+
+.cv-contact-ico {
+    width: 34px;
+    height: 34px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: rgba(0,0,0,0.03);
+    border: 1px solid rgba(0,0,0,0.08);
+    font-size: 14px;
+}
+
+.cv-contact-k {
+    font-size: 12px;
+    font-weight: 850;
+    color: rgba(0,0,0,0.58);
+}
+
+.cv-contact-v {
+    font-size: 13px;
+    font-weight: 850;
+    color: rgba(0,0,0,0.82);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Chips (Kompetenser) — piller med “inner shadow magic” */
+.cv-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.cv-chips--uniform .cv-chip {
+    width: 86px; /* samma bredd oavsett text */
+    justify-content: center;
+}
+
+.cv-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(0,0,0,0.12);
+    background: rgba(255,255,255,0.92);
+    font-weight: 900;
+    font-size: 12px;
+    color: rgba(0,0,0,0.78);
+    box-shadow: inset 1px 1px 2px rgba(0,0,0,0.10), inset -1px -1px 2px rgba(255,255,255,0.85);
+}
+
+/* Items (education/experience) */
+.cv-item {
+    padding: 12px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,0.08);
+    background: rgba(255,255,255,0.95);
+    margin-top: 10px;
+}
+
+.cv-item-title {
+    font-weight: 900;
+    color: rgba(0,0,0,0.84);
+}
+
+.cv-item-sub {
+    margin-top: 4px;
+    font-weight: 700;
+    font-size: 13px;
+    color: rgba(0,0,0,0.62);
+}
+
+.cv-item-muted {
+    opacity: 0.96;
+}
+
+/* ===== Projects (centered title + justified text + centered divider + small tiles) ===== */
+.cv-projects-intro {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.cv-projects {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 12px;
+}
+
+.cv-project {
+    border: 1px solid rgba(0,0,0,0.08);
+    background: rgba(255,255,255,0.95);
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.cv-project-title {
+    font-weight: 950;
+    color: rgba(0,0,0,0.86);
+    text-align: center;
+    letter-spacing: -0.01em;
+}
+
+.cv-project-desc {
+    margin: 10px 0 0;
+    font-size: 14px;
+    color: rgba(0,0,0,0.70);
+    font-weight: 650;
+    line-height: 1.6;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.cv-project-divider {
+    width: 62%;
+    height: 1px;
+    margin: 14px auto 12px;
+    background: rgba(0,0,0,0.12);
+    border-radius: 999px;
+}
+
+.cv-techstack {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.cv-tech-tile {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.10);
+    background: rgba(255,255,255,0.92);
+    display: grid;
+    place-items: center;
+    box-shadow: inset 0.8px 0.8px 1.4px rgba(0,0,0,0.10), inset -1px -1px 1.6px rgba(255,255,255,0.90);
+}
+
+.cv-tech-icon {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+/* Edit button container */
+.cv-edit-button-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 6px;
+}
+
+    .cv-edit-button-container .btn-primary-custom {
         text-decoration: none;
         color: #fff;
     }
 
-/* =========================
-   Mobile – matcha HOME (800px)
-   ========================= */
+        .cv-edit-button-container .btn-primary-custom:hover,
+        .cv-edit-button-container .btn-primary-custom:visited {
+            text-decoration: none;
+            color: #fff;
+        }
+
+/* Responsive — matcha Home breakpoint */
 @media (max-width: 800px) {
+    .cv-page {
+        padding: 18px 14px 24px;
+    }
+
     :root {
         --cv-banner-h: 160px;
-        --cv-avatar-h: 180px;
-        --cv-title: 24px;
-    }
-
-    .cv-page {
-        padding: 20px 14px 26px;
-    }
-
-    .cv-topbar {
-        padding: 12px 14px;
-    }
-
-    .cv-inner {
-        padding: 14px;
     }
 
     .cv-grid {
         grid-template-columns: 1fr;
-        gap: 14px;
     }
 
     .cv-projects {
         grid-template-columns: 1fr;
+    }
+
+    .cv-project-divider {
+        width: 70%;
+    }
+
+    .cv-tech-tile {
+        width: 36px;
+        height: 36px;
+    }
+
+    .cv-tech-icon {
+        width: 19px;
+        height: 19px;
     }
 }

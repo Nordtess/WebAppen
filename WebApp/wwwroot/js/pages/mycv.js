@@ -1,23 +1,21 @@
-﻿(() => {
-    const root = document.querySelector('[data-privacy-toggle]');
-    if (!root) return;
+﻿// mycv.js — placeholder toggle (kopplas mot SQL senare)
+document.addEventListener("DOMContentLoaded", () => {
+    const toggle = document.querySelector(".cv-toggle");
+    if (!toggle) return;
 
-    const btn = root.querySelector('.privacy-switch');
-    if (!btn) return;
-
-    const ON_CLASS = 'is-on';
-
-    // Starta PÅ just nu (tills ni kopplar mot SQL).
-    // Sen kan ni sätta initial state från servern med t.ex. data-initial="on/off".
+    // Default: ON (tills backend finns)
     setState(true);
 
-    btn.addEventListener('click', () => {
-        const next = !btn.classList.contains(ON_CLASS);
-        setState(next);
+    toggle.addEventListener("click", () => {
+        const isOn = toggle.classList.contains("is-on");
+        setState(!isOn);
     });
 
-    function setState(isOn) {
-        btn.classList.toggle(ON_CLASS, isOn);
-        btn.setAttribute('aria-pressed', isOn ? 'true' : 'false');
+    function setState(on) {
+        toggle.classList.toggle("is-on", on);
+        toggle.setAttribute("aria-checked", on ? "true" : "false");
+
+        // valfritt: kunna styla sidan beroende på läge senare
+        document.documentElement.dataset.privateMode = on ? "on" : "off";
     }
-})();
+});
