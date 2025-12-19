@@ -94,8 +94,13 @@
 /* LEFT mint-panel */
 .cv-left {
     padding: var(--cv-pad);
-    background: linear-gradient(180deg, var(--mint-soft) 0%, rgba(255,255,255,0) 75%);
     border-right: 1px solid rgba(0,0,0,.06);
+
+    /* Cool mint multi-layer gradient that lasts longer */
+    background:
+        radial-gradient(900px 520px at 20% 0%, rgba(127,255,212,.28) 0%, rgba(127,255,212,0) 60%),
+        radial-gradient(700px 420px at 80% 35%, rgba(127,255,212,.16) 0%, rgba(127,255,212,0) 62%),
+        linear-gradient(180deg, rgba(127,255,212,.22) 0%, rgba(127,255,212,.12) 55%, rgba(255,255,255,0) 100%);
 }
 
 /* RIGHT */
@@ -170,6 +175,26 @@
     .cv-toggle.is-on .cv-toggle__label--off { opacity: .50; }
 
 .cv-toggle:not(.is-on) .cv-toggle__label--on { opacity: .50; }
+
+/* =========================
+   Toggle row (restore label look)
+   ========================= */
+.cv-privacy {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.cv-privacy-label {
+    font-size: 13px;
+    font-weight: 800;
+    color: rgba(0,0,0,.70);
+    margin: 0;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+}
 
 /* =========================
    Left profile card
@@ -424,8 +449,8 @@
 }
 
 .cv-tech-tile {
-    width: 34px; /* mindre “vita lådan” */
-    height: 34px;
+    width: 32px; /* slightly smaller tile */
+    height: 32px;
     border-radius: 12px;
     border: 1px solid rgba(0,0,0,.10);
     background: rgba(255,255,255,.92);
@@ -435,8 +460,8 @@
 }
 
 .cv-tech-icon {
-    width: 22px;
-    height: 22px;
+    width: 24px; /* bigger logo */
+    height: 24px;
     display: block;
 }
 
