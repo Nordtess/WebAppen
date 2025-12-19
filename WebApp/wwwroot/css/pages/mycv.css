@@ -162,40 +162,25 @@
     z-index: 2;
 }
 
-/* Toggle label visibility:
-   - When ON: knob is on the right, so show "På" (right) and hide "Av" (left)
-   - When OFF: knob is on the left, so show "Av" (left) and hide "På" (right)
-*/
-.cv-toggle.is-on .cv-toggle__label--off { opacity: 0; }
-.cv-toggle.is-on .cv-toggle__label--on { opacity: 1; }
+/* =========================
+   Toggle fixes (single knob, no double-circle)
+   ========================= */
 
-.cv-toggle:not(.is-on) .cv-toggle__label--off { opacity: 1; }
-.cv-toggle:not(.is-on) .cv-toggle__label--on { opacity: 0; }
-
-/* When ON: knob covers "Av" side -> hide OFF label completely */
-.cv-toggle.is-on .cv-toggle__label--off { opacity: 0; }
-
-/* When OFF: knob covers "På" side -> hide ON label completely */
-.cv-toggle:not(.is-on) .cv-toggle__label--on { opacity: 0; }
-
-
-
-/* PÅ-läge */
-.cv-toggle.is-on {
-    background: var(--mint);
-    border-color: rgba(0,0,0,.12);
-    box-shadow: inset 0 1px 2px rgba(0,0,0,.10), 0 0 0 3px rgba(127,255,212,.16);
+/* Disable the masking layer that caused a second "knob" in ON state */
+.cv-toggle::before {
+    content: none;
 }
 
-    .cv-toggle.is-on .cv-toggle__knob {
-        transform: translateX(calc(var(--w) - (var(--knob) + (var(--pad) * 2))));
-    }
+/* Ensure labels are above the track but below the knob */
+.cv-toggle__label {
+    z-index: 1;
+    opacity: 1;
+}
 
-/* AV-läge (neutral, but still "active") */
-.cv-toggle:not(.is-on) {
-    background: rgba(0,0,0,.08);
-    border-color: rgba(0,0,0,.14);
-    box-shadow: inset 0 1px 2px rgba(0,0,0,.10);
+/* Knob covers labels cleanly */
+.cv-toggle__knob {
+    z-index: 2;
+    background: rgba(255,255,255,.98);
 }
 
 /* =========================
@@ -520,6 +505,19 @@
             color: #fff;
         }
 
+/* Project card as link (no visual change) */
+.cv-project-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.cv-project-link:hover,
+.cv-project-link:visited {
+    text-decoration: none;
+    color: inherit;
+}
+
 /* Responsive (matcha Home: 800px breakpoint) */
 @media (max-width: 800px) {
     .cv-banner {
@@ -538,4 +536,33 @@
     .cv-projects {
         grid-template-columns: 1fr;
     }
+}
+
+/* =========================
+   Toggle: keep it simple + working
+   ========================= */
+
+/* Ensure knob movement works */
+.cv-toggle__knob {
+    transition: transform .18s ease;
+}
+
+.cv-toggle.is-on .cv-toggle__knob {
+    transform: translateX(calc(var(--w) - (var(--knob) + (var(--pad) * 2))));
+}
+
+/* Keep labels always visible (accept minor bleed) */
+.cv-toggle__label { opacity: 1; }
+
+/* Toggle state colors */
+.cv-toggle:not(.is-on) {
+    background: rgba(0,0,0,.08);
+    border-color: rgba(0,0,0,.14);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.10);
+}
+
+.cv-toggle.is-on {
+    background: var(--mint);
+    border-color: rgba(0,0,0,.12);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.10), 0 0 0 3px rgba(127,255,212,.16);
 }
