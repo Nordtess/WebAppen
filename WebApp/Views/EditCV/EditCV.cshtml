@@ -38,15 +38,6 @@
                 </div>
 
                 <div class="editcv-topbar-right">
-                    <div class="editcv-status" data-state="@initialSaveState" id="autosaveStatus">
-                        <span class="editcv-status-dot" aria-hidden="true"></span>
-                        <span class="editcv-status-text">Ej sparad</span>
-                    </div>
-
-                    <a class="btn-secondary-custom editcv-topbar-btn"
-                       href="@Url.Action("Index", "MyCV")">
-                        Tillbaka
-                    </a>
                 </div>
             </div>
 
@@ -67,22 +58,10 @@
                     </div>
 
                     <div class="editcv-actions-right">
-                        <!-- Preview (POSTar formdatan, öppnar ny flik) -->
-                        <button type="submit"
-                                class="btn-secondary-custom"
-                                formaction="@Url.Action("Preview", "EditCV")"
-                                formtarget="_blank"
-                                formnovalidate>
-                            Förhandsvisa
-                        </button>
-
-                        <!-- Save (valfri nu). Om du inte har Save-action ännu: byt type till "button". -->
-                        <button type="submit"
-                                class="btn-primary-custom"
-                                id="saveBtn"
-                                formaction="@Url.Action("Save", "EditCV")">
-                            Spara ändringar
-                        </button>
+                        <div class="editcv-status" data-state="@initialSaveState" id="autosaveStatus">
+                            <span class="editcv-status-dot" aria-hidden="true"></span>
+                            <span class="editcv-status-text">Ej sparad</span>
+                        </div>
                     </div>
                 </div>
 
