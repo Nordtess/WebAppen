@@ -6,18 +6,49 @@
     --mint: #7FFFD4;
     --mint-soft: rgba(127,255,212,0.18);
     --danger: #ff3b30;
+
+    /* Matcha MyCV */
+    --edit-banner-h: 190px;
 }
 
 /* Page shell */
 .editcv-page {
-    padding: 34px 18px 90px;
+    padding: 22px 18px 90px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Banner (matchar MyCV) */
+.editcv-banner {
+    width: 100%;
+    max-width: var(--edit-max);
+    height: var(--edit-banner-h);
+    border-radius: var(--edit-card-radius);
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.16);
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 18px 38px rgba(0,0,0,0.07), 0 2px 6px rgba(0,0,0,0.04);
+}
+
+.editcv-banner-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center 20%;
+}
+
+/* Container (matchar banner-bredd) */
+.editcv-container {
+    width: 100%;
+    max-width: var(--edit-max);
 }
 
 .editcv-shell {
     width: 100%;
-    max-width: var(--edit-max);
+    max-width: 100%;
 }
 
 /* Topbar */
@@ -266,12 +297,13 @@
     gap: 10px;
 }
 
+/* Matcha MyCV: fyrkantig kort-bild istället för rund */
 .editcv-avatar {
-    width: 140px;
-    height: 140px;
-    border-radius: 999px;
-    border: 1px solid rgba(0,0,0,0.10);
-    background: radial-gradient(circle at 30% 20%, rgba(127,255,212,0.22), rgba(0,0,0,0.02));
+    width: 100%;
+    height: 240px;
+    border-radius: 16px;
+    border: 1px solid rgba(0,0,0,0.12);
+    background: rgba(0,0,0,0.02);
     position: relative;
     overflow: hidden;
     display: flex;
@@ -593,8 +625,7 @@
     }
 
     .editcv-avatar {
-        width: 120px;
-        height: 120px;
+        height: 200px;
     }
 
     .editcv-actions-bar {
