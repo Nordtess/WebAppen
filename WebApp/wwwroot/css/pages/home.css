@@ -119,18 +119,25 @@
 }
 
 /* Text block inside card */
-.home-card--text p {
-    margin: 0 0 12px;
-    font-size: 16px;
-    line-height: 1.75;
-    font-weight: 450;
-    color: rgba(0,0,0,.84);
-    text-align: justify;
+.home-card--text {
+    max-width: 720px;
+    margin: 0 auto;
 }
 
-    .home-card--text p:last-child {
-        margin-bottom: 0;
-    }
+.home-card--text p {
+    margin: 0 0 14px;
+    font-size: 15px;
+    line-height: 1.7;
+    font-weight: 520;
+    color: rgba(0,0,0,.74);
+    text-align: left;
+    text-wrap: pretty;
+    overflow-wrap: break-word;
+}
+
+.home-card--text p:last-child {
+    margin-bottom: 0;
+}
 
 /* =========================
    CV CARD (banner + carousel)
