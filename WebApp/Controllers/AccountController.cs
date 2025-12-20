@@ -1,18 +1,19 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Domain.Identity;
 
 namespace WebApp.Controllers;
 
 /// <summary>
 /// Convenience endpoints that integrate your custom navigation/UI with ASP.NET Core Identity.
-/// The actual login/register pages are provided by the Identity UI under /Identity/Account/....
+/// Login/Register pages are Razor Pages under /Identity/Account/...
 /// </summary>
 public class AccountController : Controller
 {
-    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
 
-    public AccountController(SignInManager<IdentityUser> signInManager)
+    public AccountController(SignInManager<ApplicationUser> signInManager)
     {
         _signInManager = signInManager;
     }

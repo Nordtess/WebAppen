@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject UserManager<IdentityUser> UserManager
+@using WebApp.Domain.Identity
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     string Active(string controller)
@@ -8,7 +9,7 @@
         return string.Equals(current, controller, StringComparison.OrdinalIgnoreCase) ? "active" : "";
     }
 
-    // Placeholder for testing - always shows
+    // Placeholder for testing (will be replaced by real unread count later)
     int unreadCount = 3;
 
     var isAuthenticated = User?.Identity?.IsAuthenticated == true;
@@ -51,22 +52,19 @@
                 </div>
 
                 <div class="header-user-area">
-                    <img src="~/images/svg/mail.svg"
-                         alt="Meddelanden"
-                         class="icon-mail" />
-
-                    @if (unreadCount > 0)
-                    {
-                        <span class="unread-text">Du har <strong>@unreadCount</strong> olästa meddelanden</span>
-                    }
-
+                    @* Only show mail/unread UI when logged in *@
                     @if (isAuthenticated)
                     {
+                        <img src="~/images/svg/mail.svg"
+                             alt="Meddelanden"
+                             class="icon-mail" />
+
+                        @if (unreadCount > 0)
+                        {
+                            <span class="unread-text">Du har <strong>@unreadCount</strong> olästa meddelanden</span>
+                        }
+
                         <span class="user-email">@userEmail</span>
-                    }
-                    else
-                    {
-                        <span class="user-email">Ej inloggad</span>
                     }
                 </div>
             </div>

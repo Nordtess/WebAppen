@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using WebApp.Domain.Identity;
 using WebApp.Infrastructure.Data;
-using Microsoft.AspNetCore.Identity;
 
 namespace WebApp;
 
@@ -24,7 +24,7 @@ public class Program
 
         // Identity (cookie auth)
         builder.Services
-            .AddDefaultIdentity<Microsoft.AspNetCore.Identity.IdentityUser>(options =>
+            .AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
             })
