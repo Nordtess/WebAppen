@@ -10,6 +10,9 @@
 
     /* Matcha MyCV */
     --edit-banner-h: 190px;
+
+    /* Profile block sizing (MyCV-left panel feel) */
+    --edit-profile-max: 360px;
 }
 
 /* Page shell */
@@ -241,8 +244,10 @@
     border: 1px solid rgba(0,0,0,0.10);
     background: rgba(255,255,255,0.96);
     padding: 12px 12px;
-    font-weight: 650;
-    font-size: 14px;
+    /* More professional / less "thick" */
+    font-weight: 560;
+    font-size: 13px;
+    line-height: 1.35;
     outline: none;
 }
 
@@ -317,6 +322,9 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    /* Make the avatar block feel narrower like MyCV's left panel */
+    max-width: var(--edit-profile-max);
+    margin: 0 auto;
 }
 
 /* Matcha MyCV: fyrkantig kort-bild istället för rund */
@@ -653,7 +661,18 @@
     gap: 10px;
 }
 
-/* Responsive */
+/* Education add button spacing + sizing */
+.editcv-draft-actions {
+    margin-top: 10px;
+    padding-top: 4px;
+}
+
+.editcv-draft-actions .btn-secondary-custom {
+    padding: 0.55em 1.05em;
+    font-size: 0.92rem;
+    font-weight: 650;
+}
+
 @media (max-width: 800px) {
     .editcv-grid {
         grid-template-columns: 1fr;
@@ -683,5 +702,14 @@
 
     .editcv-actions-right {
         justify-content: flex-end;
+    }
+
+    .editcv-avatar-wrap {
+        max-width: 100%;
+    }
+
+    .editcv-draft-actions .btn-secondary-custom {
+        width: 100%;
+        justify-content: center;
     }
 }
