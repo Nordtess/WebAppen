@@ -139,6 +139,12 @@
     margin-bottom: 16px;
 }
 
+/* Slightly smaller secondary buttons in EditCV content */
+.editcv-maincard .btn-secondary-custom {
+    padding: 0.55em 1.05em;
+    font-size: 0.95rem;
+}
+
 .editcv-mini-info {
     display: flex;
     flex-direction: column;
@@ -188,6 +194,7 @@
     box-shadow: var(--edit-shadow);
     padding: 18px;
     margin-bottom: 16px;
+    box-sizing: border-box;
 }
 
 .editcv-card-head {
@@ -321,6 +328,7 @@
     justify-content: center;
     cursor: pointer;
     padding: 0;
+    box-sizing: border-box;
 }
 
 .editcv-avatar-img {
