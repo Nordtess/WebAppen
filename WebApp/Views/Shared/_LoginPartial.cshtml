@@ -1,0 +1,21 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@* 
+   Identity UI expects this partial to exist. 
+   We keep it minimal because you already handle navigation in your main layout.
+   This prevents Identity pages (Login/Register) from crashing.
+*@
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <form asp-controller="Account" asp-action="Logout" method="post" class="form-inline">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-link">Logga ut</button>
+    </form>
+}
+else
+{
+    <a class="btn btn-link" href="/Identity/Account/Login">Logga in</a>
+}

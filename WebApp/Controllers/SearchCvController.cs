@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace WebApp.Controllers
+namespace WebApp.Controllers;
+
+public class SearchCvController : Controller
 {
-    public class SearchCvController : Controller
+    public IActionResult Index()
     {
-        public IActionResult Index()
-        {
-            return View("SearchCV");
-        }
+        return View("SearchCV");
     }
 }

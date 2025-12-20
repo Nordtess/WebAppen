@@ -1,0 +1,70 @@
+﻿@page
+@model LoginModel
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/login.css" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="login-page">
+    <div class="login-card">
+
+        <!-- VÄNSTER: FORM -->
+        <div class="login-left">
+            <h1 class="login-title">Logga in</h1>
+            <p class="login-subtitle">
+                Logga in för att hantera ditt CV, kontakta andra och använda privata meddelanden.
+            </p>
+
+            <form id="account" method="post" class="login-form">
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                <label asp-for="Input.Email">Användarnamn</label>
+                <input asp-for="Input.Email" autocomplete="username" aria-required="true" placeholder="namn@exempel.se" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+                <label asp-for="Input.Password">Lösenord</label>
+                <input asp-for="Input.Password" type="password" autocomplete="current-password" aria-required="true" placeholder="••••••••" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+                <div class="login-actions">
+                    <button class="btn-primary-custom" id="login-submit" type="submit">
+                        Logga in
+                    </button>
+
+                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="signup-link">
+                        Bli medlem
+                    </a>
+                </div>
+
+                <div class="login-actions" style="margin-top:10px;">
+                    <label style="display:flex; gap:8px; align-items:center;">
+                        <input asp-for="Input.RememberMe" />
+                        <span>@Html.DisplayNameFor(m => m.Input.RememberMe)</span>
+                    </label>
+                </div>
+
+                <div style="margin-top:10px;">
+                    <a id="forgot-password" asp-page="./ForgotPassword">Glömt lösenord?</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- HÖGER: ILLUSTRATION -->
+        <div class="login-right">
+            <div class="login-illustration-wrap">
+                <img src="~/images/viewimages/login.png"
+                     alt="Login illustration"
+                     class="login-illustration" />
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-namespace WebApp.Controllers
+namespace WebApp.Controllers;
+
+[Authorize]
+public class MessagesController : Controller
 {
-    public class MessagesController : Controller
+    public IActionResult Index()
     {
-        public IActionResult Index()
-        {
-            return View("Messages");
-        }
+        return View("Messages");
     }
 }
