@@ -9,6 +9,12 @@
         return string.Equals(current, controller, StringComparison.OrdinalIgnoreCase) ? "active" : "";
     }
 
+    string ActivePathStartsWith(string pathPrefix)
+    {
+        var p = Context?.Request?.Path.Value ?? string.Empty;
+        return p.StartsWith(pathPrefix, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+    }
+
     // Placeholder for testing (will be replaced by real unread count later)
     int unreadCount = 3;
 
@@ -90,11 +96,11 @@
 
                 @if (!isAuthenticated)
                 {
-                    <a class="sidebar-link" href="/Identity/Account/Login">
+                    <a class="sidebar-link @ActivePathStartsWith("/Identity/Account/Login")" href="/Identity/Account/Login">
                         <span class="link-icon">🔑</span>
                         <span class="link-text">Logga in</span>
                     </a>
-                    <a class="sidebar-link" href="/Identity/Account/Register">
+                    <a class="sidebar-link @ActivePathStartsWith("/Identity/Account/Register")" href="/Identity/Account/Register">
                         <span class="link-icon">✨</span>
                         <span class="link-text">Bli medlem</span>
                     </a>

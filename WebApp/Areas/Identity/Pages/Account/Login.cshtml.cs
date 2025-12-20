@@ -96,18 +96,19 @@ namespace WebApp.Areas.Identity.Pages.Account
                        ?? (normalizedUserName is null ? null : await _userManager.FindByNameAsync(normalizedUserName))
                        ?? (normalizedEmail is null ? null : await _userManager.FindByEmailAsync(normalizedEmail));
 
-            if (user is not null && user.IsDeactivated)
-            {
-                ModelState.AddModelError(string.Empty, genericError);
-                return Page();
-            }
-
             // Use canonical username for sign-in.
             var userNameForSignIn = user?.UserName ?? rawLogin;
 
             var result = await _signInManager.PasswordSignInAsync(userNameForSignIn, password, isPersistent: Input.RememberMe, lockoutOnFailure: false);
             if (result.Succeeded)
             {
+                // Reactivate on successful login.
+                if (user is not null && user.IsDeactivated)
+                {
+                    user.IsDeactivated = false;
+                    await _userManager.UpdateAsync(user);
+                }
+
                 _logger.LogInformation("User logged in.");
                 return LocalRedirect(returnUrl);
             }
