@@ -296,7 +296,7 @@
 /* Profile layout */
 .editcv-profile {
     display: grid;
-    grid-template-columns: 150px 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 14px;
     align-items: start;
 }
@@ -372,13 +372,14 @@
     gap: 6px;
 }
 
-/* --- EditCV: match MyCV avatar sizing in this layout --- */
+/* --- EditCV: match MyCV feel (name + rubrik under bilden) --- */
 .editcv-profile {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
 }
 
-.editcv-avatar {
-    height: 240px;
+/* Contact: avoid cramped two-col layout (stack fields like MyCV left panel) */
+.editcv-two-col {
+    grid-template-columns: 1fr;
 }
 
 @media (max-width: 900px) {
@@ -627,7 +628,7 @@
 }
 
 .editcv-bottom-inner {
-    border: 1px solid rgba(0,0,0,0.22);
+    border: 2px solid rgba(0,0,0,0.28);
     border-radius: var(--edit-card-radius);
     background: rgba(255,255,255,0.96);
     box-shadow: 0 22px 44px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06);
@@ -639,7 +640,7 @@
 }
 
 /* Responsive */
-@media (max-width: 900px) {
+@media (max-width: 800px) {
     .editcv-grid {
         grid-template-columns: 1fr;
     }

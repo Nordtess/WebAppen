@@ -98,19 +98,20 @@
                                         <div class="editcv-help">
                                             Rekommenderat: kvadratisk bild (t.ex. 512×512).
                                         </div>
-                                    </div>
 
-                                    <div class="editcv-profile-fields">
-                                        <div class="editcv-field">
-                                            <label class="editcv-label" asp-for="FullName">Namn</label>
-                                            <input class="editcv-input" asp-for="FullName" placeholder="Förnamn Efternamn" />
-                                            <span class="editcv-error" asp-validation-for="FullName"></span>
-                                        </div>
+                                        <!-- Name + headline under image -->
+                                        <div class="editcv-profile-fields">
+                                            <div class="editcv-field">
+                                                <label class="editcv-label" asp-for="FullName">Namn</label>
+                                                <input class="editcv-input" asp-for="FullName" placeholder="Förnamn Efternamn" />
+                                                <span class="editcv-error" asp-validation-for="FullName"></span>
+                                            </div>
 
-                                        <div class="editcv-field">
-                                            <label class="editcv-label" asp-for="Headline">Rubrik</label>
-                                            <input class="editcv-input" asp-for="Headline" placeholder="Systemvetenskap • Fullstack" />
-                                            <span class="editcv-error" asp-validation-for="Headline"></span>
+                                            <div class="editcv-field">
+                                                <label class="editcv-label" asp-for="Headline">Rubrik</label>
+                                                <input class="editcv-input" asp-for="Headline" placeholder="Systemvetenskap • Fullstack" />
+                                                <span class="editcv-error" asp-validation-for="Headline"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
