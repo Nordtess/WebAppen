@@ -170,6 +170,16 @@
     align-items: start;
 }
 
+/* Main content container (Apple look) */
+.editcv-maincard {
+    border: 1px solid var(--edit-border);
+    border-radius: var(--edit-card-radius);
+    background: rgba(255,255,255,0.96);
+    box-shadow: var(--edit-shadow);
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
 /* Cards */
 .editcv-card {
     border: 1px solid var(--edit-border);
@@ -360,6 +370,25 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
+}
+
+/* --- EditCV: match MyCV avatar sizing in this layout --- */
+.editcv-profile {
+    grid-template-columns: 1fr 1fr;
+}
+
+.editcv-avatar {
+    height: 240px;
+}
+
+@media (max-width: 900px) {
+    .editcv-profile {
+        grid-template-columns: 1fr;
+    }
+
+    .editcv-avatar {
+        height: 240px;
+    }
 }
 
 /* Draft list cards */
