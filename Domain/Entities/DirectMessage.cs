@@ -1,8 +1,7 @@
 namespace WebApp.Domain.Entities;
 
 /// <summary>
-/// A single message sent inside a conversation.
-/// Uses Identity user ids (string) for sender.
+/// Ett enskilt meddelande i en konversation.
 /// </summary>
 public class DirectMessage
 {
@@ -10,6 +9,7 @@ public class DirectMessage
 
     public int ConversationId { get; set; }
 
+    // Avsändarens Identity-användar-Id (AspNetUsers.Id).
     public string SenderUserId { get; set; } = "";
 
     public string Body { get; set; } = "";

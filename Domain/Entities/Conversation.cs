@@ -1,8 +1,7 @@
 namespace WebApp.Domain.Entities;
 
 /// <summary>
-/// Represents a conversation/thread between two (or more) participants.
-/// Minimal for now; can be expanded later.
+/// Representerar en konversation/tråd.
 /// </summary>
 public class Conversation
 {

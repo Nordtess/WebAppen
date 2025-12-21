@@ -1,7 +1,7 @@
 namespace WebApp.Domain.Entities;
 
 /// <summary>
-/// Links a conversation to a participant identity user.
+/// Koppling mellan en konversation och en deltagare (Identity-användare).
 /// </summary>
 public class ConversationParticipant
 {
@@ -9,8 +9,6 @@ public class ConversationParticipant
 
     public int ConversationId { get; set; }
 
-    /// <summary>
-    /// FK to Identity user (AspNetUsers.Id).
-    /// </summary>
+    // Identity-användarens Id (AspNetUsers.Id).
     public string UserId { get; set; } = "";
 }

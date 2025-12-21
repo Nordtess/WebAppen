@@ -1,5 +1,8 @@
 namespace WebApp.Domain.Entities;
 
+/// <summary>
+/// Loggrad för ett profilbesök (t.ex. för statistik/spårning).
+/// </summary>
 public class ProfileVisit
 {
     public int Id { get; set; }

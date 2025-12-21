@@ -1,9 +1,8 @@
 namespace WebApp.Domain.Entities;
 
 /// <summary>
-/// Legacy placeholder entity from early development.
-/// Future messaging should use `Conversation` + `DirectMessage`.
-/// Kept temporarily to avoid breaking existing UI/code.
+/// Äldre entitet som finns kvar för bakåtkompatibilitet.
+/// Nyare meddelandefunktionalitet bör använda Conversation och DirectMessage.
 /// </summary>
 public class Message
 {
