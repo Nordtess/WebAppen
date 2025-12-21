@@ -11,8 +11,6 @@
 
 <div class="login-page">
     <div class="login-card">
-
-        <!-- VÄNSTER: FORM -->
         <div class="login-left">
             <h1 class="login-title">Logga in</h1>
             <p class="login-subtitle">
@@ -26,35 +24,34 @@
                 <input asp-for="Input.Email" autocomplete="username" placeholder="namn@exempel.se" />
 
                 <label asp-for="Input.Password">Lösenord</label>
-                <input asp-for="Input.Password" type="password" autocomplete="current-password" placeholder="••••••••" />
+                <input
+                    asp-for="Input.Password"
+                    type="password"
+                    autocomplete="current-password"
+                    placeholder="••••••••" />
 
                 <div class="login-actions">
-                    <button class="btn-primary-custom" id="login-submit" type="submit">
-                        Logga in
-                    </button>
+                    <button class="btn-primary-custom" id="login-submit" type="submit">Logga in</button>
 
-                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="signup-link">
-                        Bli medlem
-                    </a>
+                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="signup-link">Bli medlem</a>
                 </div>
 
-                <div class="login-actions" style="margin-top:10px; justify-content:flex-start;">
-                    <label class="remember-me" style="display:flex; gap:10px; align-items:center; font-weight:650;">
-                        <input asp-for="Input.RememberMe" style="width:auto;" />
+                <div class="login-actions" style="margin-top: 10px; justify-content: flex-start;">
+                    <label class="remember-me" style="display: flex; gap: 10px; align-items: center; font-weight: 650;">
+                        <input asp-for="Input.RememberMe" style="width: auto;" />
                         <span>Kom ihåg mig</span>
                     </label>
                 </div>
             </form>
         </div>
 
-        <!-- HÖGER: ILLUSTRATION -->
         <div class="login-right">
             <div class="login-illustration-wrap">
-                <img src="~/images/viewimages/login.png"
-                     alt="Login illustration"
-                     class="login-illustration" />
+                <img
+                    src="~/images/viewimages/login.png"
+                    alt="Login illustration"
+                    class="login-illustration" />
             </div>
         </div>
-
     </div>
 </div>

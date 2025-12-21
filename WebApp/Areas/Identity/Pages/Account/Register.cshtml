@@ -11,62 +11,73 @@
 
 <div class="register-page">
     <div class="register-card">
-
-        <!-- VÄNSTER: FORM -->
         <div class="register-left">
             <h1 class="register-title">Bli medlem</h1>
 
-            <!-- Benefits under titeln -->
             <div class="register-benefits">
                 <div class="benefit-item">
                     <span class="benefit-emoji">✅</span>
                     <span class="benefit-text">Skapa och uppdatera ditt CV snabbt</span>
                 </div>
+
                 <div class="benefit-item">
                     <span class="benefit-emoji">🔒</span>
                     <span class="benefit-text">Privat och säker meddelandetjänst</span>
                 </div>
+
                 <div class="benefit-item">
                     <span class="benefit-emoji">🎯</span>
                     <span class="benefit-text">Matchning baserad på kompetenser</span>
                 </div>
             </div>
 
-            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="register-form" novalidate>
+            <form
+                id="registerForm"
+                asp-route-returnUrl="@Model.ReturnUrl"
+                method="post"
+                class="register-form"
+                novalidate>
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
                 <label asp-for="Input.Email">Email</label>
-                <input asp-for="Input.Email" type="email" autocomplete="username" aria-required="true" placeholder="namn@exempel.se" />
+                <input
+                    asp-for="Input.Email"
+                    type="email"
+                    autocomplete="username"
+                    aria-required="true"
+                    placeholder="namn@exempel.se" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
 
                 <label asp-for="Input.Password">Lösenord</label>
-                <input asp-for="Input.Password" type="password" autocomplete="new-password" aria-required="true" placeholder="••••••••" />
+                <input
+                    asp-for="Input.Password"
+                    type="password"
+                    autocomplete="new-password"
+                    aria-required="true"
+                    placeholder="••••••••" />
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
 
                 <label asp-for="Input.ConfirmPassword">Bekräfta lösenord</label>
-                <input asp-for="Input.ConfirmPassword" type="password" autocomplete="new-password" aria-required="true" placeholder="••••••••" />
+                <input
+                    asp-for="Input.ConfirmPassword"
+                    type="password"
+                    autocomplete="new-password"
+                    aria-required="true"
+                    placeholder="••••••••" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
 
-                <!-- Actions row -->
                 <div class="register-actions">
-                    <button class="btn-primary-custom" id="registerSubmit" type="submit">
-                        Skapa användare
-                    </button>
+                    <button class="btn-primary-custom" id="registerSubmit" type="submit">Skapa användare</button>
 
-                    <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="login-link">
-                        Jag är redan medlem
-                    </a>
+                    <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="login-link">Jag är redan medlem</a>
                 </div>
             </form>
         </div>
 
         <div class="register-right">
             <div class="register-illustration-wrap">
-                <img src="~/images/viewimages/register.png"
-                     alt="Registrering illustration"
-                     class="register-illustration" />
+                <img src="~/images/viewimages/register.png" alt="Registrering illustration" class="register-illustration" />
             </div>
         </div>
-
     </div>
 </div>
