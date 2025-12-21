@@ -34,6 +34,7 @@
     <link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/buttons.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/cursor.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/mouse-circle.css" asp-append-version="true" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -146,9 +147,12 @@
         </main>
     </div>
 
+    <div class="circle" aria-hidden="true"></div>
+
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/pages/formValidationUi.js" asp-append-version="true"></script>
     <script src="~/js/cursor-click.js" asp-append-version="true"></script>
+    <script src="~/js/mouse-circle.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
