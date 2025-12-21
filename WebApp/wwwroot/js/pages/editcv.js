@@ -113,7 +113,6 @@
     const avatarBtn = document.getElementById("avatarBtn");
     const avatarFile = document.getElementById("AvatarFile");
     const avatarPreview = document.getElementById("avatarPreview");
-    const avatarFallback = document.getElementById("avatarFallback");
 
     avatarBtn?.addEventListener("click", () => avatarFile?.click());
 
@@ -125,11 +124,6 @@
         reader.onload = () => {
             if (avatarPreview) {
                 avatarPreview.src = String(reader.result);
-                avatarPreview.style.display = "block";
-            }
-
-            if (avatarFallback) {
-                avatarFallback.style.display = "none";
             }
 
             markDirty();

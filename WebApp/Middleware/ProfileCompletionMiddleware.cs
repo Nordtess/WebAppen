@@ -26,6 +26,8 @@ public class ProfileCompletionMiddleware
             if (!path.StartsWith("/Identity", StringComparison.OrdinalIgnoreCase)
                 && !path.StartsWith("/AccountProfile/Edit", StringComparison.OrdinalIgnoreCase)
                 && !path.StartsWith("/AccountProfile/ChangePassword", StringComparison.OrdinalIgnoreCase)
+                && !path.StartsWith("/EditCV", StringComparison.OrdinalIgnoreCase)
+                && !path.StartsWith("/MyCv", StringComparison.OrdinalIgnoreCase)
                 && !path.StartsWith("/css", StringComparison.OrdinalIgnoreCase)
                 && !path.StartsWith("/js", StringComparison.OrdinalIgnoreCase)
                 && !path.StartsWith("/images", StringComparison.OrdinalIgnoreCase)

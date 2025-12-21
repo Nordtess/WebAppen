@@ -341,6 +341,16 @@
     cursor: pointer;
     padding: 0;
     box-sizing: border-box;
+    transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.editcv-avatar:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.12);
+}
+
+.editcv-avatar:active {
+    transform: translateY(-1px) scale(0.995);
 }
 
 .editcv-avatar-wrap .editcv-profile-fields {
@@ -364,27 +374,30 @@
 .editcv-avatar-overlay {
     position: absolute;
     inset: 0;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    padding-bottom: 12px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0));
+    display: grid;
+    place-items: center;
+    background:
+        radial-gradient(circle at 30% 20%, rgba(127, 255, 212, 0.30), rgba(0, 0, 0, 0) 60%),
+        rgba(0, 0, 0, 0.28);
     opacity: 0;
-    transition: opacity 160ms ease;
+    transform: translateY(10px);
+    transition: opacity 240ms ease, transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .editcv-avatar:hover .editcv-avatar-overlay {
     opacity: 1;
+    transform: translateY(0);
 }
 
 .editcv-avatar-overlay-text {
-    font-size: 12px;
-    font-weight: 850;
+    font-weight: 900;
+    font-size: 13px;
     color: rgba(255, 255, 255, 0.95);
-    padding: 6px 10px;
+    padding: 10px 14px;
     border-radius: 999px;
-    background: rgba(0, 0, 0, 0.35);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.20);
+    background: rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(6px);
 }
 
 .editcv-file {

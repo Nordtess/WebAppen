@@ -10,12 +10,12 @@ public class ApplicationUser : IdentityUser
 {
     [Required(ErrorMessage = "Förnamn är obligatoriskt.")]
     [StringLength(50, ErrorMessage = "Förnamn får vara max {1} tecken.")]
-    [RegularExpression("^[A-Za-zÅÄÖåäö-]+$", ErrorMessage = "Förnamn får bara innehålla bokstäver och bindestreck.")]
+    [RegularExpression("^[A-Za-zåäöÅÄÖ-]+$", ErrorMessage = "Förnamn får bara innehålla bokstäver och bindestreck.")]
     public string FirstName { get; set; } = "";
 
     [Required(ErrorMessage = "Efternamn är obligatoriskt.")]
     [StringLength(50, ErrorMessage = "Efternamn får vara max {1} tecken.")]
-    [RegularExpression("^[A-Za-zÅÄÖåäö-]+$", ErrorMessage = "Efternamn får bara innehålla bokstäver och bindestreck.")]
+    [RegularExpression("^[A-Za-zåäöÅÄÖ-]+$", ErrorMessage = "Efternamn får bara innehålla bokstäver och bindestreck.")]
     public string LastName { get; set; } = "";
 
     // För snabb och förutsägbar skiftlägesokänslig sökning/filtrering.
@@ -30,7 +30,7 @@ public class ApplicationUser : IdentityUser
 
     [Required(ErrorMessage = "Stad är obligatoriskt.")]
     [StringLength(100, ErrorMessage = "Stad får vara max {1} tecken.")]
-    [RegularExpression("^[A-Za-zÅÄÖåäö -]+$", ErrorMessage = "Stad får bara innehålla bokstäver, mellanslag och bindestreck.")]
+    [RegularExpression("^[A-Za-zåäöÅÄÖ -]+$", ErrorMessage = "Stad får bara innehålla bokstäver, mellanslag och bindestreck.")]
     public string City { get; set; } = "";
 
     [Required(ErrorMessage = "Postnummer är obligatoriskt.")]
@@ -39,4 +39,9 @@ public class ApplicationUser : IdentityUser
 
     // Mjuk avaktivering: används för att kunna dölja användare i listor/sök utan att radera data.
     public bool IsDeactivated { get; set; }
+
+    public bool IsProfilePrivate { get; set; }
+
+    [StringLength(260)]
+    public string? ProfileImagePath { get; set; }
 }

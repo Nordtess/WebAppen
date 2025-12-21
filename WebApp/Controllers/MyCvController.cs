@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebApp.Domain.Identity;
+using WebApp.Infrastructure.Data;
 
 namespace WebApp.Controllers;
 
@@ -9,10 +11,14 @@ namespace WebApp.Controllers;
 public class MyCvController : Controller
 {
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly ApplicationDbContext _db;
 
-    public MyCvController(UserManager<ApplicationUser> userManager)
+    public MyCvController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ApplicationDbContext db)
     {
         _userManager = userManager;
+        _signInManager = signInManager;
+        _db = db;
     }
 
     public async Task<IActionResult> Index()
@@ -23,17 +29,54 @@ public class MyCvController : Controller
             return Challenge();
         }
 
+        var link = await _db.ApplicationUserProfiles
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.UserId == user.Id);
+
+        if (link is null)
+        {
+            return RedirectToAction("Index", "EditCV");
+        }
+
+        var visits = await _db.ProfilBesok
+            .AsNoTracking()
+            .CountAsync(v => v.ProfileId == link.ProfileId);
+
         var model = new MyCvProfileViewModel
         {
             FirstName = user.FirstName ?? string.Empty,
             LastName = user.LastName ?? string.Empty,
             Email = user.Email ?? string.Empty,
             City = user.City ?? string.Empty,
-            PostalCode = user.PostalCode ?? string.Empty,
-            PhoneNumber = user.PhoneNumberDisplay ?? user.PhoneNumber ?? string.Empty
+            PhoneNumber = user.PhoneNumberDisplay ?? user.PhoneNumber ?? string.Empty,
+            IsPrivate = user.IsProfilePrivate,
+            VisitCount = visits
         };
 
         return View("MyCV", model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SetPrivacy([FromForm] bool isPrivate)
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null)
+        {
+            return Challenge();
+        }
+
+        user.IsProfilePrivate = isPrivate;
+
+        var result = await _userManager.UpdateAsync(user);
+        if (!result.Succeeded)
+        {
+            return BadRequest();
+        }
+
+        await _signInManager.RefreshSignInAsync(user);
+
+        return Ok(new { isPrivate = user.IsProfilePrivate });
     }
 
     public sealed class MyCvProfileViewModel
@@ -42,19 +85,11 @@ public class MyCvController : Controller
         public string LastName { get; init; } = string.Empty;
         public string Email { get; init; } = string.Empty;
         public string City { get; init; } = string.Empty;
-        public string PostalCode { get; init; } = string.Empty;
         public string PhoneNumber { get; init; } = string.Empty;
+        public bool IsPrivate { get; init; }
+        public int VisitCount { get; init; }
 
         public string FullName => string.Join(' ', new[] { FirstName, LastName }.Where(s => !string.IsNullOrWhiteSpace(s)));
-
-        public string Location
-        {
-            get
-            {
-                var parts = new[] { PostalCode, City }.Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
-                return parts.Length == 0 ? string.Empty : string.Join(" ", parts);
-            }
-        }
 
         public string Initials
         {
