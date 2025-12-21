@@ -25,19 +25,9 @@
     // Available tech keys (match svg filenames). Extend later.
     const available = [
         "csharp",
-        "sql",
         "mysql",
         "mongodb",
-        "aspnet",
         "javascript",
-        "typescript",
-        "react",
-        "node",
-        "python",
-        "java",
-        "cplusplus",
-        "html",
-        "css",
         "git"
     ];
 
