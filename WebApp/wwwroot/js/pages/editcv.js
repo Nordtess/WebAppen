@@ -111,6 +111,10 @@
         setSaveState(autosaveStatus.dataset.state === "saved" ? "saved" : "dirty");
     }
 
+    function isDirty() {
+        return autosaveStatus?.dataset.state === "dirty";
+    }
+
     form.addEventListener("input", (e) => {
         // Read-only (konto) fält ska inte trigga "dirty".
         const t = e.target;
@@ -166,10 +170,10 @@
     // Back navigation guard: don't let user leave with invalid required fields.
     const backBtn = document.getElementById("backBtn");
     backBtn?.addEventListener("click", (e) => {
-        const ok = validateForm({ focusFirstInvalid: true });
-        if (!ok) {
-            e.preventDefault();
-        }
+        if (!isDirty()) return;
+
+        const ok = window.confirm("Du har osparade ändringar – vill du lämna?\n\nTryck OK för att lämna eller Avbryt för att stanna kvar.");
+        if (!ok) e.preventDefault();
     });
 
     // On submit, validate and show inline messages.
@@ -228,7 +232,7 @@
         skillList.innerHTML = "";
 
         if (skills.length === 0) {
-            skillList.innerHTML = `<div class="editcv-help">Inga kompetenser ännu. Lägg till en kompetens ovan.</div>`;
+            skillList.innerHTML = `<div class="editcv-help">Ingakompetenser ännu. Lägg till en kompetens ovan.</div>`;
             return;
         }
 
