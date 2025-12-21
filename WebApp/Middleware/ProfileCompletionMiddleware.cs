@@ -4,8 +4,8 @@ using WebApp.Domain.Identity;
 namespace WebApp.Middleware;
 
 /// <summary>
-/// Forces logged-in users to complete required profile fields before using the site.
-/// Redirects to /AccountProfile/Edit if required fields are missing.
+/// Tvingar inloggade användare att fylla i obligatoriska profilfält innan de kan använda webbplatsen.
+/// Omdirigerar till /AccountProfile/Edit om fälten saknas.
 /// </summary>
 public class ProfileCompletionMiddleware
 {
@@ -18,12 +18,11 @@ public class ProfileCompletionMiddleware
 
     public async Task InvokeAsync(HttpContext context, UserManager<ApplicationUser> userManager)
     {
-        // Only enforce for authenticated users
         if (context.User?.Identity?.IsAuthenticated == true)
         {
             var path = context.Request.Path.Value ?? string.Empty;
 
-            // Allow Identity/account endpoints and static files
+            // Hoppa över kontrollen för sidor som måste vara åtkomliga (t.ex. inloggning, profilredigering och statiska filer).
             if (!path.StartsWith("/Identity", StringComparison.OrdinalIgnoreCase)
                 && !path.StartsWith("/AccountProfile/Edit", StringComparison.OrdinalIgnoreCase)
                 && !path.StartsWith("/AccountProfile/ChangePassword", StringComparison.OrdinalIgnoreCase)
@@ -36,12 +35,12 @@ public class ProfileCompletionMiddleware
 
                 if (user != null)
                 {
-                    var missing = string.IsNullOrWhiteSpace(user.FirstName)
-                                  || string.IsNullOrWhiteSpace(user.LastName)
-                                  || string.IsNullOrWhiteSpace(user.City)
-                                  || string.IsNullOrWhiteSpace(user.PostalCode);
+                    var isProfileIncomplete = string.IsNullOrWhiteSpace(user.FirstName)
+                        || string.IsNullOrWhiteSpace(user.LastName)
+                        || string.IsNullOrWhiteSpace(user.City)
+                        || string.IsNullOrWhiteSpace(user.PostalCode);
 
-                    if (missing)
+                    if (isProfileIncomplete)
                     {
                         context.Response.Redirect("/AccountProfile/Edit");
                         return;

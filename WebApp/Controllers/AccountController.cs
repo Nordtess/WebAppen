@@ -6,8 +6,8 @@ using WebApp.Domain.Identity;
 namespace WebApp.Controllers;
 
 /// <summary>
-/// Convenience endpoints that integrate your custom navigation/UI with ASP.NET Core Identity.
-/// Login/Register pages are Razor Pages under /Identity/Account/...
+/// Enkla endpoints som kopplar ihop applikationens navigation/UI med ASP.NET Core Identity.
+/// Inloggning/registrering hanteras av Razor Pages under /Identity/Account/.
 /// </summary>
 public class AccountController : Controller
 {
@@ -20,7 +20,7 @@ public class AccountController : Controller
 
     /// <summary>
     /// POST: /Account/Logout
-    /// Logs the user out and redirects to home.
+    /// Loggar ut användaren och omdirigerar till startsidan.
     /// </summary>
     [Authorize]
     [HttpPost]

@@ -7,19 +7,23 @@ using WebApp.Models;
 
 namespace WebApp.Controllers;
 
+/// <summary>
+/// Hanterar visning och uppdatering av inloggad användares kontoprofil.
+/// </summary>
 [Authorize]
 public class AccountProfileController : Controller
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
 
-    public AccountProfileController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+    public AccountProfileController(
+        UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager)
     {
         _userManager = userManager;
         _signInManager = signInManager;
     }
 
-    // GET: /AccountProfile
     public async Task<IActionResult> Index()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -31,7 +35,6 @@ public class AccountProfileController : Controller
         return View("AccountProfile", user);
     }
 
-    // GET: /AccountProfile/Edit
     [HttpGet]
     public async Task<IActionResult> Edit()
     {
@@ -41,19 +44,18 @@ public class AccountProfileController : Controller
             return Challenge();
         }
 
-        var vm = new AccountEditViewModel
+        var viewModel = new AccountEditViewModel
         {
             FirstName = user.FirstName,
             LastName = user.LastName,
-            PhoneNumberDisplay = user.PhoneNumberDisplay,
+            PhoneNumberDisplay = user.PhoneNumberDisplay ?? string.Empty,
             City = user.City,
             PostalCode = user.PostalCode
         };
 
-        return View("AccountEdit", vm);
+        return View("AccountEdit", viewModel);
     }
 
-    // POST: /AccountProfile/Edit
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(AccountEditViewModel model)
@@ -69,11 +71,9 @@ public class AccountProfileController : Controller
             return Challenge();
         }
 
-        // Pretty display formatting
+        // Normaliserar namn för konsekvent visning och enklare sökning.
         user.FirstName = NameNormalizer.ToDisplayName(model.FirstName);
         user.LastName = NameNormalizer.ToDisplayName(model.LastName);
-
-        // Normalized columns for filtering/search
         user.FirstNameNormalized = NameNormalizer.ToNormalized(user.FirstName);
         user.LastNameNormalized = NameNormalizer.ToNormalized(user.LastName);
 
@@ -88,23 +88,22 @@ public class AccountProfileController : Controller
             {
                 ModelState.AddModelError(string.Empty, err.Description);
             }
+
             return View("AccountEdit", model);
         }
 
-        // Ensure updated user values are reflected in the auth cookie.
+        // Uppdaterar inloggningssessionen så att ändringar syns direkt.
         await _signInManager.RefreshSignInAsync(user);
 
         return RedirectToAction("Index", "AccountProfile");
     }
 
-    // GET: /AccountProfile/ChangePassword
     [HttpGet]
     public IActionResult ChangePassword()
     {
         return View("ChangePassword", new ChangePasswordViewModel());
     }
 
-    // POST: /AccountProfile/ChangePassword
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
@@ -127,6 +126,7 @@ public class AccountProfileController : Controller
             {
                 ModelState.AddModelError(string.Empty, err.Description);
             }
+
             return View("ChangePassword", model);
         }
 
@@ -134,14 +134,12 @@ public class AccountProfileController : Controller
         return RedirectToAction("Index", "AccountProfile");
     }
 
-    // GET: /AccountProfile/Deactivate
     [HttpGet]
     public IActionResult Deactivate()
     {
         return View("Deactivate");
     }
 
-    // POST: /AccountProfile/Deactivate
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeactivateConfirmed()
@@ -153,6 +151,7 @@ public class AccountProfileController : Controller
         }
 
         user.IsDeactivated = true;
+
         var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded)
         {
@@ -160,6 +159,7 @@ public class AccountProfileController : Controller
             {
                 ModelState.AddModelError(string.Empty, err.Description);
             }
+
             return View("Deactivate");
         }
 
