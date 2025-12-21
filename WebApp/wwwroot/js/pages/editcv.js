@@ -52,12 +52,21 @@
         return ok;
     }
 
-    function validateForm() {
+    function validateForm({ focusFirstInvalid } = { focusFirstInvalid: false }) {
         const fields = Array.from(form.querySelectorAll(".editcv-input, .editcv-textarea"));
 
         let ok = true;
+        let firstInvalid = null;
+
         for (const field of fields) {
-            ok = validateField(field) && ok;
+            const fieldOk = validateField(field);
+            ok = fieldOk && ok;
+            if (!fieldOk && !firstInvalid) firstInvalid = field;
+        }
+
+        if (!ok && focusFirstInvalid && firstInvalid) {
+            firstInvalid.focus({ preventScroll: true });
+            firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
         }
 
         return ok;
@@ -66,6 +75,7 @@
     form.addEventListener(
         "invalid",
         (e) => {
+            // Prevent browser tooltip; we render our own messages inline.
             e.preventDefault();
         },
         true
@@ -78,7 +88,6 @@
         if (!target.classList.contains("editcv-input") && !target.classList.contains("editcv-textarea")) return;
 
         validateField(target);
-        updateSaveButtons();
     });
 
     const autosaveStatus = document.getElementById("autosaveStatus");
@@ -147,6 +156,23 @@
         };
 
         reader.readAsDataURL(file);
+    });
+
+    // Back navigation guard: don't let user leave with invalid required fields.
+    const backBtn = document.getElementById("backBtn");
+    backBtn?.addEventListener("click", (e) => {
+        const ok = validateForm({ focusFirstInvalid: true });
+        if (!ok) {
+            e.preventDefault();
+        }
+    });
+
+    // On submit, validate and show inline messages.
+    form.addEventListener("submit", (e) => {
+        const ok = validateForm({ focusFirstInvalid: true });
+        if (!ok) {
+            e.preventDefault();
+        }
     });
 
     // Skills (pills + dedupe)
@@ -390,6 +416,8 @@
     const selectedProjectsJson = document.getElementById("SelectedProjectsJson");
     const manageProjectsBtn = document.getElementById("manageProjectsBtn");
 
+    const MAX_SELECTED_PROJECTS = 4;
+
     // Tillfälliga projekt (ersätts när det kopplas till backend).
     const projects = [
         {
@@ -473,8 +501,16 @@
 
             toggle.addEventListener("click", () => {
                 const currentlyOn = selected.has(project.id);
-                if (currentlyOn) selected.delete(project.id);
-                else selected.add(project.id);
+                if (currentlyOn) {
+                    selected.delete(project.id);
+                } else {
+                    if (selected.size >= MAX_SELECTED_PROJECTS) {
+                        alert(`Du kan max välja ${MAX_SELECTED_PROJECTS} projekt att visa på ditt CV.`);
+                        return;
+                    }
+
+                    selected.add(project.id);
+                }
 
                 syncSelectedProjects();
                 renderProjects(projectSearch?.value || "");
@@ -531,19 +567,4 @@
 
     loadSelectedFromHidden();
     renderProjects();
-
-    const saveBtn = document.getElementById("saveBtn");
-    const saveBtnBottom = document.getElementById("saveBtnBottom");
-
-    function updateSaveButtons() {
-        const valid = validateForm();
-        if (saveBtn) saveBtn.disabled = !valid;
-        if (saveBtnBottom) saveBtnBottom.disabled = !valid;
-    }
-
-    updateSaveButtons();
-
-    form.addEventListener("submit", () => {
-        // Tomt medvetet. UI-state hanteras annars av redirect/TempData.
-    });
 })();

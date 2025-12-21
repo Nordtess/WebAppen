@@ -39,7 +39,7 @@
                 <div class="editcv-topbar-right"></div>
             </div>
 
-            <form id="editcvForm" class="editcv-form" method="post" enctype="multipart/form-data">
+            <form id="editcvForm" class="editcv-form" method="post" enctype="multipart/form-data" action="@Url.Action("Save", "EditCV")">
                 @Html.AntiForgeryToken()
 
                 <input type="hidden" asp-for="EducationJson" id="EducationJson" />
@@ -255,15 +255,12 @@
 
                 <div class="editcv-bottom">
                     <div class="editcv-bottom-inner">
-                        <a class="btn-secondary-custom" href="@Url.Action("Index", "MyCV")" style="text-decoration:none;">
+                        <a class="btn-secondary-custom" href="@Url.Action("Index", "MyCV")" style="text-decoration:none;" id="backBtn">
                             Tillbaka
                         </a>
 
                         <div class="editcv-bottom-right">
-                            <button type="submit"
-                                    class="btn-primary-custom"
-                                    id="saveBtnBottom"
-                                    formaction="@Url.Action("Save", "EditCV")">
+                            <button type="submit" class="btn-primary-custom" id="saveBtnBottom">
                                 Spara ändringar
                             </button>
                         </div>
