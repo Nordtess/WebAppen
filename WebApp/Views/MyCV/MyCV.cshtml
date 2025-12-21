@@ -1,14 +1,271 @@
-﻿@{
-    ViewData["Title"] = "My CV";
+﻿@section Styles {
+    <link rel="stylesheet" href="~/css/pages/mycv.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
 }
 
-@section Styles {
-    <link rel="stylesheet" href="~/css/pages/mycv.css" />
+@{
+    ViewData["Title"] = "Mitt CV";
 }
 
-<div class="page">
-    <h1>DET FINNS INGA CV:N</h1>
+<div class="cv-page">
+
+    <!-- BANNER -->
+    <div class="cv-banner" aria-label="CV-banner">
+        <img src="~/images/bannersandicons/mycv3.png"
+             alt="Banner"
+             class="cv-banner-img" />
+    </div>
+
+    <!-- CV CARD -->
+    <div class="cv-card">
+
+        <!-- TOP BAR: visits (left) + privacy toggle (right) -->
+        <div class="cv-topbar">
+            <div class="cv-visits">
+                Antal besök: <span class="cv-visits-num">10</span>
+            </div>
+
+            <div class="cv-privacy">
+                <span class="cv-privacy-label">Privat läge</span>
+
+                <!-- Startar som PÅ tills ni kopplar SQL -->
+                <button type="button"
+                        class="cv-toggle is-on"
+                        aria-pressed="true"
+                        aria-label="Privat läge">
+                    <span class="cv-toggle__label cv-toggle__label--off">Av</span>
+                    <span class="cv-toggle__label cv-toggle__label--on">På</span>
+                    <span class="cv-toggle__knob" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+
+        <div class="cv-divider"></div>
+
+        <div class="cv-grid">
+
+            <!-- LEFT (mint panel) -->
+            <div class="cv-left">
+
+                <!-- Profile card -->
+                <div class="cv-profile-card">
+                    <div class="cv-avatar" aria-label="Profilbild">
+
+                        <!-- ✅ SÅ HÄR BYTER DU TILL RIKTIG BILD:
+                             1) Lägg en bild i: wwwroot/images/profiles/jamie.jpg (eller valfritt namn)
+                             2) Avkommentera <img> nedan
+                             3) Kommentera bort / ta bort <div class="cv-avatar-placeholder">JL</div>
+                        -->
+                        @* <img class="cv-avatar-img" src="~/images/profiles/jamie.jpg" alt="Profilbild" /> *@
+
+                        <div class="cv-avatar-placeholder">JL</div>
+                    </div>
+
+                    <div class="cv-hero-text">
+                        <div class="cv-name">Jamie Larsson</div>
+                        <div class="cv-role">Systemvetenskap • Fullstack</div>
+                    </div>
+                </div>
+
+                <section class="cv-box">
+                    <h3 class="cv-box-title">Kontakt</h3>
+
+                    <div class="cv-contact-list">
+                        <div class="cv-contact-item">
+                            <span class="cv-contact-ico">✉</span>
+                            <div>
+                                <div class="cv-contact-k">Email</div>
+                                <div class="cv-contact-v">jamie@example.se</div>
+                            </div>
+                        </div>
+
+                        <div class="cv-contact-item">
+                            <span class="cv-contact-ico">📍</span>
+                            <div>
+                                <div class="cv-contact-k">Plats</div>
+                                <div class="cv-contact-v">Örebro, Sverige</div>
+                            </div>
+                        </div>
+
+                        <div class="cv-contact-item">
+                            <span class="cv-contact-ico">☎</span>
+                            <div>
+                                <div class="cv-contact-k">Telefon</div>
+                                <div class="cv-contact-v">+46 70 123 45 67</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="cv-box">
+                    <h3 class="cv-box-title">Kompetenser</h3>
+                    <div class="cv-skill-grid">
+                        <span class="cv-skill-pill">ASP.NET</span>
+                        <span class="cv-skill-pill">MVC</span>
+                        <span class="cv-skill-pill">C#</span>
+                        <span class="cv-skill-pill">SQL</span>
+                        <span class="cv-skill-pill">Fullstack</span>
+                        <span class="cv-skill-pill">Git</span>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- RIGHT -->
+            <div class="cv-right">
+
+                <section class="cv-box">
+                    <h3 class="cv-box-title">Profil</h3>
+                    <p class="cv-paragraph">
+                        Kort sammanfattning av vem du är, vad du söker och vad du är bra på.
+                        (Placeholder tills ni hämtar från SQL.)
+                    </p>
+                </section>
+
+                <section class="cv-box">
+                    <h3 class="cv-box-title">Utbildningar</h3>
+
+                    <div class="cv-item">
+                        <div class="cv-item-title">Örebro universitet — Systemvetenskap</div>
+                        <div class="cv-item-sub">2024 – Pågående • Inriktning: Webbutveckling</div>
+                    </div>
+
+                    <div class="cv-item cv-item-muted">
+                        <div class="cv-item-title">Kurs / Certifiering</div>
+                        <div class="cv-item-sub">År • Kort beskrivning</div>
+                    </div>
+                </section>
+
+                <section class="cv-box">
+                    <h3 class="cv-box-title">Tidigare erfarenhet</h3>
+
+                    <div class="cv-item">
+                        <div class="cv-item-title">ICA — Kassör</div>
+                        <div class="cv-item-sub">2021 – 2023 • Kundservice, tempo, ansvar</div>
+                    </div>
+
+                    <div class="cv-item">
+                        <div class="cv-item-title">Lagerarbete</div>
+                        <div class="cv-item-sub">2019 – 2021 • Logistik, plock, struktur</div>
+                    </div>
+                </section>
+
+                <section class="cv-box">
+                    <h3 class="cv-box-title">Projekt</h3>
+                    <p class="cv-paragraph cv-paragraph-muted">
+                        Exempelprojekt (placeholder). Senare hämtas projekt + tech stack från SQL.
+                    </p>
+
+                    <div class="cv-projects">
+                        <!-- Projekt 1 -->
+                        <a class="cv-project-link" href="/InspectProject/1" aria-label="Visa projekt: NotLinkedIn — WebApp">
+                            <article class="cv-project">
+                                <div class="cv-project-title">NotLinkedIn — WebApp</div>
+                                <p class="cv-project-desc">
+                                    Webbplattform där användare skapar CV-profiler, kopplar projekt och kan kommunicera via privata meddelanden.
+                                    Fokus på ren Apple-ish UI, tydlig struktur och snabb upplevelse.
+                                </p>
+
+                                <div class="cv-project-sep" aria-hidden="true"></div>
+
+                                <div class="cv-tech-row" aria-label="Tech stack">
+                                    <span class="cv-tech-tile">
+                                        <img class="cv-tech-icon" src="~/images/svg/techstack/csharp.svg" alt="C#" />
+                                    </span>
+                                    <span class="cv-tech-tile">
+                                        <img class="cv-tech-icon" src="~/images/svg/techstack/mongodb.svg" alt="MongoDB" />
+                                    </span>
+                                    <span class="cv-tech-tile">
+                                        <img class="cv-tech-icon" src="~/images/svg/techstack/mysql.svg" alt="MySQL" />
+                                    </span>
+                                </div>
+                            </article>
+                        </a>
+
+                        <!-- Projekt 2 -->
+                        <a class="cv-project-link" href="/InspectProject/2" aria-label="Visa projekt: AES GUI — Kryptering">
+                            <article class="cv-project">
+                                <div class="cv-project-title">AES GUI — Kryptering</div>
+                                <p class="cv-project-desc">
+                                    GUI-app som krypterar/dekrypterar text med tydlig input/feedback, validering och robust felhantering.
+                                    Byggd så att funktionalitet kan skalas upp senare.
+                                </p>
+
+                                <div class="cv-project-sep" aria-hidden="true"></div>
+
+                                <div class="cv-tech-row" aria-label="Tech stack">
+                                    <span class="cv-tech-tile">
+                                        <img class="cv-tech-icon" src="~/images/svg/techstack/csharp.svg" alt="C#" />
+                                    </span>
+                                    <span class="cv-tech-tile">
+                                        <img class="cv-tech-icon" src="~/images/svg/techstack/cplusplus.svg" alt="C++" />
+                                    </span>
+                                </div>
+                            </article>
+                        </a>
+
+                        <!-- Projekt 3 -->
+                        <a class="cv-project-link" href="/InspectProject/3" aria-label="Visa projekt: Linux & Nätverk — IPv6 / Wireshark">
+                            <article class="cv-project">
+                                <div class="cv-project-title">Linux & Nätverk — IPv6 / Wireshark</div>
+                                <p class="cv-project-desc">
+                                    Rapport + labb där trafik analyseras i hemmanätverk. Fokus på adressering, protokoll
+                                    och verifiering av paketflöden i realistisk miljö.
+                                </p>
+
+                                <div class="cv-project-sep" aria-hidden="true"></div>
+
+                                <div class="cv-tech-row" aria-label="Tech stack">
+                                    <span class="cv-tech-tile">
+                                        <img class="cv-tech-icon" src="~/images/svg/techstack/python.svg" alt="Python" />
+                                    </span>
+                                    <span class="cv-tech-tile">
+                                        <img class="cv-tech-icon" src="~/images/svg/techstack/java.svg" alt="Java" />
+                                    </span>
+                                </div>
+                            </article>
+                        </a>
+
+                        <!-- Projekt 4 -->
+                        <a class="cv-project-link" href="/InspectProject/4" aria-label="Visa projekt: Mini Dashboard — Frontend/Logik">
+                            <article class="cv-project">
+                                <div class="cv-project-title">Mini Dashboard — Frontend/Logik</div>
+                                <p class="cv-project-desc">
+                                    Liten demo för att visa struktur: komponenter, state och tydlig dataflödeslogik.
+                                    Byggd för att vara lätt att vidareutveckla när fler widgets behövs.
+                                </p>
+
+                                <div class="cv-project-sep" aria-hidden="true"></div>
+
+                                <div class="cv-tech-row" aria-label="Tech stack">
+                                    <span class="cv-tech-tile">
+                                        <img class="cv-tech-icon" src="~/images/svg/techstack/javascript.svg" alt="JavaScript" />
+                                    </span>
+                                    <span class="cv-tech-tile">
+                                        <img class="cv-tech-icon" src="~/images/svg/techstack/python.svg" alt="Python" />
+                                    </span>
+                                </div>
+                            </article>
+                        </a>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT BUTTON -->
+    <div class="cv-edit-button-container">
+        <a href="@Url.Action("Index", "EditCV")" class="btn-primary-custom">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+            </svg>
+            Redigera CV
+        </a>
+    </div>
+
 </div>
 
-
-
+@section Scripts {
+    <script src="~/js/pages/mycv.js" asp-append-version="true"></script>
+}

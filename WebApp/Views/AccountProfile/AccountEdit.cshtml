@@ -1,0 +1,63 @@
+@model WebApp.Models.AccountEditViewModel
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/account-profile.css" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "Ändra uppgifter";
+}
+
+<div class="account-page">
+
+    <div class="account-banner" aria-label="Kontobanner">
+        <img src="~/images/bannersandicons/accountedit.png"
+             alt="Banner"
+             class="account-banner-img" />
+    </div>
+
+    <section class="account-card" aria-label="Ändra uppgifter">
+        <div class="account-card-inner">
+            <h1 class="account-title">Ändra uppgifter</h1>
+
+            <div class="account-benefits">
+                <div class="account-benefit">Uppdatera dina uppgifter</div>
+                <div class="account-benefit">Informationen behövs för att göra din profil mer sökbar</div>
+            </div>
+
+            <form asp-controller="AccountProfile" asp-action="Edit" method="post" class="account-form">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                <label asp-for="FirstName">Förnamn</label>
+                <input asp-for="FirstName" autocomplete="given-name" placeholder="Förnamn" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+
+                <label asp-for="LastName">Efternamn</label>
+                <input asp-for="LastName" autocomplete="family-name" placeholder="Efternamn" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+
+                <label asp-for="PhoneNumberDisplay">Telefonnummer</label>
+                <input asp-for="PhoneNumberDisplay" autocomplete="tel" placeholder="070-1234567" />
+                <span asp-validation-for="PhoneNumberDisplay" class="text-danger"></span>
+
+                <label asp-for="City">Stad</label>
+                <input asp-for="City" autocomplete="address-level2" placeholder="Örebro" />
+                <span asp-validation-for="City" class="text-danger"></span>
+
+                <label asp-for="PostalCode">Postnummer</label>
+                <input asp-for="PostalCode" inputmode="numeric" autocomplete="postal-code" placeholder="71412" />
+                <span asp-validation-for="PostalCode" class="text-danger"></span>
+
+                <div class="account-actions">
+                    <a class="btn-secondary-custom" asp-controller="AccountProfile" asp-action="Index">Ångra</a>
+                    <button type="submit" class="btn-primary-custom">Bekräfta</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

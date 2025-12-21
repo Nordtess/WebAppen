@@ -1,0 +1,41 @@
+@{
+    ViewData["Title"] = "Deaktivera konto";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/account-profile.css" asp-append-version="true" />
+}
+
+<div class="account-page">
+
+    <div class="account-banner account-banner--deactivate" aria-label="Kontobanner">
+        <img src="~/images/bannersandicons/deactivate.png"
+             alt="Banner"
+             class="account-banner-img" />
+    </div>
+
+    <section class="account-card" aria-label="Deaktivera konto">
+        <div class="account-card-inner">
+            <h1 class="account-title">Deaktivera konto</h1>
+
+            <div class="account-benefits">
+                <div class="account-benefit">
+                    Om du deaktiverar ditt konto kommer du loggas ut och din information kommer inte synas på sidan eller i sökningar
+                    tills du loggar in igen.
+                </div>
+            </div>
+
+            <div class="account-info" style="gap:12px;">
+                <p style="margin:0; font-weight:650; color: rgba(0,0,0,0.75);">
+                    Är du säker på att du vill deaktivera ditt konto?
+                </p>
+
+                <form asp-controller="AccountProfile" asp-action="DeactivateConfirmed" method="post" class="account-actions">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn-danger-custom">Ja, deaktivera</button>
+                    <a class="btn-secondary-custom" asp-controller="AccountProfile" asp-action="Index">Nej, avbryt</a>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

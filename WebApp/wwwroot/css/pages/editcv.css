@@ -1,0 +1,689 @@
+﻿:root {
+    --edit-max: 1100px;
+    --edit-card-radius: 22px;
+    --edit-border: rgba(0, 0, 0, 0.08);
+    --edit-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+
+    --mint: #7fffd4;
+    --mint-soft: rgba(127, 255, 212, 0.18);
+    --mint-soft-strong: rgba(127, 255, 212, 0.32);
+
+    --danger: #ff3b30;
+
+    --edit-banner-h: 190px;
+
+    --edit-profile-max: 320px;
+}
+
+.editcv-page {
+    padding: 22px 18px 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.editcv-banner {
+    width: 100%;
+    max-width: var(--edit-max);
+    height: var(--edit-banner-h);
+    border-radius: var(--edit-card-radius);
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.16);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.07), 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.editcv-banner-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center 20%;
+}
+
+.editcv-container {
+    width: 100%;
+    max-width: var(--edit-max);
+}
+
+.editcv-shell {
+    width: 100%;
+    max-width: 100%;
+}
+
+.editcv-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 14px;
+}
+
+.editcv-title {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: -0.2px;
+}
+
+.editcv-pill-group {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.editcv-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: rgba(255, 255, 255, 0.95);
+    color: rgba(0, 0, 0, 0.78);
+    font-weight: 650;
+    font-size: 13px;
+}
+
+.editcv-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.editcv-topbar-btn {
+    text-decoration: none;
+}
+
+.editcv-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: rgba(255, 255, 255, 0.95);
+    font-weight: 750;
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.75);
+}
+
+.editcv-status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.28);
+}
+
+.editcv-status[data-state="dirty"] .editcv-status-dot {
+    background: rgba(255, 149, 0, 0.95);
+}
+
+.editcv-status[data-state="saved"] .editcv-status-dot {
+    background: rgba(52, 199, 89, 0.95);
+}
+
+.editcv-actions-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    border: 1px solid var(--edit-border);
+    border-radius: var(--edit-card-radius);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: var(--edit-shadow);
+    margin-bottom: 16px;
+}
+
+.editcv-maincard .btn-secondary-custom {
+    padding: 0.55em 1.05em;
+    font-size: 0.95rem;
+}
+
+.editcv-mini-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.editcv-mini-label {
+    font-weight: 850;
+    color: rgba(0, 0, 0, 0.78);
+    font-size: 13px;
+}
+
+.editcv-mini-muted {
+    font-weight: 650;
+    color: rgba(0, 0, 0, 0.55);
+    font-size: 12px;
+}
+
+.editcv-actions-right {
+    display: flex;
+    gap: 10px;
+}
+
+.editcv-grid {
+    display: grid;
+    grid-template-columns: 0.92fr 1.25fr;
+    gap: 16px;
+    align-items: start;
+}
+
+.editcv-maincard {
+    border: 1px solid var(--edit-border);
+    border-radius: var(--edit-card-radius);
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: var(--edit-shadow);
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.editcv-card {
+    border: 1px solid var(--edit-border);
+    border-radius: var(--edit-card-radius);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: var(--edit-shadow);
+    padding: 18px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+}
+
+.editcv-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.editcv-card-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 900;
+    color: rgba(0, 0, 0, 0.82);
+}
+
+.editcv-card-sub {
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.50);
+}
+
+.editcv-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.editcv-label {
+    font-size: 13px;
+    font-weight: 850;
+    color: rgba(0, 0, 0, 0.75);
+}
+
+.editcv-input,
+.editcv-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: rgba(255, 255, 255, 0.96);
+    padding: 12px;
+    font-weight: 560;
+    font-size: 13px;
+    line-height: 1.35;
+    outline: none;
+    color: rgba(0, 0, 0, 0.72);
+}
+
+.editcv-input::placeholder,
+.editcv-textarea::placeholder {
+    color: rgba(0, 0, 0, 0.52);
+    font-weight: 560;
+}
+
+.editcv-input:focus,
+.editcv-textarea:focus {
+    border-color: rgba(127, 255, 212, 0.95);
+    box-shadow:
+        0 0 0 4px rgba(127, 255, 212, 0.22),
+        0 0 0 7px var(--mint-soft-strong);
+}
+
+.editcv-textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.editcv-help {
+    font-size: 12px;
+    font-weight: 650;
+    color: rgba(0, 0, 0, 0.55);
+    margin-top: 6px;
+}
+
+.editcv-two-col {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px 12px;
+}
+
+.input-validation-error {
+    border: 1px solid var(--danger) !important;
+    box-shadow: 0 0 0 4px rgba(255, 59, 48, 0.14) !important;
+}
+
+.input-validation-valid {
+    border-color: rgba(0, 0, 0, 0.10);
+}
+
+.editcv-input.valid,
+.editcv-textarea.valid {
+    border-color: rgba(127, 255, 212, 0.55);
+    box-shadow: 0 0 0 3px rgba(127, 255, 212, 0.10);
+}
+
+.field-validation-error,
+.editcv-error.field-validation-error {
+    color: var(--danger);
+    font-weight: 800;
+}
+
+.field-validation-valid,
+.editcv-error.field-validation-valid {
+    min-height: 14px;
+}
+
+.editcv-under {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.editcv-counter {
+    font-size: 12px;
+    font-weight: 750;
+    color: rgba(0, 0, 0, 0.55);
+}
+
+.editcv-profile {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    align-items: start;
+}
+
+.editcv-avatar-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: none;
+}
+
+.editcv-avatar {
+    max-width: var(--edit-profile-max);
+    margin: 0 auto;
+    width: 100%;
+    height: 220px;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: rgba(0, 0, 0, 0.02);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.editcv-avatar-wrap .editcv-profile-fields {
+    width: 100%;
+    max-width: none;
+}
+
+.editcv-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.editcv-avatar-fallback {
+    font-weight: 900;
+    font-size: 22px;
+    color: rgba(0, 0, 0, 0.55);
+}
+
+.editcv-avatar-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 12px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0));
+    opacity: 0;
+    transition: opacity 160ms ease;
+}
+
+.editcv-avatar:hover .editcv-avatar-overlay {
+    opacity: 1;
+}
+
+.editcv-avatar-overlay-text {
+    font-size: 12px;
+    font-weight: 850;
+    color: rgba(255, 255, 255, 0.95);
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.editcv-file {
+    display: none;
+}
+
+.editcv-profile-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.editcv-draft-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.editcv-draft-card {
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.96);
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.editcv-draft-title {
+    font-weight: 900;
+    color: rgba(0, 0, 0, 0.80);
+    margin: 0;
+    font-size: 14px;
+}
+
+.editcv-draft-sub {
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.55);
+}
+
+.editcv-draft-remove {
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 999px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: 900;
+    color: rgba(0, 0, 0, 0.55);
+    padding: 0;
+    line-height: 1;
+    transition: transform 140ms ease;
+    font-size: 18px;
+}
+
+.editcv-draft-remove::before {
+    content: none;
+}
+
+.editcv-draft-remove:hover {
+    transform: translateY(-1px);
+}
+
+.editcv-collapse {
+    margin-top: 12px;
+    display: none;
+}
+
+.editcv-collapse.is-open {
+    display: block;
+}
+
+.editcv-mini-form {
+    border: 1px dashed rgba(0, 0, 0, 0.14);
+    border-radius: 18px;
+    background: rgba(127, 255, 212, 0.10);
+    padding: 12px;
+}
+
+.editcv-mini-form-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.editcv-mini-error {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--danger);
+}
+
+.editcv-projects-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.editcv-search {
+    flex: 1 1 auto;
+}
+
+.editcv-project-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.editcv-project-card {
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.96);
+    padding: 14px;
+    position: relative;
+    transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.editcv-project-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.editcv-project-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 950;
+    color: rgba(0, 0, 0, 0.82);
+    text-align: center;
+}
+
+.editcv-project-desc {
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 650;
+    color: rgba(0, 0, 0, 0.62);
+    line-height: 1.45;
+    text-align: justify;
+    hyphens: auto;
+}
+
+.editcv-project-divider {
+    width: 76%;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.10);
+    margin: 12px auto 10px;
+}
+
+.editcv-tech-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.editcv-tech-tile {
+    width: 34px;
+    height: 34px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: rgba(255, 255, 255, 0.96);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.editcv-tech-icon {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+.editcv-project-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.editcv-toggle {
+    position: relative;
+    width: 54px;
+    height: 28px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: rgba(0, 0, 0, 0.10);
+    display: flex;
+    align-items: center;
+    padding: 3px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.editcv-toggle[data-on="true"] {
+    background: rgba(127, 255, 212, 0.55);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+.editcv-toggle-knob {
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+    transform: translateX(0);
+    transition: transform 160ms ease;
+}
+
+.editcv-toggle[data-on="true"] .editcv-toggle-knob {
+    transform: translateX(24px);
+}
+
+.editcv-project-card.is-off {
+    opacity: 0.65;
+}
+
+.editcv-project-card.is-off::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.55);
+    pointer-events: none;
+}
+
+.editcv-bottom {
+    position: sticky;
+    bottom: 10px;
+    margin-top: 16px;
+}
+
+.editcv-bottom-inner .btn-secondary-custom,
+.editcv-bottom-inner .btn-secondary-custom:hover,
+.editcv-bottom-inner .btn-secondary-custom:visited {
+    color: inherit;
+    text-decoration: none;
+}
+
+.editcv-bottom-inner {
+    border: 2px solid rgba(0, 0, 0, 0.28);
+    border-radius: var(--edit-card-radius);
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 22px 44px rgba(0, 0, 0, 0.10), 0 2px 6px rgba(0, 0, 0, 0.06);
+    padding: 12px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.editcv-draft-actions {
+    margin-top: 10px;
+    padding-top: 4px;
+    margin-bottom: 10px;
+}
+
+.editcv-draft-actions .btn-secondary-custom {
+    padding: 0.55em 1.05em;
+    font-size: 0.92rem;
+    font-weight: 650;
+}
+
+@media (max-width: 800px) {
+    .editcv-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .editcv-project-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .editcv-avatar {
+        max-width: 100%;
+    }
+
+    .editcv-actions-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .editcv-actions-right {
+        justify-content: flex-end;
+    }
+
+    .editcv-avatar-wrap {
+        max-width: 100%;
+    }
+
+    .editcv-draft-actions .btn-secondary-custom {
+        width: 100%;
+        justify-content: center;
+    }
+}

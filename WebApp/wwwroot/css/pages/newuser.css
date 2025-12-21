@@ -1,1 +1,187 @@
-﻿
+﻿.register-page {
+    display: flex;
+    justify-content: center;
+    padding: 70px 20px;
+}
+
+:root {
+    --account-max: 900px;
+    --account-banner-h: 190px;
+    --account-radius: 24px;
+}
+
+.account-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 22px 18px 28px;
+    gap: 12px;
+}
+
+.account-banner {
+    width: 100%;
+    max-width: var(--account-max);
+    height: var(--account-banner-h);
+    border-radius: var(--account-radius);
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.16);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.07), 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.account-banner-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center 20%;
+}
+
+.account-card {
+    width: 100%;
+    max-width: var(--account-max);
+    box-sizing: border-box;
+}
+
+.register-card {
+    width: 100%;
+    max-width: 1100px;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 56px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+    padding: 52px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.register-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 26px 50px rgba(0, 0, 0, 0.10), 0 6px 12px rgba(0, 0, 0, 0.06);
+}
+
+.account-card.register-card {
+    grid-template-columns: 1fr;
+    gap: 28px;
+}
+
+.register-title {
+    font-size: 44px;
+    font-weight: 850;
+    margin: 0 0 18px;
+}
+
+.register-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 30px;
+}
+
+.benefit-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.75);
+}
+
+.benefit-emoji {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.benefit-text {
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.register-form label {
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.register-form input {
+    padding: 14px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.register-actions {
+    margin-top: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login-link {
+    color: #111;
+    font-weight: 650;
+    text-decoration: none;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+}
+
+.register-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register-illustration-wrap {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register-illustration {
+    width: 100%;
+    max-width: 800px;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+@media (max-width: 800px) {
+    .register-card {
+        grid-template-columns: 1fr;
+        padding: 36px;
+        gap: 28px;
+    }
+
+    .register-right {
+        display: none;
+    }
+
+    .register-title {
+        font-size: 36px;
+    }
+
+    .register-actions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .account-banner {
+        height: 160px;
+    }
+
+    .account-card .register-left {
+        max-width: 100%;
+    }
+}
