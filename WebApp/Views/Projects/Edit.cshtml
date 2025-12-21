@@ -1,0 +1,103 @@
+@model WebApp.ViewModels.ProjectEditViewModel
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pages/projectedit.css" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "Redigera projekt";
+}
+
+<div class="projectedit-page">
+    <div class="projectedit-banner" aria-label="Project-banner">
+        <img src="~/images/bannersandicons/projects.png" alt="Banner" class="projectedit-banner-img" />
+    </div>
+
+    <div class="projectedit-container">
+        <div class="projectedit-shell">
+            <div class="projectedit-topbar">
+                <div>
+                    <h1 class="projectedit-title">Redigera projekt</h1>
+                    <div class="projectedit-sub">Uppdatera ditt projekt</div>
+                    @if (!string.IsNullOrWhiteSpace(Model.CreatedText))
+                    {
+                        <div class="projectedit-meta">@Model.CreatedText</div>
+                    }
+                </div>
+            </div>
+
+            <form id="projectForm" class="projectedit-form" method="post" action="@Url.Action("Edit", "Projects")">
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="TechStackJson" id="TechStackJson" />
+
+                <div class="projectedit-maincard">
+                    <section class="projectedit-card">
+                        <div class="projectedit-card-head">
+                            <h2 class="projectedit-card-title">Projektinfo</h2>
+                            <span class="projectedit-card-sub">Titel + beskrivning</span>
+                        </div>
+
+                        <div class="projectedit-field">
+                            <label class="projectedit-label" asp-for="Title">Titel</label>
+                            <input class="projectedit-input" asp-for="Title" maxlength="80" required />
+                            <span class="projectedit-error" asp-validation-for="Title"></span>
+                        </div>
+
+                        <div class="projectedit-field">
+                            <label class="projectedit-label" asp-for="ShortDescription">Kort beskrivning (valfri)</label>
+                            <input class="projectedit-input" asp-for="ShortDescription" maxlength="140" placeholder="Kort text som syns i listor..." />
+                            <div class="projectedit-help">Tips: 1–2 meningar.</div>
+                            <span class="projectedit-error" asp-validation-for="ShortDescription"></span>
+                        </div>
+
+                        <div class="projectedit-field">
+                            <label class="projectedit-label" asp-for="Description">Om projektet</label>
+                            <textarea class="projectedit-textarea" asp-for="Description" rows="7" maxlength="500" required></textarea>
+                            <div class="projectedit-under">
+                                <span class="projectedit-error" asp-validation-for="Description"></span>
+                                <span class="projectedit-counter"><span id="descCount">0</span>/500</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="projectedit-card">
+                        <div class="projectedit-card-head">
+                            <h2 class="projectedit-card-title">Tech stack</h2>
+                            <span class="projectedit-card-sub">Valfritt (max 8)</span>
+                        </div>
+
+                        <div class="projectedit-help">Valda teknologier:</div>
+                        <div class="projectedit-sep" aria-hidden="true"></div>
+                        <div class="projectedit-tech-selected" id="techSelected"></div>
+
+                        <div class="projectedit-tech-search">
+                            <input class="projectedit-input" id="techSearch" type="text" placeholder="Sök teknologi..." />
+                        </div>
+
+                        <div class="projectedit-tech-grid" id="techGrid"></div>
+
+                        <div class="projectedit-help">Klicka på en ikon för att lägga till/ta bort.</div>
+                    </section>
+                </div>
+
+                <div class="projectedit-bottom">
+                    <div class="projectedit-bottom-inner">
+                        <a class="btn-secondary-custom" href="@Url.Action("Details", "Projects", new { id = Model.Id })" style="text-decoration:none;" id="backBtn">Tillbaka</a>
+
+                        <div class="projectedit-bottom-right">
+                            <button type="submit" class="btn-primary-custom">Spara ändringar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/pages/projectedit.js" asp-append-version="true"></script>
+}

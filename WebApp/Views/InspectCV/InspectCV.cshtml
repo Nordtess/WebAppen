@@ -1,0 +1,96 @@
+@model WebApp.Controllers.InspectCvController.InspectCvViewModel
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/mycv.css" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "CV";
+
+    var avatarSrc = string.IsNullOrWhiteSpace(Model.ProfileImagePath)
+        ? Url.Content("~/images/bannersandicons/cvplaceholder.png")
+        : Url.Content(Model.ProfileImagePath);
+}
+
+<div class="cv-page">
+    <div class="cv-banner" aria-label="CV-banner">
+        <img src="~/images/bannersandicons/cvbanner.png" alt="Banner" class="cv-banner-img" />
+    </div>
+
+    <div class="cv-card">
+        <div class="cv-topbar">
+            <div class="cv-visits">Visar profil</div>
+            <a class="btn-secondary-custom" href="@Url.Action("Index", "Projects")" style="text-decoration:none;">Tillbaka</a>
+        </div>
+
+        <hr class="cv-divider" />
+
+        <div class="cv-grid">
+            <aside class="cv-left">
+                <div class="cv-profile-card">
+                    <div class="cv-avatar">
+                        <img class="cv-avatar-img" src="@avatarSrc" alt="Profilbild" />
+                    </div>
+
+                    <div class="cv-hero-text">
+                        <h1 class="cv-name">@Model.FullName</h1>
+                        @if (!string.IsNullOrWhiteSpace(Model.Headline))
+                        {
+                            <div class="cv-role">@Model.Headline</div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.City))
+                        {
+                            <div class="cv-role">@Model.City</div>
+                        }
+                    </div>
+                </div>
+
+                <div class="cv-box">
+                    <h2 class="cv-box-title">Kontakt</h2>
+
+                    <div class="cv-contact-list">
+                        <div class="cv-contact-item">
+                            <div class="cv-contact-ico">@@</div>
+                            <div>
+                                <div class="cv-contact-k">Email</div>
+                                <div class="cv-contact-v">@Model.Email</div>
+                            </div>
+                        </div>
+
+                        <div class="cv-contact-item">
+                            <div class="cv-contact-ico">?</div>
+                            <div>
+                                <div class="cv-contact-k">Telefon</div>
+                                <div class="cv-contact-v">@Model.Phone</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="cv-right">
+                <div class="cv-box">
+                    <h2 class="cv-box-title">Om mig</h2>
+                    <p class="cv-paragraph">@(!string.IsNullOrWhiteSpace(Model.AboutMe) ? Model.AboutMe : "Ingen text att visa.")</p>
+                </div>
+
+                <div class="cv-box">
+                    <h2 class="cv-box-title">Kompetenser</h2>
+                    @if (Model.Skills.Length == 0)
+                    {
+                        <p class="cv-paragraph cv-paragraph-muted">Inga kompetenser att visa.</p>
+                    }
+                    else
+                    {
+                        <div class="cv-skill-grid">
+                            @foreach (var s in Model.Skills)
+                            {
+                                <div class="cv-skill-pill">@s</div>
+                            }
+                        </div>
+                    }
+                </div>
+            </main>
+        </div>
+    </div>
+</div>

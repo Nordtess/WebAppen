@@ -1,0 +1,106 @@
+@model WebApp.ViewModels.ProjectDetailsVm
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pages/projectdetails.css" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "Projekt";
+}
+
+<div class="projectdetails-page">
+    <div class="projectdetails-banner" aria-label="Project-banner">
+        <img src="~/images/bannersandicons/projects.png" alt="Banner" class="projectdetails-banner-img" />
+    </div>
+
+    <div class="projectdetails-container">
+        <div class="projectdetails-shell">
+            <div class="projectdetails-topbar">
+                <div>
+                    <h1 class="projectdetails-title">@Model.Title</h1>
+                    @if (!string.IsNullOrWhiteSpace(Model.ShortDescription))
+                    {
+                        <div class="projectdetails-sub">@Model.ShortDescription</div>
+                    }
+                    <div class="projectdetails-meta">Skapad: @Model.CreatedUtc.ToString("yyyy-MM-dd")</div>
+                </div>
+
+                <div class="projectdetails-topbar-actions">
+                    <a class="btn-secondary-custom" href="@Url.Action("Index", "Projects")" style="text-decoration:none;">Tillbaka</a>
+                    @if (Model.IsOwner)
+                    {
+                        <a class="btn-primary-custom" href="@Url.Action("Edit", "Projects", new { id = Model.Id })" style="text-decoration:none;">Redigera</a>
+                    }
+                </div>
+            </div>
+
+            <div class="projectdetails-maincard">
+                <section class="projectdetails-card">
+                    <div class="projectdetails-card-head">
+                        <h2 class="projectdetails-card-title">Om projektet</h2>
+                    </div>
+
+                    <p class="projectdetails-paragraph">@Model.Description</p>
+
+                    @if (Model.TechKeys.Length > 0)
+                    {
+                        <div class="projectdetails-sep" aria-hidden="true"></div>
+                        <div class="projectdetails-tech-row" aria-label="Tech stack">
+                            @foreach (var key in Model.TechKeys)
+                            {
+                                <span class="projectdetails-tech-tile">
+                                    <img class="projectdetails-tech-icon" src="~/images/svg/techstack/@(key).svg" alt="@key" />
+                                </span>
+                            }
+                        </div>
+                    }
+                </section>
+
+                <section class="projectdetails-card">
+                    <div class="projectdetails-card-head">
+                        <h2 class="projectdetails-card-title">Medlemmar</h2>
+                        <span class="projectdetails-card-sub">@Model.Participants.Count st</span>
+                    </div>
+
+                    <div class="projectdetails-members">
+                        @if (Model.Participants.Count == 0)
+                        {
+                            <div class="projectdetails-muted">Inga medlemmar att visa.</div>
+                        }
+                        else
+                        {
+                            foreach (var m in Model.Participants)
+                            {
+                                <a class="projectdetails-member" href="@Url.Action("ByUserId", "InspectCv", new { userId = m.UserId })">
+                                    <div class="projectdetails-member-name">@m.FullName</div>
+                                    <div class="projectdetails-member-city">@m.City</div>
+                                </a>
+                            }
+                        }
+                    </div>
+
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <div class="projectdetails-actions">
+                            @if (!Model.IsMember)
+                            {
+                                <form method="post" action="@Url.Action("Join", "Projects", new { id = Model.Id })">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn-primary-custom">Gå med</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form method="post" action="@Url.Action("Leave", "Projects", new { id = Model.Id })">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn-secondary-custom">Lämna projekt</button>
+                                </form>
+                            }
+                        </div>
+                    }
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,87 @@
+@model WebApp.ViewModels.ProjectsIndexVm
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pages/projects.css" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "Alla projekt";
+}
+
+<div class="projects-page">
+    <div class="projects-banner" aria-label="Projects-banner">
+        <img src="~/images/bannersandicons/projects.png" alt="Banner" class="projects-banner-img" />
+    </div>
+
+    <div class="projects-container">
+        <div class="projects-shell">
+            <div class="projects-topbar">
+                <div>
+                    <h1 class="projects-title">Alla projekt</h1>
+                    <div class="projects-sub">Skapa, hitta och gå med i projekt</div>
+                </div>
+
+                <div class="projects-topbar-actions">
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <a class="btn-primary-custom" href="@Url.Action("Create", "Projects")">Skapa projekt</a>
+                    }
+                </div>
+            </div>
+
+            <div class="projects-controls">
+                <form method="get" class="projects-search">
+                    <input class="projects-input" type="text" name="q" value="@Model.Query" placeholder="Sök projekt..." />
+
+                    <select class="projects-input" name="sort" aria-label="Sortering">
+                        <option value="new" selected="@(Model.Sort == "new")">Senast skapade</option>
+                        <option value="old" selected="@(Model.Sort == "old")">Äldst först</option>
+                    </select>
+
+                    <button type="submit" class="btn-secondary-custom">Sök</button>
+                </form>
+            </div>
+
+            <div class="projects-grid">
+                @if (Model.Projects.Count == 0)
+                {
+                    <div class="projects-empty">Inga projekt hittades.</div>
+                }
+                else
+                {
+                    foreach (var p in Model.Projects)
+                    {
+                        <a class="projects-card" href="@Url.Action("Details", "Projects", new { id = p.Id })">
+                            <div class="projects-card-title">@p.Title</div>
+
+                            @if (!string.IsNullOrWhiteSpace(p.ShortDescription))
+                            {
+                                <div class="projects-card-desc">@p.ShortDescription</div>
+                            }
+                            else
+                            {
+                                <div class="projects-card-desc projects-card-desc--muted">Ingen kort beskrivning.</div>
+                            }
+
+                            <div class="projects-card-meta">Skapad: @p.CreatedUtc.ToString("yyyy-MM-dd")</div>
+
+                            @if (!string.IsNullOrWhiteSpace(p.TechKeysCsv))
+                            {
+                                <div class="projects-card-sep" aria-hidden="true"></div>
+                                <div class="projects-tech-row" aria-label="Tech stack">
+                                    @foreach (var key in p.TechKeysCsv.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                                    {
+                                        <span class="projects-tech-tile">
+                                            <img class="projects-tech-icon" src="~/images/svg/techstack/@(key).svg" alt="@key" />
+                                        </span>
+                                    }
+                                </div>
+                            }
+                        </a>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
