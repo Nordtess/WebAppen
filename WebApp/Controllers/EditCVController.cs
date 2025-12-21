@@ -38,6 +38,19 @@ public class EditCVController : Controller
 
         var (profile, _) = await GetOrCreateProfileForUserAsync(user.Id);
 
+        var educations = await _db.Utbildningar
+            .AsNoTracking()
+            .Where(x => x.ProfileId == profile.Id)
+            .OrderBy(x => x.SortOrder)
+            .Select(x => new EducationItemVm
+            {
+                School = x.School,
+                Program = x.Program,
+                Years = x.Years,
+                Note = x.Note
+            })
+            .ToListAsync();
+
         var vm = new EditCvViewModel
         {
             FullName = string.Join(' ', new[] { user.FirstName, user.LastName }.Where(s => !string.IsNullOrWhiteSpace(s))),
@@ -49,7 +62,8 @@ public class EditCVController : Controller
             AboutMe = profile.AboutMe ?? string.Empty,
             ProfileImagePath = profile.ProfileImagePath,
 
-            EducationJson = string.IsNullOrWhiteSpace(profile.EducationJson) ? "[]" : profile.EducationJson!,
+            // education is now stored in table
+            EducationJson = JsonSerializer.Serialize(educations, JsonOptions),
             SelectedProjectsJson = string.IsNullOrWhiteSpace(profile.SelectedProjectsJson) ? "[]" : profile.SelectedProjectsJson!,
             SkillsJson = SkillsCsvToJson(profile.SkillsCsv)
         };
@@ -85,11 +99,15 @@ public class EditCVController : Controller
 
         var (profile, _) = await GetOrCreateProfileForUserAsync(user.Id);
 
+        await using var tx = await _db.Database.BeginTransactionAsync();
+
         profile.Headline = string.IsNullOrWhiteSpace(model.Headline) ? null : model.Headline.Trim();
         profile.AboutMe = model.AboutMe.Trim();
-        profile.EducationJson = string.IsNullOrWhiteSpace(model.EducationJson) ? "[]" : model.EducationJson;
         profile.SelectedProjectsJson = string.IsNullOrWhiteSpace(model.SelectedProjectsJson) ? "[]" : model.SelectedProjectsJson;
         profile.SkillsCsv = NormalizeSkillsJsonToCsv(model.SkillsJson);
+
+        // Replace educations (delete + insert) => simple & reliable.
+        await ReplaceEducationsAsync(profile.Id, model.EducationJson);
 
         if (avatarFile is not null && avatarFile.Length > 0)
         {
@@ -104,8 +122,85 @@ public class EditCVController : Controller
         profile.UpdatedUtc = DateTimeOffset.UtcNow;
         await _db.SaveChangesAsync();
 
+        await tx.CommitAsync();
+
         TempData["Saved"] = "1";
         return RedirectToAction(nameof(Index));
+    }
+
+    private async Task ReplaceEducationsAsync(int profileId, string? educationJson)
+    {
+        // Delete existing
+        var existing = await _db.Utbildningar.Where(x => x.ProfileId == profileId).ToListAsync();
+        if (existing.Count > 0)
+        {
+            _db.Utbildningar.RemoveRange(existing);
+            await _db.SaveChangesAsync();
+        }
+
+        // Insert new
+        var items = DeserializeEducationItems(educationJson);
+        if (items.Count == 0)
+        {
+            return;
+        }
+
+        // hard limits for safety
+        const int maxItems = 12;
+        var now = DateTimeOffset.UtcNow;
+
+        var toInsert = new List<Education>();
+        for (var i = 0; i < items.Count && i < maxItems; i++)
+        {
+            var it = items[i];
+
+            var school = (it.School ?? string.Empty).Trim();
+            var program = (it.Program ?? string.Empty).Trim();
+            var years = (it.Years ?? string.Empty).Trim();
+            var note = string.IsNullOrWhiteSpace(it.Note) ? null : it.Note.Trim();
+
+            if (string.IsNullOrWhiteSpace(school) || string.IsNullOrWhiteSpace(program) || string.IsNullOrWhiteSpace(years))
+            {
+                continue;
+            }
+
+            // Truncate to DB limits (airtight)
+            school = school.Length > 120 ? school[..120] : school;
+            program = program.Length > 120 ? program[..120] : program;
+            years = years.Length > 40 ? years[..40] : years;
+            if (note is not null && note.Length > 200) note = note[..200];
+
+            toInsert.Add(new Education
+            {
+                ProfileId = profileId,
+                School = school,
+                Program = program,
+                Years = years,
+                Note = note,
+                SortOrder = i,
+                CreatedUtc = now,
+                UpdatedUtc = now
+            });
+        }
+
+        if (toInsert.Count == 0) return;
+
+        _db.Utbildningar.AddRange(toInsert);
+        await _db.SaveChangesAsync();
+    }
+
+    private static List<EducationItemVm> DeserializeEducationItems(string? json)
+    {
+        if (string.IsNullOrWhiteSpace(json)) return new();
+
+        try
+        {
+            return JsonSerializer.Deserialize<List<EducationItemVm>>(json, JsonOptions) ?? new();
+        }
+        catch
+        {
+            return new();
+        }
     }
 
     private async Task<(Profile profile, ApplicationUserProfile link)> GetOrCreateProfileForUserAsync(string userId)
@@ -125,7 +220,6 @@ public class EditCVController : Controller
             IsPublic = true,
             CreatedUtc = DateTimeOffset.UtcNow,
             UpdatedUtc = DateTimeOffset.UtcNow,
-            EducationJson = "[]",
             SelectedProjectsJson = "[]",
             SkillsCsv = null
         };

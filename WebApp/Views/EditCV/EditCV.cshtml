@@ -31,7 +31,10 @@
 
                     <div class="editcv-pill-group">
                         <span class="editcv-pill">
-                            <strong>Tips:</strong> Ändringar sparas när du klickar “Spara”.
+                            <strong>Tips:</strong> Ändringar sparas när du klickar “Spara ändringar”.
+                        </span>
+                        <span class="editcv-pill">
+                            Dina personuppgifter hämtas från ditt konto. Ändra dem via kontoinställningar.
                         </span>
                     </div>
                 </div>
@@ -47,12 +50,7 @@
                 <input type="hidden" asp-for="SkillsJson" id="SkillsJson" />
 
                 <div class="editcv-actions-bar">
-                    <div class="editcv-actions-left">
-                        <div class="editcv-mini-info">
-                            <span class="editcv-mini-label">Förhandsvisa:</span>
-                            <span class="editcv-mini-muted">Visar dina osparade ändringar i ny flik</span>
-                        </div>
-                    </div>
+                    <div class="editcv-actions-left"></div>
 
                     <div class="editcv-actions-right">
                         <div class="editcv-status" data-state="@initialSaveState" id="autosaveStatus">
@@ -68,7 +66,7 @@
                             <section class="editcv-card">
                                 <div class="editcv-card-head">
                                     <h2 class="editcv-card-title">Profil</h2>
-                                    <span class="editcv-card-sub">Bild + rubrik</span>
+                                    <span class="editcv-card-sub">Bild + titel</span>
                                 </div>
 
                                 <div class="editcv-profile">
@@ -86,11 +84,11 @@
                                                class="editcv-file"
                                                accept="image/*" />
 
-                                        <div class="editcv-help">Rekommenderat: kvadratisk bild (t.ex. 512×512).</div>
+                                        <div class="editcv-help editcv-help-center">Rekommenderat: kvadratisk bild (t.ex. 512×512).</div>
 
                                         <div class="editcv-profile-fields">
                                             <div class="editcv-field">
-                                                <label class="editcv-label" asp-for="FullName">Namn (konto)</label>
+                                                <label class="editcv-label" asp-for="FullName">Namn</label>
                                                 <input class="editcv-input"
                                                        asp-for="FullName"
                                                        readonly
@@ -98,7 +96,7 @@
                                             </div>
 
                                             <div class="editcv-field">
-                                                <label class="editcv-label" asp-for="Headline">Rubrik</label>
+                                                <label class="editcv-label" asp-for="Headline">Titel / inriktning</label>
                                                 <input class="editcv-input" asp-for="Headline" placeholder="Systemvetenskap • Fullstack" maxlength="60" />
                                                 <span class="editcv-error" asp-validation-for="Headline" data-valmsg-for="Headline"></span>
                                             </div>
@@ -115,17 +113,17 @@
 
                                 <div class="editcv-two-col">
                                     <div class="editcv-field">
-                                        <label class="editcv-label" asp-for="Email">Email (konto)</label>
+                                        <label class="editcv-label" asp-for="Email">Email</label>
                                         <input class="editcv-input" asp-for="Email" readonly tabindex="-1" />
                                     </div>
 
                                     <div class="editcv-field">
-                                        <label class="editcv-label" asp-for="Phone">Telefon (konto)</label>
+                                        <label class="editcv-label" asp-for="Phone">Telefon</label>
                                         <input class="editcv-input" asp-for="Phone" readonly tabindex="-1" />
                                     </div>
 
                                     <div class="editcv-field">
-                                        <label class="editcv-label" asp-for="Location">Plats (konto)</label>
+                                        <label class="editcv-label" asp-for="Location">Plats</label>
                                         <input class="editcv-input" asp-for="Location" readonly tabindex="-1" />
                                     </div>
                                 </div>
@@ -232,7 +230,7 @@
                             <section class="editcv-card">
                                 <div class="editcv-card-head">
                                     <h2 class="editcv-card-title">Visa projekt på CV</h2>
-                                    <span class="editcv-card-sub">Välj vilka av dina projekt som ska synas</span>
+                                    <span class="editcv-card-sub">Välj upp till 4</span>
                                 </div>
 
                                 <div class="editcv-projects-toolbar">
@@ -240,13 +238,16 @@
                                         <input type="text" class="editcv-input" id="projectSearch" placeholder="Sök projekt..." />
                                     </div>
 
-                                    <a class="btn-secondary-custom" href="#" id="manageProjectsBtn">Hantera projekt</a>
+                                    <a class="btn-secondary-custom" href="#" id="manageProjectsBtn">Skapa / hantera</a>
                                 </div>
+
+                                <div class="editcv-help">Valda projekt visas överst och kan senare sorteras (topp 4).</div>
+                                <div class="editcv-project-featured" id="featuredProjects"></div>
 
                                 <div class="editcv-project-grid" id="projectGrid"></div>
 
                                 <div class="editcv-help">
-                                    (Placeholder) “Hantera projekt” kan senare länka till din projektsida där man skapar/ansluter till projekt.
+                                    (Placeholder) “Skapa / hantera” länkas senare till projektsidan.
                                 </div>
                             </section>
                         </main>

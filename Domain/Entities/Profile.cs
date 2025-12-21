@@ -32,11 +32,6 @@ public class Profile
     public string? SkillsCsv { get; set; }
 
     /// <summary>
-    /// JSON för utbildningar (prototyp/placeholder tills egna tabeller finns).
-    /// </summary>
-    public string? EducationJson { get; set; }
-
-    /// <summary>
     /// JSON för valda projekt-ID:n (prototyp/placeholder tills kopplingstabell finns).
     /// </summary>
     public string? SelectedProjectsJson { get; set; }

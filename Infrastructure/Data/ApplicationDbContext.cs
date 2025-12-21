@@ -17,6 +17,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
     // Domänmodellen (CV).
     public DbSet<Profile> Profiler => Set<Profile>();
+    public DbSet<Education> Utbildningar => Set<Education>();
     public DbSet<Skill> Kompetenser => Set<Skill>();
     public DbSet<Project> Projekt => Set<Project>();
     public DbSet<ProjectUser> ProjektAnvandare => Set<ProjectUser>();
@@ -88,5 +89,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
         builder.Entity<UserMessage>()
             .HasIndex(m => m.SenderUserId);
+
+        builder.Entity<Education>()
+            .HasIndex(x => new { x.ProfileId, x.SortOrder });
+
+        builder.Entity<Education>()
+            .HasOne(x => x.Profile)
+            .WithMany()
+            .HasForeignKey(x => x.ProfileId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

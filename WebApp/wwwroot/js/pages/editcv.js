@@ -106,6 +106,11 @@
         setSaveState("dirty");
     }
 
+    // Initialize text based on server-rendered data-state.
+    if (autosaveStatus) {
+        setSaveState(autosaveStatus.dataset.state === "saved" ? "saved" : "dirty");
+    }
+
     form.addEventListener("input", (e) => {
         // Read-only (konto) fält ska inte trigga "dirty".
         const t = e.target;
@@ -415,6 +420,7 @@
     const projectSearch = document.getElementById("projectSearch");
     const selectedProjectsJson = document.getElementById("SelectedProjectsJson");
     const manageProjectsBtn = document.getElementById("manageProjectsBtn");
+    const featuredProjects = document.getElementById("featuredProjects");
 
     const MAX_SELECTED_PROJECTS = 4;
 
@@ -476,6 +482,8 @@
     function renderProjects(filter = "") {
         if (!projectGrid) return;
         projectGrid.innerHTML = "";
+
+        renderFeaturedProjects();
 
         const f = filter.trim().toLowerCase();
         const filtered = !f ? projects : projects.filter((p) => (p.title + " " + p.desc).toLowerCase().includes(f));
@@ -553,6 +561,75 @@
             card.appendChild(techRow);
 
             projectGrid.appendChild(card);
+        });
+    }
+
+    function renderFeaturedProjects() {
+        if (!featuredProjects) return;
+        featuredProjects.innerHTML = "";
+
+        const selectedList = Array.from(selected);
+            
+        if (selectedList.length === 0) return;
+
+        // Preserve selection order as stored in JSON
+        const selectedProjects = selectedList
+            .map((id) => projects.find((p) => p.id === id))
+            .filter(Boolean);
+
+        selectedProjects.forEach((project) => {
+            const card = document.createElement("div");
+            card.className = "editcv-project-card";
+
+            const toggleWrap = document.createElement("div");
+            toggleWrap.className = "editcv-project-toggle";
+
+            const toggle = document.createElement("div");
+            toggle.className = "editcv-toggle";
+            toggle.dataset.on = "true";
+
+            const knob = document.createElement("div");
+            knob.className = "editcv-toggle-knob";
+            toggle.appendChild(knob);
+
+            toggle.addEventListener("click", () => {
+                selected.delete(project.id);
+                syncSelectedProjects();
+                renderProjects(projectSearch?.value || "");
+                markDirty();
+            });
+
+            toggleWrap.appendChild(toggle);
+
+            const title = document.createElement("h3");
+            title.className = "editcv-project-title";
+            title.textContent = project.title;
+
+            const divider = document.createElement("div");
+            divider.className = "editcv-project-divider";
+
+            const techRow = document.createElement("div");
+            techRow.className = "editcv-tech-row";
+
+            (project.tech || []).forEach((t) => {
+                const tile = document.createElement("div");
+                tile.className = "editcv-tech-tile";
+
+                const img = document.createElement("img");
+                img.className = "editcv-tech-icon";
+                img.alt = t;
+                img.src = techIconPath(t);
+
+                tile.appendChild(img);
+                techRow.appendChild(tile);
+            });
+
+            card.appendChild(toggleWrap);
+            card.appendChild(title);
+            card.appendChild(divider);
+            card.appendChild(techRow);
+
+            featuredProjects.appendChild(card);
         });
     }
 
