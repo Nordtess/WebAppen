@@ -140,6 +140,18 @@
     gap: 10px;
 }
 
+.projectedit-avatar-tip {
+    display: flex;
+    align-items: flex-start;
+    padding-top: 0;
+    max-width: 560px;
+}
+
+.projectedit-avatar-tip .projectedit-pill {
+    border-radius: 999px;
+    padding: 8px 12px;
+}
+
 .projectedit-avatar {
     width: 224px;
     height: 224px;
@@ -205,9 +217,9 @@
     position: absolute;
     top: 44px;
     left: calc(100% + 10px);
-    width: 360px;
-    max-height: 224px;
-    overflow: auto;
+    width: 520px;
+    height: 224px;
+    overflow: hidden;
     border-radius: 18px;
     border: 1px solid rgba(0, 0, 0, 0.14);
     background: rgba(255, 255, 255, 0.98);
@@ -217,35 +229,75 @@
     display: none;
 }
 
-/* If near the right edge, open to the left instead */
-@supports selector(:has(*)) {
-    .projectedit-avatar-wrap:has(.projectedit-avatar-picker.is-open) {
-        overflow: visible;
-    }
+.projectedit-avatar-picker.is-open {
+    display: block;
 }
 
-@media (max-width: 900px) {
-    .projectedit-avatar-picker {
-        top: 242px;
-        left: 0;
-        width: min(520px, 86vw);
-        max-height: none;
-    }
+.projectedit-avatar-picker-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
 
-    .projectedit-avatar-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
+.projectedit-avatar-picker-title {
+    font-weight: 950;
+    color: rgba(0, 0, 0, 0.82);
+}
+
+.projectedit-avatar-picker-close {
+    width: auto;
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: rgba(0, 0, 0, 0.88);
+    color: rgba(255, 255, 255, 0.95);
+    cursor: pointer;
+    font-weight: 900;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
+}
+
+.projectedit-avatar-picker-close:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 22px rgba(0, 0, 0, 0.16);
+    background: rgba(0, 0, 0, 0.94);
+}
+
+.projectedit-avatar-picker-close:active {
+    transform: translateY(0);
 }
 
 .projectedit-avatar-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-flow: column;
+    grid-auto-columns: 120px;
     gap: 10px;
     margin-bottom: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 6px;
+    scroll-snap-type: x mandatory;
 }
 
 .projectedit-avatar-tile {
-    height: 100px;
+    width: 100%;
+    height: 160px;
+    border-radius: 18px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: rgba(255, 255, 255, 0.96);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    overflow: hidden;
+    scroll-snap-align: start;
 }
 
 .projectedit-avatar-tile img {
@@ -461,8 +513,19 @@
 }
 
 @media (max-width: 900px) {
+    .projectedit-avatar-picker {
+        top: 242px;
+        left: 0;
+        width: min(520px, 86vw);
+        height: auto;
+    }
+
     .projectedit-tech-grid {
         grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .projectedit-avatar-grid {
+        grid-auto-columns: 110px;
     }
 }
 
@@ -470,57 +533,4 @@
     .projectedit-tech-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
-
-    .projectedit-avatar {
-        width: 194px;
-        height: 194px;
-    }
-
-    .projectedit-avatar-picker {
-        top: 210px;
-        left: 0;
-    }
-
-    .projectedit-avatar-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-}
-
-.projectedit-avatar-tip {
-    display: flex;
-    align-items: flex-start;
-    padding-top: 0;
-    max-width: 560px;
-}
-
-.projectedit-avatar-tip .projectedit-pill {
-    border-radius: 999px;
-    padding: 8px 12px;
-}
-
-.projectedit-avatar-picker-close {
-    width: auto;
-    height: 36px;
-    padding: 0 12px;
-    border-radius: 999px;
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    background: rgba(0, 0, 0, 0.88);
-    color: rgba(255, 255, 255, 0.95);
-    cursor: pointer;
-    font-weight: 900;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-    transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
-}
-
-.projectedit-avatar-picker-close:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 12px 22px rgba(0, 0, 0, 0.16);
-    background: rgba(0, 0, 0, 0.94);
-}
-
-.projectedit-avatar-picker-close:active {
-    transform: translateY(0);
 }
