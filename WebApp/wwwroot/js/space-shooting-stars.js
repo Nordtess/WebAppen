@@ -18,7 +18,8 @@
         sStar.style.top = `${viewTop + 20}px`;
         sStar.style.left = `${startLeft}px`;
 
-        const dur = rand(2.5, 4.0);
+        // Speed: 5.0 - 8.0 seconds (slow)
+        const dur = 5.0 + Math.random() * 3.0;
         sStar.style.animation = `shootingStarGlide ${dur}s linear forwards`;
 
         // NOTE: Geometry is drawn RIGHT -> LEFT so that after rotate(155deg)
