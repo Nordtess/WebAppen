@@ -178,6 +178,8 @@
                 <div id="starsContainer" class="stars-container"></div>
             </div>
 
+            <div id="shootingStarsLayer" aria-hidden="true"></div>
+
             <div class="main-inner">
                 @RenderBody()
 
@@ -197,6 +199,7 @@
     <script src="~/js/cursor-click.js" asp-append-version="true"></script>
     <script src="~/js/mouse-circle.js" asp-append-version="true"></script>
     <script src="~/js/space-background.js" asp-append-version="true"></script>
+    <script src="~/js/space-shooting-stars.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
