@@ -11,12 +11,24 @@
         return h;
     }
 
-    const rand = (min, max) => min + Math.random() * (max - min);
+    // Deterministic pseudo-random generator (fast, repeatable)
+    function mulberry32(seed) {
+        return function () {
+            let t = (seed += 0x6D2B79F5);
+            t = Math.imul(t ^ (t >>> 15), t | 1);
+            t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+    }
 
-    function createStar({ hPx, size, topPx, leftPct, useId, viewBox, extraClass }) {
+    // Stable seed so stars appear in the same positions each load.
+    // (Change this number if you ever want a new "sky" layout.)
+    const prng = mulberry32(1337);
+    const rand = (min, max) => min + prng() * (max - min);
+
+    function createStar({ size, topPx, leftPct, useId, viewBox }) {
         const star = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         star.classList.add('laser-star');
-        if (extraClass) star.classList.add(extraClass);
 
         star.setAttribute('width', String(size));
         star.setAttribute('height', String(size));
@@ -24,6 +36,7 @@
 
         star.style.left = `${leftPct}%`;
         star.style.top = `${topPx}px`;
+        // twinkle timing is also deterministic now
         star.style.animationDuration = `${rand(3.5, 7.5)}s`;
         star.style.animationDelay = `${rand(0, 6)}s`;
 
@@ -31,7 +44,6 @@
         use.setAttribute('href', useId);
         star.appendChild(use);
 
-        // Small perf hint: avoid forcing layout
         container.appendChild(star);
     }
 
@@ -45,49 +57,43 @@
         const sizes = [18, 20, 22, 24, 26, 28, 30, 35];
 
         for (let i = 0; i < STAR_COUNT; i++) {
-            const size = sizes[Math.floor(Math.random() * sizes.length)];
+            const size = sizes[Math.floor(prng() * sizes.length)];
             createStar({
-                hPx,
                 size,
-                topPx: Math.random() * hPx,
-                leftPct: Math.random() * 100,
+                topPx: prng() * hPx,
+                leftPct: prng() * 100,
                 useId: '#northStarShape',
                 viewBox: '0 0 20 20'
             });
         }
 
-        // A few special/bigger stars (complex path) for visual interest.
-        // Keep this low to avoid performance issues.
+        // Special/bigger stars (complex path)
         const SPECIAL_COUNT = 10;
         for (let i = 0; i < SPECIAL_COUNT; i++) {
             createStar({
-                hPx,
                 size: Math.floor(rand(52, 92)),
-                topPx: Math.random() * hPx,
-                leftPct: Math.random() * 100,
+                topPx: prng() * hPx,
+                leftPct: prng() * 100,
                 useId: '#geminiStarShape',
-                // important: match the "better" viewBox you provided
                 viewBox: '155.8 111.4 407.4 407.6'
             });
         }
     }
 
-    function createShootingStar(hPx, baseTop, baseRight, offsetIndex) {
+    function createShootingStar(baseTop, baseRight, offsetIndex) {
         const sStar = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         sStar.classList.add('shooting-star', 'is-laser');
         sStar.setAttribute('width', '220');
         sStar.setAttribute('height', '4');
         sStar.setAttribute('viewBox', '0 0 220 4');
 
-        // Small random offsets so they feel grouped
         sStar.style.top = `${baseTop + rand(-40, 40)}px`;
         sStar.style.right = `${baseRight + rand(-3, 8)}%`;
 
         // Slow travel across the page
-        const dur = rand(6, 10); // seconds
+        const dur = rand(6, 10);
         const delay = rand(0, 0.8) + offsetIndex * rand(0.15, 0.35);
 
-        // Run once; remove after animation
         sStar.style.animation = `shootingStarAnim ${dur}s linear 1`;
         sStar.style.animationDelay = `${delay}s`;
 
@@ -105,33 +111,34 @@
         container.appendChild(sStar);
     }
 
-    function createShootingStarGroup() {
-        const hPx = syncHeight();
-        const groupCount = Math.floor(rand(3, 6)); // 3-5
+    // Create a group within the current viewport so users will actually see it.
+    function createShootingStarGroupInViewport() {
+        syncHeight();
 
-        // Random start point across entire scroll height
-        const baseTop = rand(0, hPx);
-        const baseRight = -10 - rand(0, 30);
+        const viewTop = main.scrollTop;
+        const viewH = main.clientHeight;
+        const groupCount = Math.floor(rand(3, 6));
+
+        // Start somewhere visible with a little padding
+        const pad = 60;
+        const baseTop = rand(viewTop + pad, Math.max(viewTop + pad, viewTop + viewH - pad));
+        const baseRight = -10 - rand(0, 20);
 
         for (let i = 0; i < groupCount; i++) {
-            createShootingStar(hPx, baseTop, baseRight, i);
+            createShootingStar(baseTop, baseRight, i);
         }
     }
 
-    let groupTimerId = 0;
-
     function startShootingStarGroups() {
-        window.setTimeout(createShootingStarGroup, 1200);
-        groupTimerId = window.setInterval(() => {
-            createShootingStarGroup();
+        window.setTimeout(createShootingStarGroupInViewport, 1200);
+        window.setInterval(() => {
+            createShootingStarGroupInViewport();
         }, 10000);
     }
 
-    // Initial
     initStars();
     startShootingStarGroups();
 
-    // Keep height in sync
     window.addEventListener('resize', () => {
         syncHeight();
     });
