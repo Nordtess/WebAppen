@@ -80,3 +80,25 @@
     /* Hint for smoother animation */
     will-change: transform, opacity;
 }
+
+/* Layer for viewport-relative shooting stars */
+#shootingStarsLayer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 5; /* above background (0), below content (10) */
+    pointer-events: none;
+    overflow: visible;
+}
+
+.moving-star {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+
+    /* Keep it crisp and smooth */
+    will-change: transform;
+}
