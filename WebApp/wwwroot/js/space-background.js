@@ -72,6 +72,20 @@
                 viewBox: '155.8 111.4 407.4 407.6'
             });
         }
+
+        // Improve first-load smoothness:
+        // 1) Force a layout pass so styles are applied before animation timing is tweaked.
+        // 2) Use negative delays so each star appears mid-animation rather than all starting at 0%.
+        const stars = container.querySelectorAll('.laser-star');
+        void container.offsetHeight;
+
+        for (const star of stars) {
+            const duration = rand(3.5, 7.5);
+            star.style.animationDuration = `${duration}s`;
+
+            // Negative delay starts the animation as if it had already been running.
+            star.style.animationDelay = `${-rand(0, duration)}s`;
+        }
     }
 
     initStars();

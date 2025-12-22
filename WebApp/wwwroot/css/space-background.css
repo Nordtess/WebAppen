@@ -71,4 +71,12 @@
     filter: url(#whiteLaserGlow);
     animation: whiteTwinkle infinite ease-in-out;
     transform-origin: center;
+
+    /* Start in a known state on first paint and keep keyframe values applied */
+    opacity: 0.3;
+    transform: scale(0.8) rotate(0deg);
+    animation-fill-mode: both;
+
+    /* Hint for smoother animation */
+    will-change: transform, opacity;
 }
