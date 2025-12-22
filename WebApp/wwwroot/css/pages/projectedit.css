@@ -216,9 +216,9 @@
     position: absolute;
     /* align with the top of the image */
     top: 46px;
-    left: calc(100% + 6px);
+    left: calc(40% + 10px);
     width: 520px;
-    height: 224px;
+    height: 220px;
     overflow: hidden;
     border-radius: 18px;
     border: 1px solid rgba(0, 0, 0, 0.14);
