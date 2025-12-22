@@ -74,77 +74,7 @@
         }
     }
 
-    function createShootingStarFromTopRight(viewTop, viewH) {
-        const sStar = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        sStar.classList.add('shooting-star', 'is-laser');
-
-        sStar.setAttribute('width', '280');
-        sStar.setAttribute('height', '44');
-        sStar.setAttribute('viewBox', '0 0 280 44');
-
-        // Start near the upper-right corner of the current viewport
-        // Keep it consistently in the "yellow-line" region (top 25% of the viewport)
-        const startTop = viewTop + rand(10, Math.max(10, viewH * 0.14));
-        sStar.style.top = `${startTop}px`;
-
-        // Position just off the right edge so it enters from the corner
-        sStar.style.right = `${-6 - rand(0, 4)}%`;
-
-        // Slow travel (2–3s) - previously too fast
-        const dur = rand(5.2, 6.8);
-        sStar.style.animation = `shootingStarAnim ${dur}s linear 1`;
-
-        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-        rect.setAttribute('x', '0');
-        rect.setAttribute('y', '20');
-        rect.setAttribute('width', '250');
-        rect.setAttribute('height', '4');
-        rect.setAttribute('fill', 'url(#shootingStarGradient)');
-        rect.setAttribute('filter', 'url(#whiteLaserGlow)');
-        sStar.appendChild(rect);
-
-        const head = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        head.setAttribute('x', '248');
-        head.setAttribute('y', '10');
-        head.setAttribute('width', '26');
-        head.setAttribute('height', '26');
-        head.setAttribute('viewBox', '0 0 20 20');
-        head.setAttribute('filter', 'url(#whiteLaserGlow)');
-
-        const headUse = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-        headUse.setAttribute('href', '#northStarShape');
-        head.appendChild(headUse);
-        sStar.appendChild(head);
-
-        sStar.addEventListener('animationend', () => {
-            sStar.remove();
-        });
-
-        container.appendChild(sStar);
-    }
-
-    function createShootingStarGroupInViewport() {
-        syncHeight();
-        const viewTop = main.scrollTop;
-        const viewH = main.clientHeight;
-
-        const groupCount = Math.floor(rand(3, 6));
-        for (let i = 0; i < groupCount; i++) {
-            window.setTimeout(() => {
-                createShootingStarFromTopRight(viewTop, viewH);
-            }, i * 220);
-        }
-    }
-
-    function startShootingStarGroups() {
-        window.setTimeout(createShootingStarGroupInViewport, 1200);
-        window.setInterval(() => {
-            createShootingStarGroupInViewport();
-        }, 10000);
-    }
-
     initStars();
-    startShootingStarGroups();
 
     window.addEventListener('resize', () => {
         syncHeight();

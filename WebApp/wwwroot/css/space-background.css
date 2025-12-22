@@ -34,7 +34,7 @@
     pointer-events: none;
     z-index: 0;
     border-radius: inherit;
-    overflow: hidden;
+    overflow: visible;
 
     /* Keep the perfect gradient */
     background: linear-gradient(180deg, var(--space-mint) -10%, var(--space-purple-1) 40%, var(--space-purple-2) 100%);
@@ -45,7 +45,9 @@
     inset: 0;
     pointer-events: none;
     z-index: 0;
-    overflow: hidden;
+
+    /* Allow shooting stars to travel beyond container bounds */
+    overflow: visible;
 }
 
 .space-background svg {
