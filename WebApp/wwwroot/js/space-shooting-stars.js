@@ -5,7 +5,7 @@
 
     const rand = (min, max) => min + Math.random() * (max - min);
 
-    function createShootingStarFromTop(viewTop, viewW) {
+    function createShootingStarFromViewportTopRight(viewTop, viewW) {
         const sStar = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         sStar.classList.add('shooting-star', 'is-laser');
 
@@ -14,13 +14,14 @@
         sStar.setAttribute('height', '100');
         sStar.setAttribute('viewBox', '0 0 400 100');
 
-        // Spawn just above the current viewport
-        const startLeft = rand(0, Math.max(0, viewW));
-        sStar.style.top = `${viewTop - 100}px`;
+        // SPAWN: top-right of the CURRENT viewport
+        // Use left positioning to make animation math consistent.
+        const startLeft = viewW - 40; // near the right edge
+        sStar.style.top = `${viewTop + 20}px`;
         sStar.style.left = `${startLeft}px`;
 
-        // Smooth glide duration (2.5 - 3.5s)
-        const dur = rand(2.5, 3.5);
+        // Smooth glide duration (2.5 - 4.0s)
+        const dur = rand(2.5, 4.0);
         sStar.style.animation = `shootingStarGlide ${dur}s linear forwards`;
 
         // Tail group so we can apply flutter on the whole tail
@@ -28,29 +29,28 @@
         tailGroup.classList.add('shooting-star-tail-group');
         sStar.appendChild(tailGroup);
 
-        // Aura (wide mint wedge)
+        // Aura (wide WHITE wedge, no mint)
         const aura = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-        aura.setAttribute('points', '20,50 380,20 380,80');
-        aura.setAttribute('fill', 'url(#shootingStarMintGradient)');
-        aura.setAttribute('filter', 'url(#mintLaserGlow)');
-        aura.setAttribute('opacity', '0.5');
+        aura.setAttribute('points', '25,50 350,40 350,60');
+        aura.setAttribute('fill', 'rgba(248, 248, 255, 0.40)');
+        aura.setAttribute('filter', 'url(#whiteLaserGlow)');
         tailGroup.appendChild(aura);
 
-        // Core (thin white wedge)
+        // Core (thin WHITE wedge)
         const core = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-        core.setAttribute('points', '20,50 360,40 360,60');
+        core.setAttribute('points', '25,50 300,47 300,53');
         core.setAttribute('fill', '#F8F8FF');
         core.setAttribute('filter', 'url(#whiteLaserGlow)');
         tailGroup.appendChild(core);
 
-        // Stardust particles (trail behind head)
-        for (let i = 1; i <= 5; i++) {
+        // Stardust particles (WHITE)
+        for (let i = 0; i < 6; i++) {
             const particle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
             particle.classList.add('stardust-particle');
-            particle.setAttribute('cx', String(30 + i * 50));
-            particle.setAttribute('cy', String(50 + (rand(-10, 10))));
-            particle.setAttribute('r', String(1.5 + rand(0, 2.5)));
-            particle.style.animationDelay = `${i * 0.1}s`;
+            particle.setAttribute('cx', String(60 + (i * 55)));
+            particle.setAttribute('cy', String(50 + (rand(-6, 6))));
+            particle.setAttribute('r', String(1.5 + rand(0, 1.5)));
+            particle.style.animationDelay = `${i * 0.06}s`;
             sStar.appendChild(particle);
         }
 
@@ -76,13 +76,13 @@
         const viewTop = main.scrollTop;
         const viewW = main.clientWidth;
 
-        // 2-4 stars per group (avoid clutter)
-        const groupCount = Math.floor(rand(2, 5));
+        // 1-3 stars per group (spawn origin is fixed; avoid stacking too much)
+        const groupCount = Math.floor(rand(1, 4));
         for (let i = 0; i < groupCount; i++) {
-            // 600ms - 1000ms spacing between stars
+            // 550ms - 950ms spacing between stars
             window.setTimeout(() => {
-                createShootingStarFromTop(viewTop, viewW);
-            }, i * rand(600, 1000));
+                createShootingStarFromViewportTopRight(viewTop, viewW);
+            }, i * rand(550, 950));
         }
     }
 
