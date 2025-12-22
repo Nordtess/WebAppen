@@ -258,6 +258,16 @@
     color: rgba(0, 0, 0, 0.90);
 }
 
+.projectedit-tech-msg {
+    margin: 10px 0 12px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 59, 48, 0.35);
+    background: rgba(255, 59, 48, 0.08);
+    color: rgba(0, 0, 0, 0.72);
+    font-weight: 800;
+}
+
 @media (max-width: 900px) {
     .projectedit-tech-grid {
         grid-template-columns: repeat(4, minmax(0, 1fr));

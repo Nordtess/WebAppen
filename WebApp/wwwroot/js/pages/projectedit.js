@@ -20,7 +20,14 @@
     const techGrid = document.getElementById("techGrid");
     const techSearch = document.getElementById("techSearch");
 
-    const MAX_TECH = 8;
+    const MAX_TECH = 4;
+
+    // Inline message (avoid browser alert encoding issues)
+    const techMsg = document.createElement("div");
+    techMsg.className = "projectedit-help projectedit-tech-msg";
+    techMsg.setAttribute("aria-live", "polite");
+    techMsg.style.display = "none";
+    techGrid?.parentElement?.insertBefore(techMsg, techGrid);
 
     // Available tech keys (match svg filenames). Must exist in wwwroot/images/svg/techstack.
     const available = [
@@ -40,6 +47,18 @@
 
     /** @type {Set<string>} */
     let selected = new Set();
+
+    function showTechMsg(text) {
+        if (!techMsg) return;
+        if (!text) {
+            techMsg.textContent = "";
+            techMsg.style.display = "none";
+            return;
+        }
+
+        techMsg.textContent = text;
+        techMsg.style.display = "block";
+    }
 
     function loadSelected() {
         if (!techJson) return;
@@ -80,6 +99,7 @@
             tile.addEventListener("click", () => {
                 selected.delete(key);
                 sync();
+                showTechMsg("");
                 render();
             });
 
@@ -108,12 +128,14 @@
             tile.addEventListener("click", () => {
                 if (selected.has(key)) {
                     selected.delete(key);
+                    showTechMsg("");
                 } else {
                     if (selected.size >= MAX_TECH) {
-                        alert(`Du kan max välja ${MAX_TECH} teknologier.`);
+                        showTechMsg(`Du kan max välja ${MAX_TECH} teknologier.`);
                         return;
                     }
                     selected.add(key);
+                    showTechMsg("");
                 }
 
                 sync();
