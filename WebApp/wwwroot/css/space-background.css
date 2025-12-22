@@ -56,13 +56,13 @@
 
 @keyframes whiteTwinkle {
     0%, 100% {
-        opacity: 0.3;
-        transform: scale(0.8) rotate(0deg);
+        opacity: 0.22;
+        transform: scale(0.75) rotate(0deg);
     }
 
     50% {
         opacity: 1;
-        transform: scale(1.1) rotate(5deg);
+        transform: scale(1.18) rotate(5deg);
     }
 }
 
@@ -73,8 +73,8 @@
     transform-origin: center;
 
     /* Start in a known state on first paint and keep keyframe values applied */
-    opacity: 0.3;
-    transform: scale(0.8) rotate(0deg);
+    opacity: 0.22;
+    transform: scale(0.75) rotate(0deg);
     animation-fill-mode: both;
 
     /* Hint for smoother animation */
@@ -93,8 +93,8 @@
 }
 
 .space-moon img {
-    width: 190px;
-    height: 190px;
+    width: 308px;
+    height: 308px;
     opacity: 0.95;
     display: block;
 
@@ -111,10 +111,16 @@
     }
 
     .space-moon img {
-        width: 140px;
-        height: 140px;
+        width: 227px;
+        height: 227px;
     }
 
+    /* Mobile perf: disable heavy/animated decor */
+    .space-moon,
+    #meteorLayer,
+    #ufoLayer {
+        display: none;
+    }
 }
 
 /* Meteor overlay layer (above space background, below content) */

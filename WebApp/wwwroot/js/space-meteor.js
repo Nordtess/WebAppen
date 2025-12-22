@@ -2,6 +2,9 @@
     const main = document.querySelector('.app-main');
     if (!main) return;
 
+    // Mobile perf: skip entirely.
+    if (window.matchMedia && window.matchMedia('(max-width: 800px)').matches) return;
+
     // Ensure a layer exists (kept separate from .space-background so it draws above it).
     let layer = document.getElementById('meteorLayer');
     if (!layer) {
@@ -17,7 +20,8 @@
         window.__spaceMeteorTimer = null;
     }
 
-    const METEOR_INTERVAL_MS = 10_000;
+    const METEOR_INTERVAL_MS = 20_000;
+    const INITIAL_DELAY_MS = 2_000;
     const TRAVEL_MS = 6_000;
 
     function shootMeteor() {
@@ -68,7 +72,6 @@
         }, delayMs);
     }
 
-    // One immediately for testing, then every 10s.
-    shootMeteor();
-    scheduleNext(METEOR_INTERVAL_MS);
+    // Start 2s after load, then every 20s.
+    scheduleNext(INITIAL_DELAY_MS);
 })();

@@ -2,6 +2,9 @@
     const main = document.querySelector('.app-main');
     if (!main) return;
 
+    // Mobile perf: skip entirely.
+    if (window.matchMedia && window.matchMedia('(max-width: 800px)').matches) return;
+
     // Ensure a layer exists.
     let layer = document.getElementById('ufoLayer');
     if (!layer) {
@@ -17,7 +20,8 @@
         window.__spaceUfoTimer = null;
     }
 
-    const UFO_INTERVAL_MS = 10_000;
+    const UFO_INTERVAL_MS = 20_000;
+    const INITIAL_DELAY_MS = 7_000;
     const TRAVEL_MS = 6_000;
 
     function flyUfo() {
@@ -65,7 +69,6 @@
         }, delayMs);
     }
 
-    // Fire one immediately for testing, then every 10s.
-    flyUfo();
-    scheduleNext(UFO_INTERVAL_MS);
+    // Start 7s after load, then every 20s.
+    scheduleNext(INITIAL_DELAY_MS);
 })();

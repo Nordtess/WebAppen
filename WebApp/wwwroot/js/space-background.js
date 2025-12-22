@@ -23,6 +23,10 @@
     const prng = mulberry32(1337);
     const rand = (min, max) => min + prng() * (max - min);
 
+    function clamp(v, min, max) {
+        return Math.max(min, Math.min(max, v));
+    }
+
     function createStar({ size, topPx, leftPct, useId, viewBox }) {
         const star = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         star.classList.add('laser-star');
@@ -33,8 +37,6 @@
 
         star.style.left = `${leftPct}%`;
         star.style.top = `${topPx}px`;
-        star.style.animationDuration = `${rand(3.5, 7.5)}s`;
-        star.style.animationDelay = `${rand(0, 6)}s`;
 
         const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
         use.setAttribute('href', useId);
@@ -47,8 +49,22 @@
         container.innerHTML = '';
 
         const hPx = syncHeight();
+        const isMobile = window.matchMedia && window.matchMedia('(max-width: 800px)').matches;
 
-        const STAR_COUNT = 120;
+        // Height-based density model (stars per 1000px of scrollable height).
+        // This reduces "cramped" stars on short pages.
+        // Caps protect performance on very tall pages.
+        const densityPer1000 = isMobile ? 38 : 60;
+        const minStars = isMobile ? 40 : 80;
+        const maxStars = isMobile ? 90 : 150;
+
+        const specialDensityPer1000 = isMobile ? 2.5 : 5;
+        const minSpecial = isMobile ? 3 : 7;
+        const maxSpecial = isMobile ? 6 : 12;
+
+        const STAR_COUNT = clamp(Math.round(densityPer1000 * (hPx / 1000)), minStars, maxStars);
+        const SPECIAL_COUNT = clamp(Math.round(specialDensityPer1000 * (hPx / 1000)), minSpecial, maxSpecial);
+
         const sizes = [18, 20, 22, 24, 26, 28, 30, 35];
 
         for (let i = 0; i < STAR_COUNT; i++) {
@@ -62,7 +78,6 @@
             });
         }
 
-        const SPECIAL_COUNT = 10;
         for (let i = 0; i < SPECIAL_COUNT; i++) {
             createStar({
                 size: Math.floor(rand(52, 92)),
@@ -80,10 +95,8 @@
         void container.offsetHeight;
 
         for (const star of stars) {
-            const duration = rand(3.5, 7.5);
+            const duration = rand(2.4, 5.6);
             star.style.animationDuration = `${duration}s`;
-
-            // Negative delay starts the animation as if it had already been running.
             star.style.animationDelay = `${-rand(0, duration)}s`;
         }
     }
@@ -92,6 +105,7 @@
 
     window.addEventListener('resize', () => {
         syncHeight();
+        initStars();
     });
 
     if ('ResizeObserver' in window) {
