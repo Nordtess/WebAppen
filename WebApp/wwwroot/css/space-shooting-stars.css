@@ -2,12 +2,13 @@
 
 @keyframes shootingStarGlide {
     0% {
-        transform: rotate(155deg) translateX(0);
+        transform: translate(0px, 0px) rotate(var(--rot)) scaleX(0.5);
         opacity: 0;
     }
 
     10% {
         opacity: 1;
+        transform: translate(-40px, 40px) rotate(var(--rot)) scaleX(1);
     }
 
     90% {
@@ -15,7 +16,7 @@
     }
 
     100% {
-        transform: rotate(155deg) translateX(150vmax);
+        transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scaleX(1);
         opacity: 0;
     }
 }
@@ -52,16 +53,13 @@
 }
 
 .shooting-star.is-laser {
-    position: absolute;
-    z-index: 0;
-    pointer-events: none;
-    transform-origin: 0% 50%;
+    transform-origin: 100% 50%;
     will-change: transform;
 }
 
 .shooting-star-tail-group {
     animation: tailFlutter 0.2s infinite alternate ease-in-out;
-    transform-origin: 0% 50%;
+    transform-origin: 100% 50%;
 }
 
 .stardust-particle {
