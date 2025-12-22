@@ -15,6 +15,11 @@
 
     /* Space theme */
     --space-text: #F8F8FF;
+
+    /* Scrollbar theme */
+    --sb-track-color: transparent;
+    --sb-thumb-color: #7FFFD4;
+    --sb-thumb-hover: #98FFEB;
 }
 
 html,
@@ -246,25 +251,36 @@ p {
     overflow-y: auto;
     overflow-x: hidden;
     height: 100%;
+
+    /* Firefox */
     scrollbar-width: thin;
-    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
 }
 
+/* WebKit (Chromium/Edge/Safari) */
 .app-main::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
 }
 
 .app-main::-webkit-scrollbar-track {
-    background: transparent;
+    background: var(--sb-track-color);
 }
 
 .app-main::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
+    background-color: var(--sb-thumb-color);
     border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+
+    /* Mint laser glow */
+    filter:
+        drop-shadow(0 0 2px #7FFFD4)
+        drop-shadow(0 0 6px #7FFFD4);
 }
 
 .app-main::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.3);
+    background-color: var(--sb-thumb-hover);
+    filter: drop-shadow(0 0 10px #7FFFD4);
 }
 
 .main-inner {

@@ -36,7 +36,7 @@
     border-radius: inherit;
     overflow: hidden;
 
-    /* Keep the new perfect gradient */
+    /* Keep the perfect gradient */
     background: linear-gradient(180deg, var(--space-mint) -10%, var(--space-purple-1) 40%, var(--space-purple-2) 100%);
 }
 
@@ -69,38 +69,4 @@
     filter: url(#whiteLaserGlow);
     animation: whiteTwinkle infinite ease-in-out;
     transform-origin: center;
-}
-
-@keyframes shootingStarAnim {
-    0% {
-        transform: translateX(0) translateY(0) rotate(-35deg);
-        opacity: 0;
-    }
-
-    1% {
-        opacity: 1;
-    }
-
-    10% {
-        transform: translateX(-120vw) translateY(120vh) rotate(-35deg);
-        opacity: 0;
-    }
-
-    100% {
-        transform: translateX(-120vw) translateY(120vh) rotate(-35deg);
-        opacity: 0;
-    }
-}
-
-.shooting-star {
-    position: absolute;
-    transform-origin: right;
-    opacity: 0;
-}
-
-/* Optional: stronger glow for shooting stars only (keep regular stars lightweight) */
-.shooting-star.is-laser {
-    filter:
-        drop-shadow(0 0 3px #F8F8FF)
-        drop-shadow(0 0 8px #F8F8FF);
 }
