@@ -84,7 +84,13 @@
     techMsg.className = "projectedit-help projectedit-tech-msg";
     techMsg.setAttribute("aria-live", "polite");
     techMsg.style.display = "none";
-    techGrid?.parentElement?.insertBefore(techMsg, techGrid);
+
+    // Place message right under the search box for consistent positioning
+    if (techSearch && techSearch.parentElement) {
+        techSearch.parentElement.insertAdjacentElement("afterend", techMsg);
+    } else {
+        techGrid?.parentElement?.insertBefore(techMsg, techGrid);
+    }
 
     // Available tech keys (match svg filenames). Must exist in wwwroot/images/svg/techstack.
     const available = [

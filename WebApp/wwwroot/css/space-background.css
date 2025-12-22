@@ -97,3 +97,10 @@
     transform-origin: right;
     opacity: 0;
 }
+
+/* Optional: stronger glow for shooting stars only (keep regular stars lightweight) */
+.shooting-star.is-laser {
+    filter:
+        drop-shadow(0 0 3px #F8F8FF)
+        drop-shadow(0 0 8px #F8F8FF);
+}

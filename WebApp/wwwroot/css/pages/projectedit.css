@@ -441,6 +441,13 @@
     margin: 6px 0 10px;
 }
 
+/* Inline tech message ("Du kan max ha 4 teknologier!")
+   Adjust this margin/padding to change where it appears vertically.
+*/
+.projectedit-tech-msg {
+    margin: 6px 0 10px;
+}
+
 .projectedit-tech-grid {
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -558,5 +565,9 @@
 
     .projectedit-tech-grid {
         grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .projectedit-tech-msg {
+        margin: 6px 0 10px;
     }
 }
