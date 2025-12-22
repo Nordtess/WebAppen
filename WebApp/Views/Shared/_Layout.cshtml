@@ -156,6 +156,19 @@
                             <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#FFFFFF" flood-opacity="0.7" />
                         </filter>
 
+                        <!-- Mint glow for shooting star aura -->
+                        <filter id="mintLaserGlow" x="-100%" y="-100%" width="300%" height="300%">
+                            <feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#7FFFD4" flood-opacity="0.9" />
+                            <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#7FFFD4" flood-opacity="0.5" />
+                        </filter>
+
+                        <!-- Gradient for mint aura wedge -->
+                        <linearGradient id="shootingStarMintGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#7FFFD4" stop-opacity="0.0" />
+                            <stop offset="30%" stop-color="#7FFFD4" stop-opacity="0.55" />
+                            <stop offset="100%" stop-color="#7FFFD4" stop-opacity="0.0" />
+                        </linearGradient>
+
                         <linearGradient id="shootingStarGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0" />
                             <stop offset="100%" stop-color="#FFFFFF" stop-opacity="1" />

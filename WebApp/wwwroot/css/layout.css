@@ -263,12 +263,14 @@ p {
 }
 
 .app-main::-webkit-scrollbar-track {
-    background: var(--sb-track-color);
+    background: transparent;
 }
 
 .app-main::-webkit-scrollbar-thumb {
     background-color: var(--sb-thumb-color);
     border-radius: 10px;
+
+    /* Use transparent border to create padding without revealing track color */
     border: 2px solid transparent;
     background-clip: padding-box;
 
