@@ -139,10 +139,13 @@
 }
 
 .projectedit-avatar-tip {
+    /* Tip above image and slightly closer to the image */
+    order: -1;
     display: flex;
     align-items: flex-start;
     padding-top: 0;
-    margin-top: -8px;
+    margin-top: -14px;
+    margin-bottom: 4px;
     max-width: 560px;
 }
 
@@ -214,11 +217,11 @@
 
 .projectedit-avatar-picker {
     position: absolute;
-    /* align with the top of the image */
-    top: 46px;
+    /* pull menu a bit further up (but not much) */
+    top: 34px;
     left: calc(40% + 10px);
     width: 520px;
-    height: 220px;
+    height: 224px;
     overflow: hidden;
     border-radius: 18px;
     border: 1px solid rgba(0, 0, 0, 0.14);
@@ -512,25 +515,48 @@
     font-weight: 900;
 }
 
-@media (max-width: 900px) {
-    .projectedit-avatar-picker {
-        top: 242px;
-        left: 0;
-        width: min(520px, 86vw);
-        height: auto;
+@media (max-width: 800px) {
+    /* Single breakpoint for mobile/tablet */
+    .projectedit-hero {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
     }
 
-    .projectedit-tech-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+    .projectedit-avatar-wrap {
+        width: 100%;
+        align-items: center;
+    }
+
+    .projectedit-avatar-tip {
+        max-width: 100%;
+        width: 100%;
+        justify-content: center;
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+
+    .projectedit-avatar {
+        width: min(260px, 86vw);
+        height: min(260px, 86vw);
+        border-radius: 26px;
+    }
+
+    .projectedit-avatar-picker {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+        max-width: min(560px, 92vw);
+        margin-top: 12px;
     }
 
     .projectedit-avatar-grid {
         grid-auto-columns: 110px;
     }
-}
 
-@media (max-width: 520px) {
     .projectedit-tech-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 }
