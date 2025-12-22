@@ -126,12 +126,18 @@
 /* Hero (image only) */
 .projectedit-hero {
     display: flex;
+    align-items: flex-start;
+    gap: 14px;
     justify-content: flex-start;
     margin-bottom: 14px;
 }
 
 .projectedit-avatar-wrap {
     position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
 }
 
 .projectedit-avatar {
@@ -197,9 +203,11 @@
 
 .projectedit-avatar-picker {
     position: absolute;
-    top: 0;
-    left: calc(100% + 14px);
-    width: min(520px, 70vw);
+    top: 44px;
+    left: calc(100% + 10px);
+    width: 360px;
+    max-height: 224px;
+    overflow: auto;
     border-radius: 18px;
     border: 1px solid rgba(0, 0, 0, 0.14);
     background: rgba(255, 255, 255, 0.98);
@@ -221,28 +229,23 @@
         top: 242px;
         left: 0;
         width: min(520px, 86vw);
+        max-height: none;
+    }
+
+    .projectedit-avatar-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
 
 .projectedit-avatar-grid {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
     margin-bottom: 8px;
 }
 
 .projectedit-avatar-tile {
-    width: 100%;
-    height: 86px;
-    border-radius: 18px;
-    border: 1px solid rgba(0, 0, 0, 0.10);
-    background: rgba(255, 255, 255, 0.96);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    padding: 0;
-    overflow: hidden;
+    height: 100px;
 }
 
 .projectedit-avatar-tile img {
@@ -481,4 +484,43 @@
     .projectedit-avatar-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
+}
+
+.projectedit-avatar-tip {
+    display: flex;
+    align-items: flex-start;
+    padding-top: 0;
+    max-width: 560px;
+}
+
+.projectedit-avatar-tip .projectedit-pill {
+    border-radius: 999px;
+    padding: 8px 12px;
+}
+
+.projectedit-avatar-picker-close {
+    width: auto;
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: rgba(0, 0, 0, 0.88);
+    color: rgba(255, 255, 255, 0.95);
+    cursor: pointer;
+    font-weight: 900;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
+}
+
+.projectedit-avatar-picker-close:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 22px rgba(0, 0, 0, 0.16);
+    background: rgba(0, 0, 0, 0.94);
+}
+
+.projectedit-avatar-picker-close:active {
+    transform: translateY(0);
 }

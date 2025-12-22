@@ -7,7 +7,18 @@
 
 @{
     ViewData["Title"] = "Redigera projekt";
-    var defaultImg = Url.Content("~/images/projects/rocketship.png");
+
+    // Gallery images in wwwroot/images/projects
+    var galleryImages = new[]
+    {
+        "rocketship.png",
+        "aigarden.png",
+        "cloudisland.png",
+        "datamine.png",
+        "securityfortress.png"
+    };
+
+    var placeholder = "/images/projects/rocketship.png";
 }
 
 <div class="projectedit-page">
@@ -39,13 +50,19 @@
 
                 <input type="hidden" asp-for="Id" />
                 <input type="hidden" asp-for="TechStackJson" id="TechStackJson" />
-                <input type="hidden" name="ProjectImage" id="ProjectImage" value="/images/projects/rocketship.png" />
+                <input type="hidden" name="ProjectImage" id="ProjectImage" value="@placeholder" />
 
                 <div class="projectedit-maincard">
                     <div class="projectedit-hero">
                         <div class="projectedit-avatar-wrap">
+                            <div class="projectedit-avatar-tip">
+                                <span class="projectedit-pill">
+                                    <strong>Tips:</strong> Du kan byta projektbild till några ur vårt galleri för att matcha projektet bättre.
+                                </span>
+                            </div>
+
                             <button type="button" class="projectedit-avatar" id="projectAvatarBtn" aria-label="Välj projektbild">
-                                <img id="projectAvatarPreview" class="projectedit-avatar-img" alt="Projektbild" src="@defaultImg" />
+                                <img id="projectAvatarPreview" class="projectedit-avatar-img" alt="Projektbild" src="@placeholder" />
                                 <div class="projectedit-avatar-overlay">
                                     <span class="projectedit-avatar-overlay-text">Välj bild</span>
                                 </div>
@@ -54,14 +71,17 @@
                             <div class="projectedit-avatar-picker" id="projectAvatarPicker" aria-hidden="true">
                                 <div class="projectedit-avatar-picker-head">
                                     <div class="projectedit-avatar-picker-title">Välj projektbild</div>
-                                    <button type="button" class="projectedit-avatar-picker-close" id="projectAvatarClose" aria-label="Stäng">×</button>
+                                    <button type="button" class="projectedit-avatar-picker-close" id="projectAvatarClose" aria-label="Stäng">Stäng</button>
                                 </div>
 
                                 <div class="projectedit-avatar-grid" id="projectAvatarGrid">
-                                    <button type="button" class="projectedit-avatar-tile is-on" data-src="/images/projects/rocketship.png" aria-label="Rocketship">
-                                        <img src="@defaultImg" alt="Rocketship" />
-                                    </button>
-                                    @* Add up to 4 more tiles here when images are added *@
+                                    @foreach (var file in galleryImages)
+                                    {
+                                        var src = $"/images/projects/{file}";
+                                        <button type="button" class="projectedit-avatar-tile" data-src="@src" aria-label="@file">
+                                            <img src="@src" alt="@file" />
+                                        </button>
+                                    }
                                 </div>
 
                                 <div class="projectedit-help">Du kan välja mellan förvalda bilder.</div>
