@@ -32,8 +32,8 @@
         "mongodb",
         "mysql",
         "python",
+        "react",
         "ruby",
-        "rust",
         "swift",
         "typescript"
     ];
