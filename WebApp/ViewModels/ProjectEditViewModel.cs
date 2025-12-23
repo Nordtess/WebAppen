@@ -20,6 +20,9 @@ public sealed class ProjectEditViewModel
     // Tech selection (keys like "csharp", "mysql" etc)
     public string TechStackJson { get; set; } = "[]";
 
+    // Selected image path in wwwroot (ex: /images/projects/rocketship.png)
+    public string? ProjectImage { get; set; }
+
     // Read-only meta
     public string CreatedText { get; set; } = "";
     public bool IsOwner { get; set; }

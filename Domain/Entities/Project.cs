@@ -21,6 +21,14 @@ public class Project
     public string Beskrivning { get; set; } = "";
 
     /// <summary>
+    /// Relative image path (wwwroot) chosen in the create/edit form.
+    /// Example: "/images/projects/rocketship.png".
+    /// </summary>
+    [System.ComponentModel.DataAnnotations.Schema.Column("ProjectImagePath")]
+    [StringLength(260)]
+    public string? ImagePath { get; set; }
+
+    /// <summary>
     /// Komma-separerade tech-nycklar som matchar SVG-filer i wwwroot/images/svg/techstack.
     /// Ex: "csharp,mysql,aspnet".
     /// </summary>

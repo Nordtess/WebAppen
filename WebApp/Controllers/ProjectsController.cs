@@ -24,6 +24,32 @@ public sealed class ProjectsController : Controller
         _userManager = userManager;
     }
 
+    [Authorize]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null) return Challenge();
+
+        var project = await _db.Projekt.FirstOrDefaultAsync(p => p.Id == id);
+        if (project is null) return NotFound();
+
+        if (project.CreatedByUserId != user.Id) return Forbid();
+
+        // Remove memberships first (FK safety)
+        var links = await _db.ProjektAnvandare.Where(x => x.ProjectId == id).ToListAsync();
+        if (links.Count > 0)
+        {
+            _db.ProjektAnvandare.RemoveRange(links);
+        }
+
+        _db.Projekt.Remove(project);
+        await _db.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
+
     [HttpGet]
     public async Task<IActionResult> Index([FromQuery] string? q, [FromQuery] string? sort, [FromQuery] string? scope, [FromQuery] bool? mine)
     {
@@ -46,7 +72,9 @@ public sealed class ProjectsController : Controller
 
         if (onlyMine)
         {
-            baseQuery = baseQuery.Where(x => x.p.CreatedByUserId == viewerId);
+            baseQuery = baseQuery.Where(x =>
+                x.p.CreatedByUserId == viewerId ||
+                _db.ProjektAnvandare.AsNoTracking().Any(pu => pu.ProjectId == x.p.Id && pu.UserId == viewerId));
         }
 
         if (!string.IsNullOrWhiteSpace(q))
@@ -120,6 +148,7 @@ public sealed class ProjectsController : Controller
                  ShortDescription = x.p.KortBeskrivning,
                  CreatedUtc = x.p.CreatedUtc,
                  TechKeysCsv = x.p.TechStackKeysCsv,
+                 ImagePath = x.p.ImagePath,
                  CreatedByName = x.u == null ? null : ((x.u.FirstName + " " + x.u.LastName).Trim()),
                  CreatedByEmail = x.u == null ? null : x.u.Email
              })
@@ -166,6 +195,7 @@ public sealed class ProjectsController : Controller
             KortBeskrivning = string.IsNullOrWhiteSpace(model.ShortDescription) ? null : model.ShortDescription.Trim(),
             Beskrivning = model.Description.Trim(),
             TechStackKeysCsv = NormalizeTechJsonToCsv(model.TechStackJson),
+            ImagePath = string.IsNullOrWhiteSpace(model.ProjectImage) ? null : model.ProjectImage.Trim(),
             CreatedByUserId = user.Id,
             CreatedUtc = now,
             UpdatedUtc = now
@@ -174,7 +204,8 @@ public sealed class ProjectsController : Controller
         _db.Projekt.Add(project);
         await _db.SaveChangesAsync();
 
-        // Owner auto-joins their own project
+        // Creator auto-connects to their own project so the relationship exists (owner is still treated separately in UI).
+        // Members listing excludes the owner.
         _db.ProjektAnvandare.Add(new ProjectUser { ProjectId = project.Id, UserId = user.Id, ConnectedUtc = now });
         await _db.SaveChangesAsync();
 
@@ -184,8 +215,18 @@ public sealed class ProjectsController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(int id)
     {
-        var project = await _db.Projekt.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
-        if (project is null) return NotFound();
+        // Load project + creator in one query so details page can show creator info.
+        var projectRow = await (from p in _db.Projekt.AsNoTracking()
+                                join u in _db.Users.AsNoTracking() on p.CreatedByUserId equals u.Id into users
+                                from u in users.DefaultIfEmpty()
+                                where p.Id == id
+                                select new { p, u })
+            .FirstOrDefaultAsync();
+
+        if (projectRow is null) return NotFound();
+
+        var project = projectRow.p;
+        var creator = projectRow.u;
 
         var viewer = await _userManager.GetUserAsync(User);
         var isLoggedIn = viewer is not null;
@@ -196,6 +237,7 @@ public sealed class ProjectsController : Controller
         var participantsQuery = from pu in _db.ProjektAnvandare.AsNoTracking()
                                 join u in _db.Users.AsNoTracking() on pu.UserId equals u.Id
                                 where pu.ProjectId == id
+                                where pu.UserId != project.CreatedByUserId
                                 select new { u.Id, u.FirstName, u.LastName, u.City, u.IsProfilePrivate };
 
         if (!isLoggedIn)
@@ -226,6 +268,9 @@ public sealed class ProjectsController : Controller
             Title = project.Titel,
             ShortDescription = project.KortBeskrivning,
             Description = project.Beskrivning,
+            ImagePath = project.ImagePath,
+            CreatedByName = creator == null ? null : ((creator.FirstName + " " + creator.LastName).Trim()),
+            CreatedByEmail = creator?.Email,
             CreatedUtc = project.CreatedUtc,
             CreatedByUserId = project.CreatedByUserId,
             TechKeys = ParseCsv(project.TechStackKeysCsv),
@@ -257,6 +302,7 @@ public sealed class ProjectsController : Controller
             ShortDescription = project.KortBeskrivning,
             Description = project.Beskrivning,
             TechStackJson = JsonSerializer.Serialize(ParseCsv(project.TechStackKeysCsv), JsonOptions),
+            ProjectImage = project.ImagePath,
             CreatedText = $"Skapad: {project.CreatedUtc:yyyy-MM-dd}",
             IsOwner = true
         };
@@ -288,6 +334,7 @@ public sealed class ProjectsController : Controller
         project.KortBeskrivning = string.IsNullOrWhiteSpace(model.ShortDescription) ? null : model.ShortDescription.Trim();
         project.Beskrivning = model.Description.Trim();
         project.TechStackKeysCsv = NormalizeTechJsonToCsv(model.TechStackJson);
+        project.ImagePath = string.IsNullOrWhiteSpace(model.ProjectImage) ? null : model.ProjectImage.Trim();
         project.UpdatedUtc = DateTimeOffset.UtcNow;
 
         await _db.SaveChangesAsync();
@@ -323,6 +370,10 @@ public sealed class ProjectsController : Controller
     {
         var user = await _userManager.GetUserAsync(User);
         if (user is null) return Challenge();
+
+        var project = await _db.Projekt.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+        if (project is null) return NotFound();
+        if (project.CreatedByUserId == user.Id) return Forbid();
 
         var link = await _db.ProjektAnvandare.FirstOrDefaultAsync(x => x.ProjectId == id && x.UserId == user.Id);
         if (link is not null)

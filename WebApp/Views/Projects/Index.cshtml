@@ -91,32 +91,54 @@
                         foreach (var p in Model.Projects)
                         {
                             <a class="projects-card" href="@Url.Action("Details", "Projects", new { id = p.Id })">
-                                <div class="projects-card-title">@p.Title</div>
+                                <div class="projects-doc">
+                                    <div class="projects-doc-top">
+                                        <div class="projects-doc-grid">
+                                            <div class="projects-doc-avatar" aria-hidden="true">
+                                                <img src="@(string.IsNullOrWhiteSpace(p.ImagePath) ? "/images/projects/rocketship.png" : p.ImagePath)" alt="" />
+                                            </div>
 
-                                @if (!string.IsNullOrWhiteSpace(p.ShortDescription))
-                                {
-                                    <div class="projects-card-desc">@p.ShortDescription</div>
-                                }
-                                else
-                                {
-                                    <div class="projects-card-desc projects-card-desc--muted">Ingen kort beskrivning.</div>
-                                }
+                                            <div class="projects-doc-center">
+                                                <div class="projects-doc-title">@p.Title</div>
+                                                <div class="projects-doc-createdby">
+                                                    Skapare: @(string.IsNullOrWhiteSpace(p.CreatedByName) ? (p.CreatedByEmail ?? "Okänd") : p.CreatedByName)
+                                                </div>
+                                                <div class="projects-doc-meta">Skapad: @p.CreatedUtc.ToString("yyyy-MM-dd")</div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                <div class="projects-card-meta">Skapad: @p.CreatedUtc.ToString("yyyy-MM-dd")</div>
-
-                                @if (!string.IsNullOrWhiteSpace(p.TechKeysCsv))
-                                {
-                                    <div class="projects-card-sep" aria-hidden="true"></div>
-                                    <div class="projects-tech-row" aria-label="Tech stack">
-                                        @foreach (var key in p.TechKeysCsv.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                                    <div class="projects-doc-body">
+                                        @if (!string.IsNullOrWhiteSpace(p.ShortDescription))
                                         {
-                                            <span class="projects-tech-tile">
-                                                <img class="projects-tech-icon" src="~/images/svg/techstack/@(key).svg" alt="@key" />
-                                            </span>
+                                            <div class="projects-doc-desc-card">
+                                                <div class="projects-doc-desc">@p.ShortDescription</div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="projects-doc-desc-card">
+                                                <div class="projects-doc-desc projects-doc-desc--muted">Ingen kort beskrivning.</div>
+                                            </div>
+                                        }
+
+                                        @if (!string.IsNullOrWhiteSpace(p.TechKeysCsv))
+                                        {
+                                            <div class="projects-doc-bottom">
+                                                <div class="projects-doc-sep" aria-hidden="true"></div>
+                                                <div class="projects-doc-tech" aria-label="Tech stack">
+                                                    @foreach (var key in p.TechKeysCsv.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                                                    {
+                                                        <span class="projects-doc-tech-tile">
+                                                            <img class="projects-doc-tech-icon" src="~/images/svg/techstack/@(key).svg" alt="@key" />
+                                                        </span>
+                                                    }
+                                                </div>
+                                            </div>
                                         }
                                     </div>
-                                }
-                            </a>
+                                </div>
+                             </a>
                         }
                     }
                 </div>

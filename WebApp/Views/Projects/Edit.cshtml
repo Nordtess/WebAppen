@@ -50,7 +50,7 @@
 
                 <input type="hidden" asp-for="Id" />
                 <input type="hidden" asp-for="TechStackJson" id="TechStackJson" />
-                <input type="hidden" name="ProjectImage" id="ProjectImage" value="@placeholder" />
+                <input type="hidden" asp-for="ProjectImage" id="ProjectImage" value="@(string.IsNullOrWhiteSpace(Model.ProjectImage) ? placeholder : Model.ProjectImage)" />
 
                 <div class="projectedit-maincard">
                     <div class="projectedit-hero">
@@ -62,7 +62,7 @@
                             </div>
 
                             <button type="button" class="projectedit-avatar" id="projectAvatarBtn" aria-label="Välj projektbild">
-                                <img id="projectAvatarPreview" class="projectedit-avatar-img" alt="Projektbild" src="@placeholder" />
+                                <img id="projectAvatarPreview" class="projectedit-avatar-img" alt="Projektbild" src="@(string.IsNullOrWhiteSpace(Model.ProjectImage) ? placeholder : Model.ProjectImage)" />
                                 <div class="projectedit-avatar-overlay">
                                     <span class="projectedit-avatar-overlay-text">Välj bild</span>
                                 </div>

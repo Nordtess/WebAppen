@@ -7,6 +7,11 @@ public sealed class ProjectDetailsVm
     public string? ShortDescription { get; init; }
     public string Description { get; init; } = string.Empty;
 
+    public string? ImagePath { get; init; }
+
+    public string? CreatedByName { get; init; }
+    public string? CreatedByEmail { get; init; }
+
     public DateTimeOffset CreatedUtc { get; init; }
     public string? CreatedByUserId { get; init; }
 

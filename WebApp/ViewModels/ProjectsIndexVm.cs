@@ -22,6 +22,8 @@ public sealed class ProjectsIndexVm
         public DateTimeOffset CreatedUtc { get; init; }
         public string? TechKeysCsv { get; init; }
 
+        public string? ImagePath { get; init; } // Exposed project image path
+
         // For searching/filtering (and later display if we want)
         public string? CreatedByName { get; init; }
         public string? CreatedByEmail { get; init; }
