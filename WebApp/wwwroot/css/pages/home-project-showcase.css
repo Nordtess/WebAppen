@@ -38,6 +38,5 @@
 /* Add spacing ABOVE the divider line (only on Home showcase).
    This does not change the card size; it just moves the divider down. */
 .home-project-showcase .projects-doc-sep {
-    /* previously 67px; add ~15px more */
-    margin: 82px auto 10px;
+    margin: 70px auto 10px;
 }
