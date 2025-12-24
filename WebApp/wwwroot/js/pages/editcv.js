@@ -419,11 +419,12 @@
     loadEduFromHidden();
     renderEdu();
 
-    // --- Projects picker modal (EditCV) ---
+    // --- Projects picker modal (EditCV) + live preview ---
     const selectedProjectsJson = document.getElementById("SelectedProjectsJson");
     const modal = document.getElementById("editcv-projects-modal");
     const picker = document.getElementById("editcv-projects-picker");
     const counter = document.getElementById("editcv-projects-counter");
+    const preview = document.getElementById("editcvProjectPreview");
 
     const MAX_SELECTED_PROJECTS = 4;
 
@@ -446,6 +447,62 @@
     function syncSelectedJson() {
         if (!selectedProjectsJson) return;
         selectedProjectsJson.value = JSON.stringify(Array.from(selected));
+    }
+
+    function renderPreview() {
+        if (!preview) return;
+
+        const selectedList = Array.from(selected);
+        if (selectedList.length === 0) {
+            preview.innerHTML = `<div class="editcv-help" style="margin-top:10px;">Inga projekt valda ännu.</div>`;
+            return;
+        }
+
+        // Use the same markup classes as MyCV cards (but without links).
+        preview.innerHTML = `
+            <div class="mycv-projects-card">
+                <div class="mycv-projects-grid">
+                    ${selectedList
+                        .slice(0, MAX_SELECTED_PROJECTS)
+                        .map((id) => {
+                            const p = projects.find((x) => x.id === id);
+                            if (!p) return "";
+
+                            return `
+                                <div class="mycv-project-card" role="group" aria-label="Förhandsvisning projekt: ${escapeHtml(p.title)}">
+                                    <div class="mycv-project-doc">
+                                        <div class="mycv-project-doc-top">
+                                            <div class="mycv-project-doc-grid">
+                                                <div class="mycv-project-doc-avatar" aria-hidden="true">
+                                                    <img src="/images/projects/rocketship.png" alt="" />
+                                                </div>
+                                                <div class="mycv-project-doc-center">
+                                                    <div class="mycv-project-doc-title">${escapeHtml(p.title)}</div>
+                                                    <div class="mycv-project-doc-createdby">Skapare: (förhandsvisning)</div>
+                                                    <div class="mycv-project-doc-meta">Skapad: ${escapeHtml(p.createdUtc)}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mycv-project-doc-body">
+                                            <div class="mycv-project-doc-desc-card">
+                                                <div class="mycv-project-doc-desc mycv-project-doc-desc--muted">(Kort beskrivning visas på MyCV)</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
+                        })
+                        .join("")}
+                </div>
+            </div>`;
+    }
+
+    function escapeHtml(s) {
+        return String(s || "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#39;");
     }
 
     function setModalOpen(open) {
@@ -483,6 +540,11 @@
         // Keep `selected` in sync with DOM.
         selected = new Set(checked.map((c) => Number(c.value)));
         syncSelectedJson();
+        renderPreview();
+    }
+
+    function cbValue(cb) {
+        return cb.value;
     }
 
     function renderPicker() {
@@ -525,12 +587,10 @@
             picker.appendChild(row);
         }
 
+        // This also syncs selected/json/preview.
         updatePickerUi();
     }
 
-    // `projects` comes from server-rendered JSON in the hidden input area.
-    // We piggyback on existing hidden field content by embedding JSON into data attributes.
-    // (We create these data attributes in the view.)
     const projectsDataEl = document.querySelector("[data-editcv-projects-json]");
     if (projectsDataEl instanceof HTMLElement) {
         try {
@@ -553,6 +613,7 @@
     selected = new Set(parseSelectedIds().slice(0, MAX_SELECTED_PROJECTS));
     syncSelectedJson();
     renderPicker();
+    renderPreview();
 
     document.addEventListener("click", (e) => {
         const t = e.target;

@@ -138,13 +138,11 @@ public class EditCVController : Controller
 
         TempData["Saved"] = "1";
 
-        if (redirectToMyCvAfterSave)
-        {
-            // Redirect them to MyCV after the first successful save so they see the result.
-            return RedirectToAction("Index", "MyCV");
-        }
-
-        return RedirectToAction(nameof(Index));
+        // Always bring user back to MyCV after a successful save.
+        // (First-time flow already expects this redirect.)
+        return redirectToMyCvAfterSave
+            ? RedirectToAction("Index", "MyCV")
+            : RedirectToAction("Index", "MyCV");
     }
 
     private async Task ReplaceEducationsAsync(int profileId, string? educationJson)

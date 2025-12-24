@@ -3,6 +3,7 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pages/editcv.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pages/mycv-projects.css" asp-append-version="true" />
 }
 
 @{
@@ -231,12 +232,14 @@
 
                                 <div class="editcv-help">Välj upp till 4 projekt som ska synas på ditt CV.</div>
 
-                                <div style="display:flex; gap:10px; align-items:center; justify-content:flex-start; flex-wrap:wrap;">
+                                <div class="editcv-projects-actions">
                                     <button type="button" class="btn-secondary-custom" data-editcv-modal-open="editcv-projects-modal">Ändra projekt</button>
                                     <a class="btn-secondary-custom" href="@Url.Action("Index", "Projects", new { mine = true })" style="text-decoration:none;">Mina projekt</a>
                                 </div>
 
                                 <div data-editcv-projects-json='@System.Text.Json.JsonSerializer.Serialize(Model.AllMyProjects.Select(p => new { id = p.Id, title = p.Title, createdUtc = p.CreatedUtc.ToString("yyyy-MM-dd") }), new System.Text.Json.JsonSerializerOptions(System.Text.Json.JsonSerializerDefaults.Web))'></div>
+
+                                <div class="editcv-project-preview" id="editcvProjectPreview"></div>
 
                                 @await Html.PartialAsync("_ProjectPickerModal", Model)
                             </section>

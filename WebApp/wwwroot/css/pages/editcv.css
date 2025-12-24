@@ -544,6 +544,24 @@
     display: none;
 }
 
+.editcv-projects-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+/* Preview of selected projects using the same card style as MyCV/Alla projekt */
+.editcv-project-preview {
+    margin-top: 12px;
+}
+
+.editcv-project-preview .mycv-projects-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 @media (max-width: 800px) {
     .editcv-grid {
         grid-template-columns: 1fr;
@@ -578,6 +596,10 @@
     .editcv-draft-actions .btn-secondary-custom {
         width: 100%;
         justify-content: center;
+    }
+
+    .editcv-project-preview .mycv-projects-grid {
+        grid-template-columns: 1fr;
     }
 }
 
