@@ -360,7 +360,7 @@ public sealed class ProjectsController : Controller
             await _db.SaveChangesAsync();
 
             TempData["ToastTitle"] = "Du gick med i ett projekt";
-            TempData["ToastMessage"] = "Kom ihåg att komplettera ditt konto/CV med personliga uppgifter så att andra kan se vem du är.";
+            TempData["ToastMessage"] = "Du har gått med i projektet! Glöm inte att lägga till det på ditt CV för att visa andra!";
         }
         else
         {

@@ -68,13 +68,13 @@
             rgba(58, 34, 95, 0.55) 68%,
             rgba(21, 10, 36, 0.78) 100%);
     border-radius: 16px;
-    padding: 14px;
+    padding: 18px;
     box-shadow: 0 10px 22px rgba(0, 0, 0, 0.05);
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    min-height: 420px;
+    min-height: 520px;
     will-change: transform, box-shadow;
     transition:
         transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
@@ -127,9 +127,9 @@
 }
 
 .mycv-project-doc-avatar {
-    width: 128px;
-    height: 128px;
-    border-radius: 22px;
+    width: 160px;
+    height: 160px;
+    border-radius: 26px;
     overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.10);
     background: rgba(255, 255, 255, 0.96);
@@ -154,7 +154,7 @@
 }
 
 .mycv-project-doc-title {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 950;
     color: rgba(0, 0, 0, 0.86);
     letter-spacing: -0.2px;
@@ -198,10 +198,10 @@
 
 .mycv-project-doc-desc {
     margin: 0;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 650;
     color: rgba(0, 0, 0, 0.72);
-    line-height: 1.45;
+    line-height: 1.55;
     text-align: left;
 }
 
@@ -229,9 +229,9 @@
 }
 
 .mycv-project-doc-tech-tile {
-    width: 40px;
-    height: 40px;
-    border-radius: 14px;
+    width: 46px;
+    height: 46px;
+    border-radius: 16px;
     border: 1px solid rgba(0, 0, 0, 0.10);
     background: rgba(255, 255, 255, 0.96);
     display: flex;
@@ -240,8 +240,8 @@
 }
 
 .mycv-project-doc-tech-icon {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     display: block;
 }
 
