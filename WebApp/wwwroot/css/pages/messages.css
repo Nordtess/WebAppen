@@ -142,9 +142,13 @@
 
 .messages-toolbar-actions {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: flex-end;
-    padding-top: 22px;
+    padding-top: 0;
+}
+
+.messages-toolbar-actions form {
+    margin: 0;
 }
 
 .messages-label {
