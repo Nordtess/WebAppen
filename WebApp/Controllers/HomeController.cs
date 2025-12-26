@@ -37,9 +37,90 @@ namespace WebApp.Controllers
                              })
                 .FirstOrDefaultAsync();
 
+            // --- Latest public CV cards (copy of SearchCV card data, read-only) ---
+            const int maxCvCards = 3;
+
+            var latestUsers = await (from u in _db.Users.AsNoTracking()
+                                     where !u.IsDeactivated && !u.IsProfilePrivate
+                                     orderby u.Id descending
+                                     join link in _db.ApplicationUserProfiles.AsNoTracking() on u.Id equals link.UserId into links
+                                     from link in links.DefaultIfEmpty()
+                                     join p in _db.Profiler.AsNoTracking() on link.ProfileId equals p.Id into profiles
+                                     from p in profiles.DefaultIfEmpty()
+                                     select new
+                                     {
+                                         u.Id,
+                                         u.FirstName,
+                                         u.LastName,
+                                         u.City,
+                                         u.IsProfilePrivate,
+                                         UserAvatar = u.ProfileImagePath,
+                                         Headline = p == null ? null : p.Headline,
+                                         AboutMe = p == null ? null : p.AboutMe,
+                                         ProfileAvatar = p == null ? null : p.ProfileImagePath,
+                                         SkillsCsv = p == null ? null : p.SkillsCsv,
+                                         SelectedProjectsJson = p == null ? null : p.SelectedProjectsJson,
+                                         ProfileId = link == null ? (int?)null : link.ProfileId
+                                     })
+                .Take(maxCvCards)
+                .ToListAsync();
+
+            var profileIds = latestUsers.Where(x => x.ProfileId != null).Select(x => x.ProfileId!.Value).Distinct().ToArray();
+
+            var eduByProfile = profileIds.Length == 0
+                ? new Dictionary<int, List<(string School, string Program, string Years)>>()
+                : await _db.Utbildningar.AsNoTracking()
+                    .Where(e => profileIds.Contains(e.ProfileId))
+                    .OrderBy(e => e.SortOrder)
+                    .Select(e => new { e.ProfileId, e.School, e.Program, e.Years })
+                    .ToListAsync()
+                    .ContinueWith(t => t.Result
+                        .GroupBy(x => x.ProfileId)
+                        .ToDictionary(
+                            g => g.Key,
+                            g => g.Select(x => (x.School, x.Program, x.Years)).ToList()));
+
+
+            var expByProfile = profileIds.Length == 0
+                ? new Dictionary<int, List<(string Company, string Role, string Years)>>()
+                : await _db.Erfarenheter.AsNoTracking()
+                    .Where(e => profileIds.Contains(e.ProfileId))
+                    .OrderBy(e => e.SortOrder)
+                    .Select(e => new { e.ProfileId, e.Company, e.Role, e.Years })
+                    .ToListAsync()
+                    .ContinueWith(t => t.Result
+                        .GroupBy(x => x.ProfileId)
+                        .ToDictionary(
+                            g => g.Key,
+                            g => g.Select(x => (x.Company, x.Role, x.Years)).ToList()));
+
+
             var vm = new HomeIndexVm
             {
-                LatestProject = row
+                LatestProject = row,
+                LatestPublicCvs = latestUsers.Select(x =>
+                {
+                    var fullName = string.Join(' ', new[] { x.FirstName, x.LastName }.Where(s => !string.IsNullOrWhiteSpace(s)));
+
+                    var pid = x.ProfileId;
+                    var edus = pid != null && eduByProfile.TryGetValue(pid.Value, out var eduList) ? eduList : new();
+                    var exps = pid != null && expByProfile.TryGetValue(pid.Value, out var expList) ? expList : new();
+
+                    return new HomeIndexVm.CvCardVm
+                    {
+                        UserId = x.Id,
+                        FullName = fullName,
+                        Headline = string.IsNullOrWhiteSpace(x.Headline) ? "" : x.Headline,
+                        City = x.City ?? string.Empty,
+                        IsPrivate = x.IsProfilePrivate,
+                        ProfileImagePath = !string.IsNullOrWhiteSpace(x.ProfileAvatar) ? x.ProfileAvatar : x.UserAvatar,
+                        AboutMe = x.AboutMe,
+                        Skills = ParseSkills(x.SkillsCsv),
+                        ProjectCount = ParseSelectedProjectCount(x.SelectedProjectsJson),
+                        Educations = edus.Take(2).Select(e => $"{e.Years} • {e.Program}").ToArray(),
+                        Experiences = exps.Take(2).Select(e => $"{e.Years} • {e.Role} @ {e.Company}").ToArray()
+                    };
+                }).ToList()
             };
 
             return View(vm);
@@ -55,11 +136,38 @@ namespace WebApp.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        private static string[] ParseSkills(string? csv)
+        {
+            if (string.IsNullOrWhiteSpace(csv)) return Array.Empty<string>();
+
+            return csv.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                .Where(s => !string.IsNullOrWhiteSpace(s))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToArray();
+        }
+
+        private static int ParseSelectedProjectCount(string? json)
+        {
+            if (string.IsNullOrWhiteSpace(json)) return 0;
+
+            try
+            {
+                var ids = System.Text.Json.JsonSerializer.Deserialize<int[]>(json, new System.Text.Json.JsonSerializerOptions(System.Text.Json.JsonSerializerDefaults.Web));
+                return ids?.Length ?? 0;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
     }
 
     public sealed class HomeIndexVm
     {
         public LatestProjectVm? LatestProject { get; init; }
+
+        public List<CvCardVm> LatestPublicCvs { get; init; } = new();
 
         public sealed class LatestProjectVm
         {
@@ -72,6 +180,21 @@ namespace WebApp.Controllers
             public string? TechKeysCsv { get; init; }
             public string? CreatedByName { get; init; }
             public string? CreatedByEmail { get; init; }
+        }
+
+        public sealed class CvCardVm
+        {
+            public string UserId { get; init; } = string.Empty;
+            public string FullName { get; init; } = string.Empty;
+            public string? Headline { get; init; }
+            public string City { get; init; } = string.Empty;
+            public bool IsPrivate { get; init; }
+            public string? ProfileImagePath { get; init; }
+            public string? AboutMe { get; init; }
+            public string[] Skills { get; init; } = Array.Empty<string>();
+            public int ProjectCount { get; init; }
+            public string[] Educations { get; init; } = Array.Empty<string>();
+            public string[] Experiences { get; init; } = Array.Empty<string>();
         }
     }
 }
