@@ -21,6 +21,9 @@
     var isAuthenticated = User?.Identity?.IsAuthenticated == true;
     var userEmail = isAuthenticated ? (User?.Identity?.Name ?? "") : "";
 
+    // Temp helper: a direct link to InspectCV so the page can be styled before SearchCV exists.
+    var currentUserId = isAuthenticated ? UserManager.GetUserId(User) : null;
+
     var toastTitle = ViewData["ToastTitle"] as string ?? (TempData.Peek("ToastTitle") as string);
     var toastMessage = ViewData["ToastMessage"] as string ?? (TempData.Peek("ToastMessage") as string);
 }
@@ -94,6 +97,15 @@
                     <span class="link-icon">🔍</span>
                     <span class="link-text">Sök CV</span>
                 </a>
+
+                @* TEMP: quick link to InspectCV (current user) for styling/testing *@
+                @if (isAuthenticated && !string.IsNullOrWhiteSpace(currentUserId))
+                {
+                    <a class="sidebar-link @(ActivePathStartsWith("/InspectCV") == "active" ? "active" : "")" href="/InspectCV/@currentUserId">
+                        <span class="link-icon">🧪</span>
+                        <span class="link-text">Inspect CV (test)</span>
+                    </a>
+                }
 
                 <a class="sidebar-link @(Context?.Request?.Path.Value?.Equals("/Projects", StringComparison.OrdinalIgnoreCase) == true ? "active" : "")" asp-controller="Projects" asp-action="Index">
                     <span class="link-icon">📁</span>
