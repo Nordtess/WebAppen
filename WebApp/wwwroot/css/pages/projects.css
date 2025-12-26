@@ -1,5 +1,7 @@
 ﻿:root {
     --proj-max: 1100px;
+    --proj-banner-max: 1120px;
+    --proj-banner-offset-x: 10px;
     --proj-radius: 22px;
     --proj-border: rgba(0, 0, 0, 0.10);
     --proj-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
@@ -16,7 +18,7 @@
 
 .projects-banner {
     width: 100%;
-    max-width: var(--proj-max);
+    max-width: var(--proj-banner-max);
     height: var(--proj-banner-h);
     border-radius: var(--proj-radius);
     overflow: hidden;
@@ -26,6 +28,9 @@
 
     /* Match visual width of the cards below (prevents "looks narrower" effect) */
     box-sizing: border-box;
+
+    /* Optional sideways nudge, without affecting the rest of the layout */
+    transform: translateX(var(--proj-banner-offset-x));
 }
 
 .projects-banner-img {
