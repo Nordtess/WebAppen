@@ -26,6 +26,9 @@ public sealed class EditCvViewModel
     // Existing placeholders: keep as JSON strings until backed by tables.
     public string EducationJson { get; set; } = "[]";
 
+    // Experiences stored in table
+    public string ExperienceJson { get; set; } = "[]";
+
     // Selected projects stored as JSON array of ids (persisted on save)
     public string SelectedProjectsJson { get; set; } = "[]";
 

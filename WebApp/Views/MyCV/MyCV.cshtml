@@ -18,6 +18,9 @@
         : Model.Headline;
 
     var myProjectsUrl = Url.Action("Index", "Projects", new { mine = true });
+
+    // "Liknande" => OR match (at least one of my skills)
+    var similarUrl = Url.Action("Index", "SearchCv", new { mode = "similar" });
 }
 
 @Html.AntiForgeryToken()
@@ -39,17 +42,21 @@
                 Antal besök: <span class="cv-visits-num">@Model.VisitCount</span>
             </div>
 
-            <div class="cv-privacy">
-                <span class="cv-privacy-label">Privat läge</span>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <a class="btn-secondary-custom" href="@similarUrl" style="text-decoration:none;">Hitta liknande personer</a>
 
-                <button type="button"
-                        class="cv-toggle@(Model.IsPrivate ? " is-on" : "")"
-                        aria-pressed="@(Model.IsPrivate ? "true" : "false")"
-                        aria-label="Privat läge">
-                    <span class="cv-toggle__label cv-toggle__label--off">Av</span>
-                    <span class="cv-toggle__label cv-toggle__label--on">På</span>
-                    <span class="cv-toggle__knob" aria-hidden="true"></span>
-                </button>
+                <div class="cv-privacy">
+                    <span class="cv-privacy-label">Privat läge</span>
+
+                    <button type="button"
+                            class="cv-toggle@(Model.IsPrivate ? " is-on" : "")"
+                            aria-pressed="@(Model.IsPrivate ? "true" : "false")"
+                            aria-label="Privat läge">
+                        <span class="cv-toggle__label cv-toggle__label--off">Av</span>
+                        <span class="cv-toggle__label cv-toggle__label--on">På</span>
+                        <span class="cv-toggle__knob" aria-hidden="true"></span>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -157,7 +164,25 @@
 
                 <section class="cv-box">
                     <h3 class="cv-box-title">Tidigare erfarenhet</h3>
-                    <p class="cv-paragraph cv-paragraph-muted">Ingen erfarenhet tillagd ännu.</p>
+
+                    @if (Model.Experiences is { Count: > 0 })
+                    {
+                        foreach (var ex in Model.Experiences)
+                        {
+                            <div class="cv-item">
+                                <div class="cv-item-title">@ex.Company</div>
+                                <div class="cv-item-sub">@ex.Years • @ex.Role</div>
+                                @if (!string.IsNullOrWhiteSpace(ex.Description))
+                                {
+                                    <div class="cv-item-sub cv-item-muted">@ex.Description</div>
+                                }
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="cv-paragraph cv-paragraph-muted">Ingen erfarenhet tillagd ännu.</p>
+                    }
                 </section>
 
                 <section class="cv-box">

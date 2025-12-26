@@ -184,6 +184,34 @@
         }
     });
 
+    // --- Skill formatting ---
+    function skillDisplay(s) {
+        const t = String(s || "").trim();
+        if (!t) return "";
+
+        const low = t.toLocaleLowerCase();
+        if (low === "c#") return "C#";
+        if (low === "f#") return "F#";
+        if (low === "sql") return "SQL";
+        if (low === "html") return "HTML";
+        if (low === "css") return "CSS";
+        if (low === "js" || low === "javascript") return "JavaScript";
+        if (low === "ts" || low === "typescript") return "TypeScript";
+        if (low === ".net" || low === "dotnet") return ".NET";
+        if (low === "asp.net" || low === "aspnet") return "ASP.NET";
+        if (low === "mvc") return "MVC";
+        if (low === "api") return "API";
+        if (low === "azure") return "Azure";
+        if (low === "aws") return "AWS";
+
+        if (t.length <= 4 && /^[A-Za-zÅÄÖåäö]+$/.test(t)) {
+            return t.toUpperCase();
+        }
+
+        // TitleCase-ish (simple): uppercase first letter.
+        return t.charAt(0).toUpperCase() + t.slice(1);
+    }
+
     // Skills (pills + dedupe)
     const skillsJsonInput = document.getElementById("SkillsJson");
     const skillList = document.getElementById("skillList");
@@ -212,7 +240,7 @@
     function normalizeSkills(items) {
         const map = new Map();
         for (const raw of items) {
-            const v = String(raw || "").trim();
+            const v = skillDisplay(raw);
             if (!v) continue;
 
             const key = v.toLocaleLowerCase();
@@ -264,7 +292,7 @@
     }
 
     function tryAddSkill(text) {
-        const v = String(text || "").trim();
+        const v = skillDisplay(text);
         if (!v) return;
 
         skills = normalizeSkills([v, ...skills]);
@@ -419,6 +447,137 @@
     loadEduFromHidden();
     renderEdu();
 
+    // Work experience JSON + UI
+    const expJsonInput = document.getElementById("ExperienceJson");
+    const expList = document.getElementById("expList");
+    const expToggleBtn = document.getElementById("expToggleBtn");
+    const expFormWrap = document.getElementById("expFormWrap");
+    const expAddBtn = document.getElementById("expAddBtn");
+    const expCancelBtn = document.getElementById("expCancelBtn");
+    const expMiniError = document.getElementById("expMiniError");
+
+    const expCompany = document.getElementById("expCompany");
+    const expRole = document.getElementById("expRole");
+    const expYears = document.getElementById("expYears");
+    const expDesc = document.getElementById("expDesc");
+
+    /** @type {{company:string, role:string, years:string, description?:string}[]} */
+    let experiences = [];
+
+    function loadExpFromHidden() {
+        if (!expJsonInput) return;
+        try {
+            const parsed = JSON.parse(expJsonInput.value || "[]");
+            if (Array.isArray(parsed)) {
+                experiences = parsed;
+            }
+        } catch {
+            experiences = [];
+        }
+
+        syncExpJson();
+    }
+
+    function openExpForm(open) {
+        if (!expFormWrap) return;
+
+        expFormWrap.classList.toggle("is-open", open);
+        expFormWrap.setAttribute("aria-hidden", open ? "false" : "true");
+
+        if (expMiniError) expMiniError.textContent = "";
+    }
+
+    expToggleBtn?.addEventListener("click", () => {
+        const open = !expFormWrap?.classList.contains("is-open");
+        openExpForm(open);
+    });
+
+    expCancelBtn?.addEventListener("click", () => {
+        clearExpMiniForm();
+        openExpForm(false);
+    });
+
+    expAddBtn?.addEventListener("click", () => {
+        const company = (expCompany?.value || "").trim();
+        const role = (expRole?.value || "").trim();
+        const years = (expYears?.value || "").trim();
+        const description = (expDesc?.value || "").trim();
+
+        if (!company || !role || !years) {
+            if (expMiniError) expMiniError.textContent = "Fyll i Företag, Roll och År.";
+            return;
+        }
+
+        experiences.unshift({ company, role, years, description });
+        syncExpJson();
+        renderExp();
+        markDirty();
+
+        clearExpMiniForm();
+        openExpForm(false);
+    });
+
+    function clearExpMiniForm() {
+        if (expCompany) expCompany.value = "";
+        if (expRole) expRole.value = "";
+        if (expYears) expYears.value = "";
+        if (expDesc) expDesc.value = "";
+        if (expMiniError) expMiniError.textContent = "";
+    }
+
+    function syncExpJson() {
+        if (!expJsonInput) return;
+        expJsonInput.value = JSON.stringify(experiences);
+    }
+
+    function renderExp() {
+        if (!expList) return;
+        expList.innerHTML = "";
+
+        if (experiences.length === 0) {
+            expList.innerHTML = `<div class="editcv-help">Inga erfarenheter ännu. Klicka “Lägg till erfarenhet”.</div>`;
+            return;
+        }
+
+        experiences.forEach((ex, idx) => {
+            const card = document.createElement("div");
+            card.className = "editcv-draft-card";
+
+            const left = document.createElement("div");
+
+            const title = document.createElement("div");
+            title.className = "editcv-draft-title";
+            title.textContent = ex.company;
+
+            const sub = document.createElement("div");
+            sub.className = "editcv-draft-sub";
+            sub.textContent = `${ex.years} • ${ex.role}${ex.description ? " • " + ex.description : ""}`;
+
+            left.appendChild(title);
+            left.appendChild(sub);
+
+            const remove = document.createElement("button");
+            remove.type = "button";
+            remove.className = "editcv-draft-remove";
+            remove.textContent = "×";
+            remove.setAttribute("aria-label", "Ta bort erfarenhet");
+            remove.addEventListener("click", () => {
+                experiences.splice(idx, 1);
+                syncExpJson();
+                renderExp();
+                markDirty();
+            });
+
+            card.appendChild(left);
+            card.appendChild(remove);
+
+            expList.appendChild(card);
+        });
+    }
+
+    loadExpFromHidden();
+    renderExp();
+
     // --- Projects picker modal (EditCV) + live preview ---
     const selectedProjectsJson = document.getElementById("SelectedProjectsJson");
     const modal = document.getElementById("editcv-projects-modal");
@@ -565,10 +724,6 @@
         selected = new Set(checked.map((c) => Number(c.value)));
         syncSelectedJson();
         renderPreview();
-    }
-
-    function cbValue(cb) {
-        return cb.value;
     }
 
     function renderPicker() {

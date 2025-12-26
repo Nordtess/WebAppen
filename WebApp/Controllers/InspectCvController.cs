@@ -33,9 +33,6 @@ public sealed class InspectCvController : Controller
             return NotFound();
         }
 
-        // Privacy rule:
-        // - Public profile: visible to everyone.
-        // - Private profile: visible only to authenticated users.
         if (user.IsProfilePrivate && !(User.Identity?.IsAuthenticated == true))
         {
             return Forbid();
@@ -108,6 +105,34 @@ public sealed class InspectCvController : Controller
             }
         }
 
+        var educations = link is null
+            ? new List<InspectCvEducationVm>()
+            : await _db.Utbildningar.AsNoTracking()
+                .Where(x => x.ProfileId == link.ProfileId)
+                .OrderBy(x => x.SortOrder)
+                .Select(x => new InspectCvEducationVm
+                {
+                    School = x.School,
+                    Program = x.Program,
+                    Years = x.Years,
+                    Note = x.Note
+                })
+                .ToListAsync();
+
+        var experiences = link is null
+            ? new List<InspectCvExperienceVm>()
+            : await _db.Erfarenheter.AsNoTracking()
+                .Where(x => x.ProfileId == link.ProfileId)
+                .OrderBy(x => x.SortOrder)
+                .Select(x => new InspectCvExperienceVm
+                {
+                    Company = x.Company,
+                    Role = x.Role,
+                    Years = x.Years,
+                    Description = x.Description
+                })
+                .ToListAsync();
+
         // Message prefill rules:
         // - Logged in: name is prefilled from account and cannot be changed.
         // - Anonymous: must type a name.
@@ -137,6 +162,8 @@ public sealed class InspectCvController : Controller
             ProfileImagePath = profile?.ProfileImagePath ?? user.ProfileImagePath,
             Skills = ParseSkills(profile?.SkillsCsv),
 
+            Educations = educations,
+            Experiences = experiences,
             Projects = projects,
 
             MessagePrefillName = viewerName,
@@ -295,6 +322,22 @@ public sealed class InspectCvController : Controller
         public string[] TechKeys { get; init; } = Array.Empty<string>();
     }
 
+    public sealed class InspectCvEducationVm
+    {
+        public string School { get; init; } = string.Empty;
+        public string Program { get; init; } = string.Empty;
+        public string Years { get; init; } = string.Empty;
+        public string? Note { get; init; }
+    }
+
+    public sealed class InspectCvExperienceVm
+    {
+        public string Company { get; init; } = string.Empty;
+        public string Role { get; init; } = string.Empty;
+        public string Years { get; init; } = string.Empty;
+        public string? Description { get; init; }
+    }
+
     public sealed class InspectCvViewModel
     {
         public string UserId { get; init; } = string.Empty;
@@ -312,6 +355,9 @@ public sealed class InspectCvController : Controller
         public string? AboutMe { get; init; }
         public string? ProfileImagePath { get; init; }
         public string[] Skills { get; init; } = Array.Empty<string>();
+
+        public List<InspectCvEducationVm> Educations { get; init; } = new();
+        public List<InspectCvExperienceVm> Experiences { get; init; } = new();
 
         public List<InspectCvProjectCardVm> Projects { get; init; } = new();
 

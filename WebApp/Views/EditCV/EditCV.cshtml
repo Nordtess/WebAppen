@@ -51,6 +51,7 @@
                 @Html.AntiForgeryToken()
 
                 <input type="hidden" asp-for="EducationJson" id="EducationJson" />
+                <input type="hidden" asp-for="ExperienceJson" id="ExperienceJson" />
                 <input type="hidden" asp-for="SelectedProjectsJson" id="SelectedProjectsJson" />
                 <input type="hidden" asp-for="SkillsJson" id="SkillsJson" />
 
@@ -222,6 +223,54 @@
                                                 <button type="button" class="btn-secondary-custom" id="eduCancelBtn">Avbryt</button>
 
                                                 <span class="editcv-mini-error" id="eduMiniError" aria-live="polite"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="editcv-card">
+                                <div class="editcv-card-head">
+                                    <h2 class="editcv-card-title">Erfarenheter</h2>
+                                    <span class="editcv-card-sub">Arbetslivserfarenhet (roll + företag)</span>
+                                </div>
+
+                                <div class="editcv-draft">
+                                    <div class="editcv-draft-list" id="expList"></div>
+
+                                    <div class="editcv-draft-actions">
+                                        <button type="button" class="btn-secondary-custom" id="expToggleBtn">Lägg till erfarenhet</button>
+                                    </div>
+
+                                    <div class="editcv-collapse" id="expFormWrap" aria-hidden="true">
+                                        <div class="editcv-mini-form">
+                                            <div class="editcv-two-col">
+                                                <div class="editcv-field">
+                                                    <label class="editcv-label" for="expCompany">Företag</label>
+                                                    <input class="editcv-input" id="expCompany" type="text" placeholder="Ex: Volvo" />
+                                                </div>
+
+                                                <div class="editcv-field">
+                                                    <label class="editcv-label" for="expRole">Roll</label>
+                                                    <input class="editcv-input" id="expRole" type="text" placeholder="Ex: Utvecklare" />
+                                                </div>
+
+                                                <div class="editcv-field">
+                                                    <label class="editcv-label" for="expYears">År</label>
+                                                    <input class="editcv-input" id="expYears" type="text" placeholder="2020 - 2024" />
+                                                </div>
+
+                                                <div class="editcv-field">
+                                                    <label class="editcv-label" for="expDesc">Beskrivning</label>
+                                                    <input class="editcv-input" id="expDesc" type="text" placeholder="Kort beskrivning av rollen..." maxlength="600" />
+                                                </div>
+                                            </div>
+
+                                            <div class="editcv-mini-form-actions">
+                                                <button type="button" class="btn-primary-custom" id="expAddBtn">Lägg till i listan</button>
+                                                <button type="button" class="btn-secondary-custom" id="expCancelBtn">Avbryt</button>
+
+                                                <span class="editcv-mini-error" id="expMiniError" aria-live="polite"></span>
                                             </div>
                                         </div>
                                     </div>

@@ -21,8 +21,8 @@
         ? $"{Model.FirstName} har en privat profil"
         : $"{Model.FirstName} har en publik profil";
 
-    // Search for people who match at least one of this profile's skills.
-    var findSimilarUrl = Url.Action("Index", "SearchCv", new { skills = string.Join(' ', Model.Skills ?? Array.Empty<string>()) });
+    // "Liknande" => OR match (at least one of my skills)
+    var findSimilarUrl = Url.Action("Index", "SearchCv", new { mode = "similar" });
 }
 
 <div class="cv-page">
@@ -65,7 +65,7 @@
 
                     <div class="cv-contact-list">
                         <div class="cv-contact-item">
-                            <span class="cv-contact-ico">&#9993;</span>
+                            <span class="cv-contact-ico">?</span>
                             <div>
                                 <div class="cv-contact-k">Email</div>
                                 <div class="cv-contact-v">@Model.Email</div>
@@ -73,7 +73,7 @@
                         </div>
 
                         <div class="cv-contact-item">
-                            <span class="cv-contact-ico">&#128205;</span>
+                            <span class="cv-contact-ico">??</span>
                             <div>
                                 <div class="cv-contact-k">Plats</div>
                                 <div class="cv-contact-v">@Model.City</div>
@@ -81,7 +81,7 @@
                         </div>
 
                         <div class="cv-contact-item">
-                            <span class="cv-contact-ico">&#9742;</span>
+                            <span class="cv-contact-ico">?</span>
                             <div>
                                 <div class="cv-contact-k">Telefon</div>
                                 <div class="cv-contact-v">@Model.Phone</div>
@@ -123,12 +123,48 @@
 
                 <section class="cv-box">
                     <h3 class="cv-box-title">Utbildningar</h3>
-                    <p class="cv-paragraph cv-paragraph-muted">Inga utbildningar tillagda ännu.</p>
+
+                    @if (Model.Educations is { Count: > 0 })
+                    {
+                        foreach (var e in Model.Educations)
+                        {
+                            <div class="cv-item">
+                                <div class="cv-item-title">@e.School</div>
+                                <div class="cv-item-sub">@e.Years • @e.Program</div>
+                                @if (!string.IsNullOrWhiteSpace(e.Note))
+                                {
+                                    <div class="cv-item-sub cv-item-muted">@e.Note</div>
+                                }
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="cv-paragraph cv-paragraph-muted">Inga utbildningar tillagda ännu.</p>
+                    }
                 </section>
 
                 <section class="cv-box">
                     <h3 class="cv-box-title">Tidigare erfarenhet</h3>
-                    <p class="cv-paragraph cv-paragraph-muted">Ingen erfarenhet tillagd ännu.</p>
+
+                    @if (Model.Experiences is { Count: > 0 })
+                    {
+                        foreach (var ex in Model.Experiences)
+                        {
+                            <div class="cv-item">
+                                <div class="cv-item-title">@ex.Company</div>
+                                <div class="cv-item-sub">@ex.Years • @ex.Role</div>
+                                @if (!string.IsNullOrWhiteSpace(ex.Description))
+                                {
+                                    <div class="cv-item-sub cv-item-muted">@ex.Description</div>
+                                }
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="cv-paragraph cv-paragraph-muted">Ingen erfarenhet tillagd ännu.</p>
+                    }
                 </section>
 
                 <section class="cv-box">

@@ -19,6 +19,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Profile> Profiler => Set<Profile>();
     public DbSet<Education> Utbildningar => Set<Education>();
     public DbSet<Skill> Kompetenser => Set<Skill>();
+    public DbSet<WorkExperience> Erfarenheter => Set<WorkExperience>();
     public DbSet<Project> Projekt => Set<Project>();
     public DbSet<ProjectUser> ProjektAnvandare => Set<ProjectUser>();
     public DbSet<ProfileVisit> ProfilBesok => Set<ProfileVisit>();
@@ -94,6 +95,15 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasIndex(x => new { x.ProfileId, x.SortOrder });
 
         builder.Entity<Education>()
+            .HasOne(x => x.Profile)
+            .WithMany()
+            .HasForeignKey(x => x.ProfileId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<WorkExperience>()
+            .HasIndex(x => new { x.ProfileId, x.SortOrder });
+
+        builder.Entity<WorkExperience>()
             .HasOne(x => x.Profile)
             .WithMany()
             .HasForeignKey(x => x.ProfileId)

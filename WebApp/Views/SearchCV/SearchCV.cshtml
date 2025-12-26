@@ -4,6 +4,10 @@
     ViewData["Title"] = "Sök CV";
 
     var isLoggedIn = User?.Identity?.IsAuthenticated == true;
+
+    // Banner image path is here:
+    // Change this src to switch banner.
+    var bannerSrc = Url.Content("~/images/bannersandicons/allacv2.png");
 }
 
 @section Styles {
@@ -13,7 +17,7 @@
 
 <div class="searchcv-page">
     <div class="searchcv-banner" aria-label="SearchCV-banner">
-        <img src="~/images/bannersandicons/allacv2.png" alt="Banner" class="searchcv-banner-img" />
+        <img src="@bannerSrc" alt="Banner" class="searchcv-banner-img" />
     </div>
 
     <div class="searchcv-container">
@@ -21,7 +25,7 @@
             <div class="searchcv-topbar">
                 <div>
                     <h1 class="searchcv-title">Sök CV</h1>
-                    <div class="searchcv-sub">Hitta personer via namn och kompetenser</div>
+                    <div class="searchcv-sub">Hitta personer via namn, stad och kompetenser</div>
                 </div>
             </div>
 
@@ -32,18 +36,32 @@
 
             <div class="searchcv-controls">
                 <form method="get" class="searchcv-search">
+                    <input type="hidden" name="mode" value="@Model.Mode" />
+
                     <div class="searchcv-search-main">
                         <input class="searchcv-input" type="text" name="name" value="@Model.NameQuery" placeholder="Sök på namn…" />
+                        <input class="searchcv-input" type="text" name="city" value="@Model.CityQuery" placeholder="Stad (ex: Örebro)…" />
                         <input class="searchcv-input" type="text" name="skills" value="@Model.SkillsQuery" placeholder="Kompetenser (ex: C#, SQL, .NET)…" />
 
                         <div class="searchcv-help">
-                            Du kan kombinera: <strong>namn</strong> + <strong>kompetenser</strong>. Minst 1 kompetens måste matcha om du fyller i kompetensfältet.
+                            <div>
+                                Vanlig sök (kompetenser): <strong>måste matcha alla</strong> kompetenser du skriver.
+                            </div>
+                            <div>
+                                “Hitta liknande personer” använder dina egna kompetenser och matchar <strong>minst en</strong>.
+                            </div>
                         </div>
                     </div>
 
                     <div class="searchcv-search-right">
                         <button type="submit" class="btn-secondary-custom">Sök</button>
-                        @if (!string.IsNullOrWhiteSpace(Model.NameQuery) || !string.IsNullOrWhiteSpace(Model.SkillsQuery))
+
+                        @if (isLoggedIn)
+                        {
+                            <a class="btn-secondary-custom" style="text-decoration:none;" href="@Url.Action("Index", "SearchCv", new { mode = "similar" })">Hitta liknande personer</a>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(Model.NameQuery) || !string.IsNullOrWhiteSpace(Model.SkillsQuery) || !string.IsNullOrWhiteSpace(Model.CityQuery) || Model.Mode == "similar")
                         {
                             <a class="btn-secondary-custom" style="text-decoration:none;" href="@Url.Action("Index", "SearchCv")">Rensa</a>
                         }
@@ -68,6 +86,9 @@
                             var headline = string.IsNullOrWhiteSpace(cv.Headline)
                                 ? "Systemvetenskap • Fullstack"
                                 : cv.Headline;
+
+                            var about = string.IsNullOrWhiteSpace(cv.AboutMe) ? "" : cv.AboutMe.Trim();
+                            if (about.Length > 120) about = about[..120] + "…";
 
                             <a class="searchcv-card" href="/InspectCV/@cv.UserId" aria-label="Öppna CV: @cv.FullName">
                                 <div class="searchcv-doc">
@@ -94,25 +115,51 @@
                                     </div>
 
                                     <div class="searchcv-doc-body">
-                                        <div class="searchcv-skills" aria-label="Kompetenser">
-                                            @if (cv.Skills is { Length: > 0 })
-                                            {
-                                                foreach (var s in cv.Skills.Take(8))
+                                        @if (!string.IsNullOrWhiteSpace(about))
+                                        {
+                                            <div class="searchcv-about">@about</div>
+                                        }
+
+                                        @if (cv.Educations is { Length: > 0 })
+                                        {
+                                            <div class="searchcv-lines" aria-label="Utbildningar">
+                                                <div class="searchcv-lines-title">Utbildning</div>
+                                                @foreach (var line in cv.Educations)
                                                 {
-                                                    <span class="searchcv-skill">@s</span>
+                                                    <div class="searchcv-line">@line</div>
                                                 }
-                                            }
-                                            else
-                                            {
-                                                <span class="searchcv-skill searchcv-skill--muted">Inga kompetenser</span>
-                                            }
-                                        </div>
+                                            </div>
+                                        }
+
+                                        @if (cv.Experiences is { Length: > 0 })
+                                        {
+                                            <div class="searchcv-lines" aria-label="Erfarenheter">
+                                                <div class="searchcv-lines-title">Erfarenhet</div>
+                                                @foreach (var line in cv.Experiences)
+                                                {
+                                                    <div class="searchcv-line">@line</div>
+                                                }
+                                            </div>
+                                        }
 
                                         <div class="searchcv-doc-bottom">
+                                            <div class="searchcv-skills" aria-label="Kompetenser">
+                                                @if (cv.Skills is { Length: > 0 })
+                                                {
+                                                    foreach (var s in cv.Skills.Take(8))
+                                                    {
+                                                        <span class="searchcv-skill">@s</span>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span class="searchcv-skill searchcv-skill--muted">Inga kompetenser</span>
+                                                }
+                                            </div>
+
                                             <div class="searchcv-doc-sep" aria-hidden="true"></div>
                                             <div class="searchcv-doc-foot">
                                                 <span><strong>@cv.ProjectCount</strong> projekt på CV</span>
-                                                <span class="searchcv-open">Öppna</span>
                                             </div>
                                         </div>
                                     </div>

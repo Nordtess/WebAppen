@@ -110,7 +110,7 @@
 
 .searchcv-search-main {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 10px;
 }
 
@@ -119,6 +119,8 @@
     font-size: 12px;
     font-weight: 750;
     color: rgba(0, 0, 0, 0.62);
+    display: grid;
+    gap: 4px;
 }
 
 .searchcv-search-right {
@@ -126,6 +128,7 @@
     gap: 10px;
     align-items: center;
     justify-content: flex-end;
+    flex-wrap: wrap;
 }
 
 .searchcv-list-card {
@@ -148,6 +151,10 @@
     .searchcv-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    .searchcv-search-main {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
 @media (max-width: 900px) {
@@ -157,7 +164,6 @@
 
     .searchcv-search-right {
         justify-content: flex-start;
-        flex-wrap: wrap;
     }
 }
 
@@ -193,7 +199,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    min-height: 360px;
+    min-height: 420px;
     will-change: transform, box-shadow;
     transition:
         transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
@@ -323,10 +329,50 @@
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
+    gap: 10px;
+}
+
+.searchcv-about {
+    border-radius: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: rgba(255, 255, 255, 0.92);
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 650;
+    color: rgba(0, 0, 0, 0.72);
+    line-height: 1.45;
+}
+
+.searchcv-lines {
+    border-radius: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: rgba(255, 255, 255, 0.92);
+    padding: 10px 12px;
+}
+
+.searchcv-lines-title {
+    font-size: 12px;
+    font-weight: 950;
+    color: rgba(0, 0, 0, 0.72);
+    margin-bottom: 6px;
+}
+
+.searchcv-line {
+    font-size: 12px;
+    font-weight: 750;
+    color: rgba(0, 0, 0, 0.66);
+    line-height: 1.35;
+}
+
+.searchcv-doc-bottom {
+    margin-top: auto;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .searchcv-skills {
-    margin-top: 10px;
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
@@ -351,37 +397,21 @@
     font-weight: 850;
 }
 
-.searchcv-doc-bottom {
-    margin-top: auto;
-    padding-top: 14px;
-}
-
 .searchcv-doc-sep {
     width: 70%;
     height: 1px;
     background: rgba(0, 0, 0, 0.10);
-    margin: 0 auto 12px;
+    margin: 0 auto;
 }
 
 .searchcv-doc-foot {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 10px;
     font-size: 12px;
     font-weight: 850;
     color: rgba(0, 0, 0, 0.68);
-}
-
-.searchcv-open {
-    display: inline-flex;
-    align-items: center;
-    height: 26px;
-    padding: 0 10px;
-    border-radius: 999px;
-    border: 1px solid rgba(0, 0, 0, 0.14);
-    background: rgba(0, 0, 0, 0.05);
-    color: rgba(0, 0, 0, 0.76);
 }
 
 .searchcv-empty {
