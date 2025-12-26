@@ -484,3 +484,55 @@ body.messages-modal-open {
 
     .message-preview { max-width: 100%; }
 }
+
+.message-reply {
+    margin-top: 12px;
+}
+
+.message-textarea {
+    width: 100%;
+    min-height: 90px;
+    resize: vertical;
+}
+
+.message-read-toggle {
+    margin: 0;
+}
+
+.message-read-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.55rem 0.9rem;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: rgba(255, 255, 255, 0.96);
+    font-weight: 850;
+    font-size: 0.9rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.message-read-text {
+    color: rgba(0, 0, 0, 0.78);
+}
+
+.message-read-checkbox {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: #7fffd4;
+}
+
+.message-read-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.20);
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+}
+
+.message-read-label:has(.message-read-checkbox:checked) .message-read-indicator {
+    background: rgba(52, 199, 89, 0.95);
+    box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.18), 0 0 12px rgba(52, 199, 89, 0.25);
+}

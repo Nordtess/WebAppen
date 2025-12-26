@@ -17,7 +17,7 @@
     --space-text: #F8F8FF;
 
     /* Header theme */
-    --header-icon-size: 64px;
+    --header-icon-size: 92px;
 
     /* Scrollbar theme */
     --sb-track-color: transparent;
@@ -355,7 +355,7 @@ p {
         --shell-padding-sides: 8px;
         --shell-gap: 8px;
         --header-height: 60px;
-        --header-icon-size: 64px;
+        --header-icon-size: 110px; /* Increased size by 20% */
     }
 
     .app-shell {

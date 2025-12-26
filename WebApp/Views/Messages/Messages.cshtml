@@ -102,13 +102,16 @@
                             <div class="message-fulltext">@m.Body</div>
 
                             <div class="message-actions-bar" aria-label="Meddelandeåtgärder">
-                                <form method="post" asp-controller="Messages" asp-action="SetRead" data-setread-form>
+                                <form method="post" asp-controller="Messages" asp-action="SetRead" data-setread-form class="message-read-toggle">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@m.Id" />
                                     <input type="hidden" name="isRead" value="@(m.IsRead ? "true" : "false")" data-setread-value />
-                                    <button class="btn-secondary-custom msg-btn" type="submit" data-setread-btn>
-                                        @(m.IsRead ? "Markera som oläst" : "Markera som läst")
-                                    </button>
+
+                                    <label class="message-read-label">
+                                        <span class="message-read-text">Läst:</span>
+                                        <input class="message-read-checkbox" type="checkbox" @(m.IsRead ? "checked" : "") data-setread-check />
+                                        <span class="message-read-indicator" aria-hidden="true"></span>
+                                    </label>
                                 </form>
 
                                 <button class="btn-danger-custom msg-btn" type="button" data-delete-open data-delete-id="@m.Id" data-delete-from="@m.FromDisplayName">Ta bort</button>

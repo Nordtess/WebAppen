@@ -36,34 +36,15 @@ document.addEventListener("DOMContentLoaded", () => {
         setUnreadCount(getUnreadCount() - 1);
     }
 
-    function incUnread() {
-        setUnreadCount(getUnreadCount() + 1);
-    }
-
-    function updateCardReadState(card, isRead) {
-        card.dataset.isread = isRead ? "1" : "0";
+    function updateCardReadState(card) {
+        card.dataset.isread = "1";
 
         const dot = card.querySelector(".message-dot");
         if (dot) dot.remove();
 
-        if (!isRead) {
-            const from = card.querySelector(".message-from");
-            if (from) {
-                const d = document.createElement("span");
-                d.className = "message-dot";
-                d.title = "Oläst";
-                d.setAttribute("aria-label", "Oläst");
-                from.appendChild(d);
-            }
-        }
-
-        const form = card.querySelector("[data-setread-form]");
-        if (form) {
-            const val = form.querySelector("[data-setread-value]");
-            const btn = form.querySelector("[data-setread-btn]");
-            if (val instanceof HTMLInputElement) val.value = isRead ? "true" : "false";
-            if (btn instanceof HTMLButtonElement) btn.textContent = isRead ? "Markera som oläst" : "Markera som läst";
-        }
+        // remove the 'mark as read' action once it's read
+        const setReadForm = card.querySelector("[data-setread-form]");
+        if (setReadForm) setReadForm.remove();
     }
 
     async function postForm(form) {
@@ -78,78 +59,22 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Expand/collapse + auto-mark as read on open
+    // Expand/collapse only (no auto-mark-as-read)
     document.querySelectorAll("[data-message]").forEach((card) => {
         const toggle = card.querySelector("[data-message-toggle]");
         const body = card.querySelector(".message-body");
         if (!(toggle instanceof HTMLButtonElement) || !(body instanceof HTMLElement)) return;
 
-        toggle.addEventListener("click", async () => {
+        toggle.addEventListener("click", () => {
             const open = toggle.getAttribute("aria-expanded") === "true";
             const nextOpen = !open;
 
             toggle.setAttribute("aria-expanded", nextOpen ? "true" : "false");
             body.hidden = !nextOpen;
             card.classList.toggle("is-open", nextOpen);
-
-            // Auto-mark as read when opening.
-            const isRead = card.getAttribute("data-isread") === "1";
-            if (nextOpen && !isRead) {
-                const form = card.querySelector("[data-setread-form]");
-                if (form instanceof HTMLFormElement) {
-                    // Optimistic UI
-                    updateCardReadState(card, true);
-                    decUnread();
-
-                    const val = form.querySelector("[data-setread-value]");
-                    if (val instanceof HTMLInputElement) val.value = "true";
-
-                    try {
-                        const res = await postForm(form);
-                        if (!res.ok) {
-                            updateCardReadState(card, false);
-                            incUnread();
-                        }
-                    } catch {
-                        updateCardReadState(card, false);
-                        incUnread();
-                    }
-                }
-            }
         });
 
-        // Manual read/unread toggle uses AJAX.
-        const setReadForm = card.querySelector("[data-setread-form]");
-        if (setReadForm instanceof HTMLFormElement) {
-            setReadForm.addEventListener("submit", async (e) => {
-                e.preventDefault();
-
-                const currentIsRead = card.getAttribute("data-isread") === "1";
-                const nextIsRead = !currentIsRead;
-
-                // Optimistic UI
-                updateCardReadState(card, nextIsRead);
-                if (currentIsRead && !nextIsRead) incUnread();
-                else if (!currentIsRead && nextIsRead) decUnread();
-
-                const val = setReadForm.querySelector("[data-setread-value]");
-                if (val instanceof HTMLInputElement) val.value = nextIsRead ? "true" : "false";
-
-                try {
-                    const res = await postForm(setReadForm);
-                    if (!res.ok) {
-                        // rollback
-                        updateCardReadState(card, currentIsRead);
-                        if (currentIsRead && !nextIsRead) decUnread();
-                        else if (!currentIsRead && nextIsRead) incUnread();
-                    }
-                } catch {
-                    updateCardReadState(card, currentIsRead);
-                    if (currentIsRead && !nextIsRead) decUnread();
-                    else if (!currentIsRead && nextIsRead) incUnread();
-                }
-            });
-        }
+        // Mark-as-read checkbox/button handlers are wired below.
     });
 
     // Delete modal
@@ -184,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (idInput instanceof HTMLInputElement) idInput.value = id;
             if (text) {
-                text.textContent = from ? `Vill du ta bort meddelandet från ${from}?` : "Vill du ta bort meddelandet?";
+                text.textContent = from ? `Vill du ta bort meddelandet skickat av ${from}?` : "Vill du ta bort meddelandet?";
             }
 
             setOpen(true);
@@ -231,4 +156,49 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+    // Wire up Läst checkbox toggle (AJAX)
+    document.querySelectorAll("[data-setread-form]").forEach((formEl) => {
+        if (!(formEl instanceof HTMLFormElement)) return;
+
+        const card = formEl.closest("[data-message]");
+        if (!(card instanceof HTMLElement)) return;
+
+        const chk = formEl.querySelector("[data-setread-check]");
+        const val = formEl.querySelector("[data-setread-value]");
+        if (!(chk instanceof HTMLInputElement) || chk.type !== "checkbox") return;
+        if (!(val instanceof HTMLInputElement)) return;
+
+        chk.addEventListener("change", async () => {
+            const currentIsRead = card.getAttribute("data-isread") === "1";
+            const nextIsRead = chk.checked;
+
+            // Optimistic UI
+            card.dataset.isread = nextIsRead ? "1" : "0";
+            val.value = nextIsRead ? "true" : "false";
+
+            const dot = card.querySelector(".message-dot");
+            if (nextIsRead) {
+                if (dot) dot.remove();
+                if (!currentIsRead) decUnread();
+            } else {
+                if (!dot) {
+                    const from = card.querySelector(".message-from");
+                    if (from) {
+                        const d = document.createElement("span");
+                        d.className = "message-dot";
+                        from.appendChild(d);
+                    }
+                }
+                if (currentIsRead) setUnreadCount(getUnreadCount() + 1);
+            }
+
+            try {
+                const res = await postForm(formEl);
+                if (!res.ok) window.location.reload();
+            } catch {
+                window.location.reload();
+            }
+        });
+    });
 });
