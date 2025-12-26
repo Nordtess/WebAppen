@@ -305,7 +305,12 @@
     display: flex;
     flex-direction: column;
     min-height: 420px;
+
+    /* avoid blurry text during transform animations */
     will-change: transform, box-shadow;
+    transform: translateY(0);
+    backface-visibility: visible;
+
     transition:
         transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
         box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),

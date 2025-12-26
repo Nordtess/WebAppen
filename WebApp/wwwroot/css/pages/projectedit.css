@@ -62,12 +62,13 @@
     font-size: 26px;
     font-weight: 900;
     letter-spacing: -0.2px;
+    color: rgba(248, 248, 255, 0.96);
 }
 
 .projectedit-sub {
     margin-top: 6px;
     font-weight: 650;
-    color: rgba(0, 0, 0, 0.58);
+    color: rgba(248, 248, 255, 0.84);
     font-size: 13px;
 }
 
