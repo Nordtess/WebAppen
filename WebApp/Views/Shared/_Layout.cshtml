@@ -1,6 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using WebApp.Domain.Identity
+@using WebApp.Infrastructure.Services
 @inject UserManager<ApplicationUser> UserManager
+@inject IUnreadMessagesService UnreadMessages
 
 @{
     string Active(string controller)
@@ -15,9 +17,6 @@
         return p.StartsWith(pathPrefix, StringComparison.OrdinalIgnoreCase) ? "active" : "";
     }
 
-    // Placeholder for testing (will be replaced by real unread count later)
-    int unreadCount = 3;
-
     var isAuthenticated = User?.Identity?.IsAuthenticated == true;
     var userEmail = isAuthenticated ? (User?.Identity?.Name ?? "") : "";
 
@@ -26,6 +25,9 @@
 
     var toastTitle = ViewData["ToastTitle"] as string ?? (TempData.Peek("ToastTitle") as string);
     var toastMessage = ViewData["ToastMessage"] as string ?? (TempData.Peek("ToastMessage") as string);
+
+    var unreadCount = isAuthenticated ? await UnreadMessages.GetUnreadCountAsync(User) : 0;
+    var noccoIcon = unreadCount > 0 ? "~/images/svg/icons/noccomessage.svg" : "~/images/svg/icons/noccosleeping.svg";
 }
 
 <!DOCTYPE html>
@@ -71,7 +73,7 @@
                     @* Only show mail/unread UI when logged in *@
                     @if (isAuthenticated)
                     {
-                        <img src="~/images/svg/icons/noccosleeping.svg"
+                        <img src="@noccoIcon"
                              alt="Meddelanden"
                              class="icon-sleepingnocco" />
 

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.Domain.Identity;
 using WebApp.Infrastructure.Data;
 using WebApp.Middleware;
+using WebApp.Infrastructure.Services;
 
 namespace WebApp;
 
@@ -30,6 +31,9 @@ public class Program
                 options.SignIn.RequireConfirmedAccount = false;
             })
             .AddEntityFrameworkStores<ApplicationDbContext>();
+
+        // App services
+        builder.Services.AddScoped<IUnreadMessagesService, UnreadMessagesService>();
 
         var app = builder.Build();
 
