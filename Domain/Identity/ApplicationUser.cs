@@ -58,4 +58,10 @@ public class ApplicationUser : IdentityUser
     /// Used to show the one-time "create your first CV" toast reliably.
     /// </summary>
     public bool HasCreatedCv { get; set; }
+
+    /// <summary>
+    /// Timestamp when the account was created (UTC).
+    /// Used for ordering (e.g. showing the latest public profiles on the home page).
+    /// </summary>
+    public DateTimeOffset CreatedUtc { get; set; } = DateTimeOffset.UtcNow;
 }

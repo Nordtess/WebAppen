@@ -6,10 +6,13 @@
     --home-pad: 18px;
 
     --carousel-h: 340px;
-    --slide-w: 520px;
-    --slide-h: 210px;
+    /* 40% narrower than 520px */
+    --slide-w: 312px;
+    /* 20% shorter than 210px */
+    --slide-h: 168px;
     --side-scale: 0.86;
-    --side-x: 320px;
+    /* move side cards closer for the smaller width */
+    --side-x: 220px;
     --side-tilt: 0deg;
     --card-border-strong: 2px solid rgba(0, 0, 0, 0.92);
     --nav-offset-y: -26px;
@@ -76,7 +79,7 @@
 }
 
 .home-card-body {
-    padding: 22px 22px 26px;
+    padding: 26px 26px 30px;
 }
 
 /* When a banner is present, give the text extra distance from the banner */
@@ -111,7 +114,7 @@
 }
 
 .home-cv-body {
-    padding: 18px 18px 26px;
+    padding: 26px 26px 30px;
     overflow: visible;
 }
 
@@ -142,6 +145,7 @@
     text-decoration: none !important;
     color: inherit;
     transition: transform 0.28s ease, opacity 0.22s ease, filter 0.22s ease, box-shadow 0.28s ease;
+    filter: none;
 }
 
 .cv-slide *,
@@ -538,9 +542,11 @@
 @media (max-width: 800px) {
     :root {
         --carousel-h: 360px;
-        --slide-h: 240px;
-        --side-x: 230px;
-        --slide-w: 440px;
+        /* 40% narrower than 440px */
+        --slide-w: 264px;
+        /* 20% shorter than 240px */
+        --slide-h: 192px;
+        --side-x: 170px;
         --side-scale: 0.82;
         --nav-offset-y: -18px;
     }

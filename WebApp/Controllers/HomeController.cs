@@ -42,7 +42,7 @@ namespace WebApp.Controllers
 
             var latestUsers = await (from u in _db.Users.AsNoTracking()
                                      where !u.IsDeactivated && !u.IsProfilePrivate
-                                     orderby u.Id descending
+                                     orderby u.CreatedUtc descending
                                      join link in _db.ApplicationUserProfiles.AsNoTracking() on u.Id equals link.UserId into links
                                      from link in links.DefaultIfEmpty()
                                      join p in _db.Profiler.AsNoTracking() on link.ProfileId equals p.Id into profiles
