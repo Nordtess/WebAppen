@@ -10,15 +10,17 @@
 @{
     ViewData["Title"] = "Redigera CV";
 
-    // Används för att styra visuell status i UI baserat på TempData, utan att påverka backend-logik.
+    // Initierar visuell status från TempData utan att påverka backend-logik.
     var initialSaveState = TempData["Saved"]?.ToString() == "1" ? "saved" : "dirty";
 
-    // If user came here from MyCV because they have no CV yet, prevent navigating back without saving.
+    // Indikerar om detta är första gången användaren skapar sitt CV (används för navigationsskydd).
     var isFirstCvEdit = TempData.Peek("FirstCvEdit")?.ToString() == "1";
 
     var avatarSrc = string.IsNullOrWhiteSpace(Model.ProfileImagePath)
         ? Url.Content("~/images/bannersandicons/cvplaceholder2.png")
         : Url.Content(Model.ProfileImagePath);
+
+    // Modal för projektval manipulerar dolda inputfält i formuläret via DOM.
 }
 
 <div class="editcv-page">

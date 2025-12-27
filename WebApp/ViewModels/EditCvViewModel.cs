@@ -2,15 +2,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.ViewModels;
 
+/// <summary>
+/// Modell för sidan där användaren redigerar sitt CV.
+/// Vissa fält hålls som JSON-strängar eftersom klienten hanterar dem via JavaScript.
+/// </summary>
 public sealed class EditCvViewModel
 {
-    // Read-only (from AspNetUsers)
+    // Läses från AspNetUsers (read-only i formuläret)
     public string FullName { get; set; } = "";
     public string Email { get; set; } = "";
     public string Phone { get; set; } = "";
     public string Location { get; set; } = "";
 
-    // Editable (CV-owned)
     [Display(Name = "Rubrik")]
     [StringLength(60, ErrorMessage = "Rubrik får max vara 60 tecken.")]
     public string? Headline { get; set; }
@@ -20,22 +23,22 @@ public sealed class EditCvViewModel
     [StringLength(500, ErrorMessage = "Om mig får max vara 500 tecken.")]
     public string AboutMe { get; set; } = "";
 
-    // Skills (edited via JS as JSON array)
+    // JSON-sträng som representerar en array av färdigheter (hanteras av klienten)
     public string SkillsJson { get; set; } = "[]";
 
-    // Existing placeholders: keep as JSON strings until backed by tables.
+    // Platshållare: lagras som JSON tills de mappas till riktiga tabeller
     public string EducationJson { get; set; } = "[]";
 
-    // Experiences stored in table
+    // Erfarenheter hanteras i tabell men hålls temporärt som JSON i vyn
     public string ExperienceJson { get; set; } = "[]";
 
-    // Selected projects stored as JSON array of ids (persisted on save)
+    // Valda projekt som JSON-array av id:n (sparas oförändrat vid persistens)
     public string SelectedProjectsJson { get; set; } = "[]";
 
-    // Project picker data (EditCV)
+    // Data för projektväljaren i EditCV
     public int[] SelectedProjectIds { get; set; } = Array.Empty<int>();
     public List<EditCvProjectPickVm> AllMyProjects { get; set; } = new();
 
-    // Existing stored image (for preview on GET)
+    // Sökväg till befintlig profilbild för förhandsgranskning vid GET
     public string? ProfileImagePath { get; set; }
 }

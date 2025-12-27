@@ -2,6 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.ViewModels;
 
+/// <summary>
+/// ViewModel för att redigera ett projekt. Innehåller valideringsattribut
+/// och några fält som representeras som JSON-strängar för klienthantering.
+/// </summary>
 public sealed class ProjectEditViewModel
 {
     public int Id { get; set; }
@@ -18,13 +22,13 @@ public sealed class ProjectEditViewModel
     [StringLength(500, MinimumLength = 1, ErrorMessage = "Beskrivning får max vara {1} tecken.")]
     public string Description { get; set; } = "";
 
-    // Tech selection (keys like "csharp", "mysql" etc)
+    // JSON-sträng med valda teknologinycklar (t.ex. "csharp", "mysql"); hanteras av klienten.
     public string TechStackJson { get; set; } = "[]";
 
-    // Selected image path in wwwroot (ex: /images/projects/rocketship.png)
+    // Sökväg till vald bild i wwwroot, t.ex. "/images/projects/rocketship.png".
     public string? ProjectImage { get; set; }
 
-    // Read-only meta
+    // Läsbara metadatafält som inte redigeras via formuläret.
     public string CreatedText { get; set; } = "";
     public bool IsOwner { get; set; }
 }

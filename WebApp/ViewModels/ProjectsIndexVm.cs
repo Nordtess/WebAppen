@@ -1,15 +1,22 @@
 namespace WebApp.ViewModels;
 
+/// <summary>
+/// ViewModel för projektsöksidan med filter- och sorteringsinformation samt listar projektkort.
+/// </summary>
 public sealed class ProjectsIndexVm
 {
     public string Query { get; init; } = string.Empty;
-    // Search scope from segmented control: all | title | created | member
+
+    // Sökomfång: "all" | "title" | "created" | "member"
     public string Scope { get; init; } = "all";
-    // Toggle: show only projects created by current user
+
+    // Visa endast projekt skapade av aktuell användare
     public bool OnlyMine { get; init; }
+
+    // Sorteringsnyckel, t.ex. "new"
     public string Sort { get; init; } = "new";
 
-    // Optional hint shown when user is anonymous.
+    // Visas som tips när användaren är anonym
     public bool ShowLoginTip { get; init; }
 
     public List<ProjectCardVm> Projects { get; init; } = new();
@@ -20,11 +27,14 @@ public sealed class ProjectsIndexVm
         public string Title { get; init; } = string.Empty;
         public string? ShortDescription { get; init; }
         public DateTimeOffset CreatedUtc { get; init; }
+
+        // Kommaseparerade nycklar för teknologier (valfritt, för presentation/filtrering)
         public string? TechKeysCsv { get; init; }
 
-        public string? ImagePath { get; init; } // Exposed project image path
+        // Exponerad bildväg för projektet
+        public string? ImagePath { get; init; }
 
-        // For searching/filtering (and later display if we want)
+        // Metadata för sökning/visning
         public string? CreatedByName { get; init; }
         public string? CreatedByEmail { get; init; }
     }

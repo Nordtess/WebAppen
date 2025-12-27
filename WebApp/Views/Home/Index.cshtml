@@ -97,6 +97,7 @@
 
                 <div class="cv-stage" aria-label="Karusell med CV-profiler">
                     @{ 
+                        // Hantera null och fallback till tom lista
                         var cvs = Model.LatestPublicCvs ?? new List<WebApp.Controllers.HomeIndexVm.CvCardVm>();
                         if (cvs.Count == 0)
                         {
@@ -119,19 +120,21 @@
                                 var cv = cvs[i];
                                 var isActive = i == 0;
 
+                                // Välj avatar eller fallback-bild
                                 var avatarSrc = string.IsNullOrWhiteSpace(cv.ProfileImagePath)
                                     ? Url.Content("~/images/bannersandicons/cvplaceholder2.png")
                                     : Url.Content(cv.ProfileImagePath);
 
+                                // Använd rubrik eller default-texter
                                 var headline = string.IsNullOrWhiteSpace(cv.Headline)
                                     ? "Systemvetenskap • Fullstack"
                                     : cv.Headline;
 
+                                // Trunkera "about" för att hålla korta kort i karusellen
                                 var about = string.IsNullOrWhiteSpace(cv.AboutMe) ? "" : cv.AboutMe.Trim();
                                 if (about.Length > 120) about = about[..120] + "…";
 
                                 <a class="cv-slide @(isActive ? "is-active" : "")" href="/InspectCV/@cv.UserId" data-href="/InspectCV/@cv.UserId" aria-label="Öppna CV: @cv.FullName">
-                                    @* Exact SearchCV card markup *@
                                     <div class="searchcv-card">
                                         <div class="searchcv-doc">
                                             <div class="searchcv-doc-top">
@@ -234,7 +237,6 @@
         </div>
 
         <div class="home-card-body home-project-body">
-            <!-- Center only the actual project card inside this white home-card -->
             <div class="home-project-showcase">
                 @if (Model.LatestProject is null)
                 {
@@ -276,7 +278,6 @@
                                         </div>
                                     }
 
-                                    @* Home-only: read-only longer description preview *@
                                     @if (!string.IsNullOrWhiteSpace(p.Description))
                                     {
                                         <div class="projects-doc-desc-card" style="margin-top: 10px;">

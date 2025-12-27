@@ -6,6 +6,11 @@ using WebApp.ViewModels;
 
 namespace WebApp.Controllers;
 
+/// <summary>
+/// Söksida för CV:er. Endast en GET-endpoint som söker användare och deras profiler
+/// baserat på namn, färdigheter och stad. Stöder "similar"-läge som använder
+/// den inloggade användarens färdigheter för matchning.
+/// </summary>
 public sealed class SearchCvController : Controller
 {
     private readonly ApplicationDbContext _db;
@@ -30,7 +35,7 @@ public sealed class SearchCvController : Controller
 
         var useSimilarMode = string.Equals(mode, "similar", StringComparison.OrdinalIgnoreCase);
 
-        // Similar-mode: ignore query string skills, use current user's skills instead.
+        // Om "similar"-läge och användaren är inloggad: använd användarens egna färdigheter
         if (useSimilarMode && isLoggedIn)
         {
             var meId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -45,36 +50,35 @@ public sealed class SearchCvController : Controller
             }
         }
 
-        // Normal mode = AND filter (must match all provided skill tokens)
-        // Similar mode = OR filter (match any of my skills)
+        // I normalt läge krävs att alla tokens matchar (AND). I "similar"-läge räcker någon matchning (OR).
         var requireAllSkills = !useSimilarMode;
 
         var skillTokens = ParseSkillTokens(skillsQuery);
 
-        // Base query: active users only.
-        var q = _db.Users.AsNoTracking().Where(u => !u.IsDeactivated);
+        // Basfråga: endast aktiva användare.
+        var usersQuery = _db.Users.AsNoTracking().Where(u => !u.IsDeactivated);
 
-        // Never show the viewer's own CV on SearchCv (MyCV exists for that)
+        // Dölj den inloggade användarens egen CV i resultatet.
         if (isLoggedIn)
         {
             var viewerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (!string.IsNullOrWhiteSpace(viewerId))
             {
-                q = q.Where(u => u.Id != viewerId);
+                usersQuery = usersQuery.Where(u => u.Id != viewerId);
             }
         }
 
-        // Privacy rule:
+        // Sekretessregel: om ej inloggad visa endast icke-privata profiler.
         if (!isLoggedIn)
         {
-            q = q.Where(u => !u.IsProfilePrivate);
+            usersQuery = usersQuery.Where(u => !u.IsProfilePrivate);
         }
 
         if (!string.IsNullOrWhiteSpace(nameQuery))
         {
             var likeAnywhere = $"%{nameQuery}%";
 
-            q = q.Where(u =>
+            usersQuery = usersQuery.Where(u =>
                 (u.FirstName != null && EF.Functions.Like(u.FirstName, likeAnywhere)) ||
                 (u.LastName != null && EF.Functions.Like(u.LastName, likeAnywhere)) ||
                 (u.FirstNameNormalized != null && EF.Functions.Like(u.FirstNameNormalized, likeAnywhere.ToUpperInvariant())) ||
@@ -85,25 +89,25 @@ public sealed class SearchCvController : Controller
         if (!string.IsNullOrWhiteSpace(cityQuery))
         {
             var likeAnywhere = $"%{cityQuery}%";
-            q = q.Where(u => u.City != null && EF.Functions.Like(u.City, likeAnywhere));
+            usersQuery = usersQuery.Where(u => u.City != null && EF.Functions.Like(u.City, likeAnywhere));
         }
 
-        // Join to profile table so we can filter on skills + read about/headline/selected projects.
-        var rows = from u in q
+        // Left joins mot profil-tabeller för att kunna filtrera på färdigheter och läsa profilfält.
+        var rows = from u in usersQuery
                    join link in _db.ApplicationUserProfiles.AsNoTracking() on u.Id equals link.UserId into links
                    from link in links.DefaultIfEmpty()
                    join p in _db.Profiler.AsNoTracking() on link.ProfileId equals p.Id into profiles
                    from p in profiles.DefaultIfEmpty()
                    select new { u, link, p };
 
-        // Filter by skills
+        // Filtrering på färdigheter: om inga tokens görs ingen filtrering.
         if (skillTokens.Count > 0)
         {
             rows = rows.Where(x => x.p != null && x.p.SkillsCsv != null);
 
             if (requireAllSkills)
             {
-                // AND across tokens
+                // AND över varje token
                 foreach (var token in skillTokens)
                 {
                     var likeAnywhere = $"%{token}%";
@@ -112,7 +116,7 @@ public sealed class SearchCvController : Controller
             }
             else
             {
-                // OR across tokens
+                // OR över tokens: bygg upp en union och gör Distinct för att ta bort dubbletter.
                 var tokenRows = rows.Where(x => false);
                 foreach (var token in skillTokens)
                 {
@@ -149,7 +153,7 @@ public sealed class SearchCvController : Controller
             })
             .ToListAsync();
 
-        // Load educations/experiences in batches for the ids we returned.
+        // Batch-ladda utbildning och erfarenheter för de profiler vi hittade (för att undvika N+1).
         var profileIds = list.Where(x => x.ProfileId != null).Select(x => x.ProfileId!.Value).Distinct().ToArray();
 
         var eduByProfile = profileIds.Length == 0
@@ -214,6 +218,7 @@ public sealed class SearchCvController : Controller
         return View("SearchCV", vm);
     }
 
+    // Delar upp söksträngen i unika tokens (komma- och mellanslagsseparerade).
     private static List<string> ParseSkillTokens(string raw)
     {
         if (string.IsNullOrWhiteSpace(raw)) return new List<string>();
@@ -228,6 +233,7 @@ public sealed class SearchCvController : Controller
         return tokens;
     }
 
+    // Parsar CSV med färdigheter och returnerar unika element.
     private static string[] ParseSkills(string? csv)
     {
         if (string.IsNullOrWhiteSpace(csv)) return Array.Empty<string>();
@@ -238,6 +244,7 @@ public sealed class SearchCvController : Controller
             .ToArray();
     }
 
+    // Avläser antal valda projekt från JSON (säkert; felhanterar ogiltig JSON).
     private static int ParseSelectedProjectCount(string? json)
     {
         if (string.IsNullOrWhiteSpace(json)) return 0;
