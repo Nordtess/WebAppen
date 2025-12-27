@@ -38,42 +38,10 @@
                 <a class="btn-primary-custom" asp-controller="AccountProfile" asp-action="Edit">Ändra uppgifter</a>
                 <a class="btn-secondary-custom" asp-controller="AccountProfile" asp-action="ChangePassword">Byt lösenord</a>
                 <a class="btn-primary-custom" asp-controller="AccountProfile" asp-action="Deactivate">Deaktivera konto</a>
+                <a class="btn-danger-custom" asp-controller="AccountProfile" asp-action="Delete" style="margin-left:8px;">Radera konto</a>
             </div>
         </div>
     </section>
 
-    <div style="margin-top:18px;">
-        <section class="danger-zone">
-            <h3 style="margin:0 0 8px 0;">Radera konto</h3>
-            <p>Detta tar bort ditt konto permanent inklusive ditt CV, meddelanden och alla projekt du skapat. Åtgärden går inte att ångra.</p>
-
-            <form method="post" asp-controller="AccountProfile" asp-action="DeleteAccount">
-                @Html.AntiForgeryToken()
-
-                <div style="margin:8px 0;">
-                    <label for="confirmText"><strong>Skriv RADERA</strong> för att bekräfta</label><br />
-                    <input id="confirmText" name="ConfirmText" maxlength="20" placeholder="RADERA" />
-                </div>
-
-                <div style="margin:8px 0;">
-                    <label for="password"><strong>Ange lösenord</strong></label><br />
-                    <input id="password" name="Password" type="password" autocomplete="current-password" />
-                </div>
-
-                <div style="margin-top:8px;">
-                    <button type="submit" class="btn-danger-custom">Radera konto permanent</button>
-                </div>
-            </form>
-
-            @if (TempData["Error"] != null)
-            {
-                <div style="color:var(--danger); margin-top:8px; font-weight:800;">@TempData["Error"]</div>
-            }
-
-            @if (TempData["Success"] != null)
-            {
-                <div style="color:green; margin-top:8px; font-weight:800;">@TempData["Success"]</div>
-            }
-        </section>
-    </div>
+    @* Delete moved to its own view (no inline danger zone here to avoid changing behavior) *@
 </div>
