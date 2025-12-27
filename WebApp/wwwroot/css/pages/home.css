@@ -222,14 +222,14 @@
 .cv-slide.is-left {
     opacity: 0.75;
     z-index: 2;
-    transform: translate(calc(-50% - var(--side-x)), -50%) scale(var(--side-scale)) rotate(var(--side-tilt));
+    transform: translate(calc(-60% - var(--side-x)), -50%) scale(var(--side-scale)) rotate(var(--side-tilt));
     filter: saturate(0.95) contrast(0.98);
 }
 
 .cv-slide.is-right {
     opacity: 0.75;
     z-index: 2;
-    transform: translate(calc(-50% + var(--side-x)), -50%) scale(var(--side-scale)) rotate(var(--side-tilt));
+    transform: translate(calc(-40% + var(--side-x)), -50%) scale(var(--side-scale)) rotate(var(--side-tilt));
     filter: saturate(0.95) contrast(0.98);
 }
 
