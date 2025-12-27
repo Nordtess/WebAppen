@@ -5,7 +5,7 @@
     --home-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
     --home-pad: 18px;
 
-    --carousel-h: 340px;
+    --carousel-h: 408px; /* 20% större än 340px */
     --slide-w: 312px;
     --slide-h: 168px;
     --side-scale: 0.86;
@@ -107,7 +107,7 @@
 }
 
 .home-cv-body {
-    padding: 90px 90px 90px;
+    padding: 108px 108px 108px; /* 20% större än 90px */
     overflow: visible;
 }
 
@@ -263,9 +263,7 @@
     display: none;
 }
 
-.cv-slide *,
-.cv-slide:hover *,
-.cv-slide:focus * {
+.cv-slide * {
     text-decoration: none !important;
 }
 
@@ -621,7 +619,7 @@
 }
 
 .home-banner {
-    height: 190px;
+    height: 228px; /* 20% större än 190px */
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
     background: rgba(0, 0, 0, 0.03);
     overflow: hidden;
