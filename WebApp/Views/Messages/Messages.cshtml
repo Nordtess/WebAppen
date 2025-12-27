@@ -1,7 +1,180 @@
-﻿@{
-    ViewData["Title"] = "Messages";
+﻿@model WebApp.ViewModels.MessagesIndexVm
+
+@{
+    ViewData["Title"] = "Meddelanden";
+
+    var sortNewUrl = Url.Action("Index", "Messages", new { sort = "new", q = Model.Query, unreadOnly = Model.UnreadOnly ? "1" : "0" });
+    var sortOldUrl = Url.Action("Index", "Messages", new { sort = "old", q = Model.Query, unreadOnly = Model.UnreadOnly ? "1" : "0" });
+
+    var unreadOnlyOnUrl = Url.Action("Index", "Messages", new { sort = Model.Sort, q = Model.Query, unreadOnly = "1" });
+    var unreadOnlyOffUrl = Url.Action("Index", "Messages", new { sort = Model.Sort, q = Model.Query, unreadOnly = "0" });
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/pages/messages.css" />
+    <link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pages/messages.css" asp-append-version="true" />
+}
+
+<div class="messages-page">
+    <div class="messages-banner" aria-label="Meddelanden-banner">
+        <img src="~/images/bannersandicons/messageboard.png" alt="Banner" class="messages-banner-img" />
+    </div>
+
+    <div class="messages-tip">
+        <strong>Tips:</strong> Du kan svara på inloggade personers meddelanden!
+    </div>
+
+    <div class="messages-card">
+        <div class="messages-topbar">
+            <div class="messages-titlewrap">
+                <h1 class="messages-title">Meddelanden</h1>
+
+                <span class="messages-count-pill" aria-label="Antal meddelanden" id="messagesCountPill">
+                    @Model.Messages.Count meddelanden
+                </span>
+            </div>
+
+            <div class="messages-actions">
+                <a class="messages-filter @((Model.Sort == "new") ? "is-active" : "")" href="@sortNewUrl">Senast mottagna</a>
+                <a class="messages-filter @((Model.Sort == "old") ? "is-active" : "")" href="@sortOldUrl">Äldst först</a>
+
+                <a class="messages-filter @(Model.UnreadOnly ? "is-active" : "")" href="@(Model.UnreadOnly ? unreadOnlyOffUrl : unreadOnlyOnUrl)">
+                    Olästa
+                </a>
+            </div>
+        </div>
+
+        <div class="messages-divider" aria-hidden="true"></div>
+
+        <div class="messages-toolbar">
+            <div class="messages-toolbar-top">
+                <form method="get" class="messages-search" action="@Url.Action("Index", "Messages")">
+                    <input type="hidden" name="sort" value="@Model.Sort" />
+                    <input type="hidden" name="unreadOnly" value="@(Model.UnreadOnly ? "1" : "0")" />
+
+                    <label class="messages-label" for="q">Filtrera på avsändare</label>
+                    <div class="messages-search-row">
+                        <input class="messages-input" id="q" name="q" value="@Model.Query" placeholder="Skriv namn (förnamn/efternamn)..." maxlength="80" />
+                        <button class="btn-secondary-custom" type="submit">Sök</button>
+                        <a class="btn-secondary-custom" href="@Url.Action("Index", "Messages", new { sort = Model.Sort, unreadOnly = Model.UnreadOnly ? "1" : "0" })" style="text-decoration:none;">Rensa</a>
+                    </div>
+                    <div class="messages-hint">Tips: använd delar av namnet. Filtreringen matchar både kontonamn och anonyma avsändare.</div>
+                </form>
+
+                <div class="messages-toolbar-actions">
+                    <form method="post" asp-controller="Messages" asp-action="MarkAllRead">
+                        @Html.AntiForgeryToken()
+                        <button class="btn-secondary-custom" type="submit">Markera alla som lästa</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="messages-list" id="messagesList">
+            @if (Model.Messages.Count == 0)
+            {
+                <div class="messages-empty">
+                    <div class="messages-empty-title">Inga meddelanden ännu.</div>
+                    <div class="messages-empty-sub">När någon skriver till dig via ditt CV dyker det upp här.</div>
+                </div>
+            }
+            else
+            {
+                foreach (var m in Model.Messages)
+                {
+                    var canReply = !string.IsNullOrWhiteSpace(m.FromUserId);
+                    <article class="message" data-message data-id="@m.Id" data-isread="@(m.IsRead ? "1" : "0")" aria-label="Meddelande från @m.FromDisplayName">
+                        <button class="message-head" type="button" data-message-toggle aria-expanded="false">
+                            <div class="message-left">
+                                <div class="message-from">
+                                    <span class="message-from-name">@m.FromDisplayName</span>
+                                    @if (!m.IsRead)
+                                    {
+                                        <span class="message-dot" title="Oläst" aria-label="Oläst"></span>
+                                    }
+                                </div>
+                                <div class="message-meta">
+                                    <span class="message-time">@m.SentUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</span>
+                                </div>
+                            </div>
+
+                            <div class="message-right" aria-hidden="true">›</div>
+                        </button>
+
+                        <div class="message-body" hidden>
+                            <div class="message-fulltext">@m.Body</div>
+
+                            <div class="message-actions-bar" aria-label="Meddelandeåtgärder">
+                                <form method="post" asp-controller="Messages" asp-action="SetRead" data-setread-form class="message-read-toggle">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@m.Id" />
+                                    <input type="hidden" name="isRead" value="@(m.IsRead ? "true" : "false")" data-setread-value />
+
+                                    <label class="message-read-label">
+                                        <span class="message-read-text">Läst:</span>
+                                        <input class="message-read-checkbox" type="checkbox" @(m.IsRead ? "checked" : "") data-setread-check />
+                                        <span class="message-read-indicator" aria-hidden="true"></span>
+                                    </label>
+                                </form>
+
+                                <button class="btn-danger-custom msg-btn" type="button" data-delete-open data-delete-id="@m.Id" data-delete-from="@m.FromDisplayName">Ta bort</button>
+                            </div>
+
+                            <div class="message-reply">
+                                @if (!canReply)
+                                {
+                                    <div class="message-reply-muted message-reply-muted--anon">Det här meddelandet skickades anonymt, så du kan inte svara här.</div>
+                                }
+                                else
+                                {
+                                    <div class="message-reply-title">Svara</div>
+
+                                    <form method="post" asp-controller="Messages" asp-action="Reply" class="message-reply-form">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="OriginalMessageId" value="@m.Id" />
+
+                                        <textarea class="message-textarea" name="Body" rows="3" minlength="1" maxlength="500" placeholder="Skriv ett svar (1–500 tecken)..." required></textarea>
+                                        <div class="message-reply-actions">
+                                            <button class="btn-primary-custom" type="submit">Skicka svar</button>
+                                        </div>
+                                    </form>
+                                }
+                            </div>
+                        </div>
+                    </article>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@* Delete confirm modal (no window.confirm) *@
+<div class="messages-modal" id="deleteModal" aria-hidden="true">
+    <div class="messages-modal__backdrop" data-delete-cancel></div>
+
+    <div class="messages-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+        <div class="messages-modal__header">
+            <div class="messages-modal__title" id="deleteModalTitle">Ta bort meddelande</div>
+            <button class="messages-modal__close" type="button" aria-label="Stäng" data-delete-cancel>×</button>
+        </div>
+
+        <div class="messages-modal__body">
+            <div class="messages-modal__text" id="deleteModalText">Vill du ta bort meddelandet?</div>
+            <div class="messages-modal__hint">Detta går inte att ångra.</div>
+        </div>
+
+        <div class="messages-modal__footer">
+            <button class="btn-secondary-custom" type="button" data-delete-cancel>Avbryt</button>
+
+            <form method="post" asp-controller="Messages" asp-action="Delete" id="deleteForm" data-delete-form>
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="deleteIdInput" name="id" value="" />
+                <button class="btn-danger-custom" type="submit">Ta bort</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/pages/messages.js" asp-append-version="true"></script>
 }

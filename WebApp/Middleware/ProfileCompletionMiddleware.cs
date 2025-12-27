@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using WebApp.Domain.Identity;
 
 namespace WebApp.Middleware;
 
 /// <summary>
-/// Tvingar inloggade användare att fylla i obligatoriska profilfält innan de kan använda webbplatsen.
-/// Omdirigerar till /AccountProfile/Edit om fälten saknas.
+/// Mellanlager som tvingar inloggade användare att komplettera obligatoriska profilfält
+/// innan de får fortsätta till övriga sidor. Om profilen är ofullständig omdirigeras
+/// användaren till /AccountProfile/Edit och en temporär toast-meddelande sätts.
 /// </summary>
 public class ProfileCompletionMiddleware
 {
@@ -16,25 +18,35 @@ public class ProfileCompletionMiddleware
         _next = next;
     }
 
-    public async Task InvokeAsync(HttpContext context, UserManager<ApplicationUser> userManager)
+    public async Task InvokeAsync(HttpContext context, UserManager<ApplicationUser> userManager, ITempDataDictionaryFactory tempDataFactory)
     {
+        // Utför endast kontroll för inloggade användare.
         if (context.User?.Identity?.IsAuthenticated == true)
         {
             var path = context.Request.Path.Value ?? string.Empty;
 
-            // Hoppa över kontrollen för sidor som måste vara åtkomliga (t.ex. inloggning, profilredigering och statiska filer).
-            if (!path.StartsWith("/Identity", StringComparison.OrdinalIgnoreCase)
-                && !path.StartsWith("/AccountProfile/Edit", StringComparison.OrdinalIgnoreCase)
-                && !path.StartsWith("/AccountProfile/ChangePassword", StringComparison.OrdinalIgnoreCase)
-                && !path.StartsWith("/css", StringComparison.OrdinalIgnoreCase)
-                && !path.StartsWith("/js", StringComparison.OrdinalIgnoreCase)
-                && !path.StartsWith("/images", StringComparison.OrdinalIgnoreCase)
-                && !path.StartsWith("/lib", StringComparison.OrdinalIgnoreCase))
+            // Lista över sökvägs-prefix som ska undantas från tvångskontrollen.
+            var excludedPrefixes = new[]
+            {
+                "/Identity",
+                "/AccountProfile/Edit",
+                "/AccountProfile/ChangePassword",
+                "/EditCV",
+                "/MyCv",
+                "/css",
+                "/js",
+                "/images",
+                "/lib"
+            };
+
+            // Om sökvägen inte matchar något undantag utförs profilkontrollen.
+            if (!excludedPrefixes.Any(p => path.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
             {
                 var user = await userManager.GetUserAsync(context.User);
 
                 if (user != null)
                 {
+                    // Profil anses ofullständig om något av dessa fält saknas.
                     var isProfileIncomplete = string.IsNullOrWhiteSpace(user.FirstName)
                         || string.IsNullOrWhiteSpace(user.LastName)
                         || string.IsNullOrWhiteSpace(user.City)
@@ -42,6 +54,11 @@ public class ProfileCompletionMiddleware
 
                     if (isProfileIncomplete)
                     {
+                        // Sätt temporära meddelanden som visas efter omdirigering.
+                        var tempData = tempDataFactory.GetTempData(context);
+                        tempData["ToastTitle"] = "Välkommen!";
+                        tempData["ToastMessage"] = "Komplettera ditt konto med dina personliga uppgifter så att du blir synlig för andra.";
+
                         context.Response.Redirect("/AccountProfile/Edit");
                         return;
                     }

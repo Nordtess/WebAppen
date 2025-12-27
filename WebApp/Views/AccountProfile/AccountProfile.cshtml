@@ -38,7 +38,10 @@
                 <a class="btn-primary-custom" asp-controller="AccountProfile" asp-action="Edit">Ändra uppgifter</a>
                 <a class="btn-secondary-custom" asp-controller="AccountProfile" asp-action="ChangePassword">Byt lösenord</a>
                 <a class="btn-primary-custom" asp-controller="AccountProfile" asp-action="Deactivate">Deaktivera konto</a>
+                <a class="btn-danger-custom" asp-controller="AccountProfile" asp-action="Delete" style="margin-left:8px;">Radera konto</a>
             </div>
         </div>
     </section>
+
+    @* Delete moved to its own view (no inline danger zone here to avoid changing behavior) *@
 </div>

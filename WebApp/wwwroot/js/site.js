@@ -6,21 +6,22 @@
     const clickedBtn = btn.contains(e.target);
     const clickedPanel = panel.contains(e.target);
 
-    function closeMenu() {
-        panel.classList.remove("open");
-        btn.classList.remove("is-open");
-        btn.setAttribute("aria-expanded", "false");
-        panel.setAttribute("aria-hidden", "true");
-    }
+    // Sätter aria + klasser för open/closed i en enhetlig funktion
+    const setMenuState = (button, panelEl, isOpen) => {
+        panelEl.classList.toggle("open", isOpen);
+        button.classList.toggle("is-open", isOpen);
+        button.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        panelEl.setAttribute("aria-hidden", isOpen ? "false" : "true");
+    };
+
+    const closeMenu = () => setMenuState(btn, panel, false);
 
     if (clickedBtn) {
         e.preventDefault();
         e.stopPropagation();
 
-        const isOpen = panel.classList.toggle("open");
-        btn.classList.toggle("is-open", isOpen);
-        btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
-        panel.setAttribute("aria-hidden", isOpen ? "false" : "true");
+        const isOpen = !panel.classList.contains("open");
+        setMenuState(btn, panel, isOpen);
         return;
     }
 
@@ -44,6 +45,7 @@ document.addEventListener("keydown", (e) => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Stäng nl-menu-panel när en menypost klickas
     document.querySelectorAll(".nl-menu-item").forEach((item) => {
         item.addEventListener("click", () => {
             const btn = document.querySelector(".nl-burger");
@@ -57,6 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // Mail-indikator: visa antal och växla ikon efter unread
     const mail = document.querySelector(".nl-mail");
     if (mail) {
         const unread = parseInt(mail.dataset.unread || "0", 10);
@@ -78,6 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    /* --- User menu (toggle + click outside to close + Escape handling) --- */
     document.addEventListener("click", (e) => {
         const toggle = document.querySelector(".user-menu-toggle");
         const dropdown = document.querySelector(".user-dropdown");
@@ -92,10 +96,8 @@ document.addEventListener("DOMContentLoaded", () => {
             e.stopPropagation();
 
             const isOpen = dropdown.getAttribute("aria-hidden") === "false";
-
             dropdown.setAttribute("aria-hidden", isOpen ? "true" : "false");
             toggle.setAttribute("aria-expanded", isOpen ? "false" : "true");
-
             return;
         }
 
@@ -120,6 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // Stäng user-dropdown när en menypost i dropdown klickas
     document.querySelectorAll(".dropdown-item").forEach((item) => {
         item.addEventListener("click", () => {
             const toggle = document.querySelector(".user-menu-toggle");
@@ -133,6 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+/* --- Resize: stänger öppna user-dropdown vid fönsterändring (debounced) --- */
 let resizeTimer;
 window.addEventListener("resize", () => {
     clearTimeout(resizeTimer);
@@ -149,6 +153,7 @@ window.addEventListener("resize", () => {
     }, 250);
 });
 
+/* --- Sidebar / hamburger (app-sidebar) --- */
 (function () {
     const hamburger = document.querySelector(".hamburger-btn");
     const sidebar = document.querySelector(".app-sidebar");
@@ -157,6 +162,7 @@ window.addEventListener("resize", () => {
 
     if (!hamburger || !sidebar || !overlay) return;
 
+    // Öppna/stäng sidebar: håller aria + overlay state i synk
     function openSidebar() {
         sidebar.classList.add("open");
         overlay.classList.add("active");
@@ -171,7 +177,6 @@ window.addEventListener("resize", () => {
 
     function toggleSidebar() {
         const isOpen = sidebar.classList.contains("open");
-
         if (isOpen) {
             closeSidebar();
         } else {
@@ -191,7 +196,6 @@ window.addEventListener("resize", () => {
 
     document.addEventListener("keydown", (e) => {
         if (e.key !== "Escape") return;
-
         if (sidebar.classList.contains("open")) {
             closeSidebar();
         }
@@ -205,6 +209,7 @@ window.addEventListener("resize", () => {
         });
     });
 
+    // Stänger sidebar automatiskt vid resize till bredare vy (debounced)
     let sidebarResizeTimer;
     window.addEventListener("resize", () => {
         clearTimeout(sidebarResizeTimer);

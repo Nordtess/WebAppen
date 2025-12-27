@@ -1,0 +1,153 @@
+@model WebApp.ViewModels.ProjectDetailsVm
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pages/projectdetails.css" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "Projekt";
+}
+
+<div class="projectdetails-page">
+    <div class="projectdetails-banner" aria-label="Project-banner">
+        <img src="~/images/bannersandicons/inspectproject.png" alt="Banner" class="projectdetails-banner-img" />
+    </div>
+
+    <div class="projectdetails-container">
+        <div class="projectdetails-shell">
+
+            <div class="projectdetails-document">
+                <header class="projectdetails-top">
+                    <div class="projectdetails-top-grid">
+                        <div class="projectdetails-avatar" aria-hidden="true">
+                            <img src="@(string.IsNullOrWhiteSpace(Model.ImagePath) ? "/images/projects/rocketship.png" : Model.ImagePath)" alt="" />
+                        </div>
+
+                        <div class="projectdetails-top-center">
+                            <div class="projectdetails-title">@Model.Title</div>
+
+                            @if (!string.IsNullOrWhiteSpace(Model.ShortDescription))
+                            {
+                                <div class="projectdetails-sub">@Model.ShortDescription</div>
+                            }
+
+                            <div class="projectdetails-meta">Skapad: @Model.CreatedUtc.ToString("yyyy-MM-dd")</div>
+
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <div class="projectdetails-role">
+                                    @(Model.IsOwner ? "Ägare" : (Model.IsMember ? "Medlem" : ""))
+                                </div>
+                            }
+                        </div>
+
+                        <div class="projectdetails-top-right" aria-hidden="true"></div>
+                    </div>
+                </header>
+
+                <div class="projectdetails-facts">
+                    <div class="projectdetails-fact">
+                        <span class="projectdetails-fact-label">Skapare:</span>
+                        <span class="projectdetails-fact-value">@(string.IsNullOrWhiteSpace(Model.CreatedByName) ? (Model.CreatedByEmail ?? "Okänd") : Model.CreatedByName)</span>
+                    </div>
+                </div>
+
+                <div class="projectdetails-facts-sep" aria-hidden="true"></div>
+
+                <section class="projectdetails-section">
+                    <h2 class="projectdetails-section-title">Om projektet</h2>
+                    <p class="projectdetails-paragraph projectdetails-paragraph--center">@Model.Description</p>
+                </section>
+
+                <section class="projectdetails-section">
+                    <div class="projectdetails-section-head">
+                        <h2 class="projectdetails-section-title">Medlemmar</h2>
+                        <span class="projectdetails-section-sub">@Model.Participants.Count st</span>
+                    </div>
+
+                    <div class="projectdetails-members">
+                        <div class="projectdetails-muted projectdetails-muted--corner">
+                            Klicka på ett namn för att inspektera personens CV
+                        </div>
+
+                        @if (Model.Participants.Count == 0)
+                        {
+                            @* Intentionally blank when no members *@
+                        }
+                        else
+                        {
+                            foreach (var m in Model.Participants)
+                            {
+                                <a class="projectdetails-member" href="@Url.Action("ByUserId", "InspectCv", new { userId = m.UserId })">
+                                    <div class="projectdetails-member-left">
+                                        <div class="projectdetails-member-name">@m.FullName</div>
+                                        @if (!string.IsNullOrWhiteSpace(m.Headline))
+                                        {
+                                            <div class="projectdetails-member-headline">@m.Headline</div>
+                                        }
+                                    </div>
+                                    <div class="projectdetails-member-city">@m.City</div>
+                                </a>
+                            }
+                        }
+                    </div>
+
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <div class="projectdetails-actions">
+                            @if (!Model.IsOwner)
+                            {
+                                if (!Model.IsMember)
+                                {
+                                    <form method="post" action="@Url.Action("Join", "Projects", new { id = Model.Id })">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn-primary-custom">Gå med</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form method="post" action="@Url.Action("Leave", "Projects", new { id = Model.Id })">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn-secondary-custom">Lämna projekt</button>
+                                    </form>
+                                }
+                            }
+                        </div>
+                    }
+                </section>
+
+                @if (Model.TechKeys.Length > 0)
+                {
+                    <section class="projectdetails-section">
+                        <h2 class="projectdetails-section-title">Tech stack</h2>
+                        <div class="projectdetails-tech-row" aria-label="Tech stack">
+                            @foreach (var key in Model.TechKeys)
+                            {
+                                <span class="projectdetails-tech-tile">
+                                    <img class="projectdetails-tech-icon" src="~/images/svg/techstack/@(key).svg" alt="@key" />
+                                </span>
+                            }
+                        </div>
+                    </section>
+                }
+
+                <footer class="projectdetails-footer">
+                    <a class="btn-secondary-custom" href="@Url.Action("Index", "Projects")" style="text-decoration:none;">Tillbaka</a>
+                    @if (Model.IsOwner)
+                    {
+                        <a class="btn-primary-custom" href="@Url.Action("Edit", "Projects", new { id = Model.Id })" style="text-decoration:none;">Redigera</a>
+
+                        <form method="post" action="@Url.Action("Delete", "Projects", new { id = Model.Id })" style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn-danger-custom" onclick="return confirm('Är du säker på att du vill radera projektet? Detta kan inte ångras.');">
+                                Radera projekt
+                            </button>
+                        </form>
+                     }
+                </footer>
+            </div>
+
+        </div>
+    </div>
+</div>

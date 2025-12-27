@@ -1,0 +1,31 @@
+.editcv-project-preview {
+    margin-top: 12px;
+}
+
+
+.editcv-project-preview .mycv-projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+@media (max-width: 800px) {
+    .editcv-project-preview .mycv-projects-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+.editcv-project-preview .mycv-project-card {
+    cursor: default;
+}
+
+.editcv-project-preview .mycv-project-card:hover {
+    transform: none;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.05);
+}
+
+.editcv-project-preview .mycv-project-card::before {
+    opacity: 0;
+    transform: none;
+}

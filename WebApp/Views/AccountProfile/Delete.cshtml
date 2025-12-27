@@ -1,0 +1,49 @@
+@model WebApp.Domain.Identity.ApplicationUser
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/account-profile.css" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "Radera konto";
+}
+
+<div class="account-page">
+    <div class="account-banner" aria-label="Kontobanner">
+        <img src="~/images/bannersandicons/accountinfo3.png" alt="Banner" class="account-banner-img" />
+    </div>
+
+    <section class="account-card">
+        <div class="account-card-inner">
+            <h1 class="account-title">Radera konto</h1>
+
+            <p>Detta tar bort ditt konto permanent inklusive ditt CV, meddelanden och alla projekt du skapat. Åtgärden går inte att ångra.</p>
+
+            <form method="post" asp-controller="AccountProfile" asp-action="DeleteAccount">
+                @Html.AntiForgeryToken()
+
+                <div style="margin:8px 0;">
+                    <label for="confirmText"><strong>Skriv RADERA</strong> för att bekräfta</label><br />
+                    <input id="confirmText" name="ConfirmText" maxlength="20" placeholder="RADERA" class="editcv-input" />
+                </div>
+
+                <div style="margin:8px 0;">
+                    <label for="password"><strong>Ange lösenord</strong></label><br />
+                    <input id="password" name="Password" type="password" autocomplete="current-password" class="editcv-input" />
+                </div>
+
+                <div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+                    <button type="submit" class="btn-danger-custom">Radera konto permanent</button>
+                    <a class="btn-secondary-custom" asp-controller="AccountProfile" asp-action="Index">Avbryt</a>
+                </div>
+            </form>
+
+            @if (TempData["Error"] != null)
+            {
+                <div style="color:var(--danger); margin-top:8px; font-weight:800;">@TempData["Error"]</div>
+            }
+
+            @* Success message intentionally removed to avoid green text UI. *@
+        </div>
+    </section>
+</div>

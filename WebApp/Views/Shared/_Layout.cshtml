@@ -1,6 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using WebApp.Domain.Identity
+@using WebApp.Infrastructure.Services
 @inject UserManager<ApplicationUser> UserManager
+@inject IUnreadMessagesService UnreadMessages
 
 @{
     string Active(string controller)
@@ -15,11 +17,24 @@
         return p.StartsWith(pathPrefix, StringComparison.OrdinalIgnoreCase) ? "active" : "";
     }
 
-    // Placeholder for testing (will be replaced by real unread count later)
-    int unreadCount = 3;
-
     var isAuthenticated = User?.Identity?.IsAuthenticated == true;
     var userEmail = isAuthenticated ? (User?.Identity?.Name ?? "") : "";
+
+    
+    var principal = User ?? Context?.User;
+
+    var currentUserId = (isAuthenticated && principal is not null)
+        ? UserManager.GetUserId(principal)
+        : null;
+
+    var toastTitle = ViewData["ToastTitle"] as string ?? (TempData.Peek("ToastTitle") as string);
+    var toastMessage = ViewData["ToastMessage"] as string ?? (TempData.Peek("ToastMessage") as string);
+
+    var unreadCount = (isAuthenticated && principal is not null)
+        ? await UnreadMessages.GetUnreadCountAsync(principal)
+        : 0;
+    var hasUnread = unreadCount > 0;
+    var noccoIcon = hasUnread ? "~/images/svg/icons/noccomessage.svg" : "~/images/svg/icons/noccosleeping.svg";
 }
 
 <!DOCTYPE html>
@@ -34,6 +49,9 @@
     <link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/buttons.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/cursor.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/mouse-circle.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/space-background.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/toast.css" asp-append-version="true" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,17 +77,21 @@
                 </div>
 
                 <div class="header-user-area">
-                    @* Only show mail/unread UI when logged in *@
+                    @* Only show header user UI when logged in *@
                     @if (isAuthenticated)
                     {
-                        <img src="~/images/svg/mail.svg"
+                        @* Always show Nocco: sleeping when 0 unread, message (animated) when >0 *@
+                        <img src="@Url.Content(noccoIcon)"
                              alt="Meddelanden"
-                             class="icon-mail" />
+                             class="icon-sleepingnocco"
+                             id="headerNocco"
+                             data-sleep-src="@Url.Content("~/images/svg/icons/noccosleeping.svg")"
+                             data-message-src="@Url.Content("~/images/svg/icons/noccomessage.svg")" />
 
-                        @if (unreadCount > 0)
-                        {
-                            <span class="unread-text">Du har <strong>@unreadCount</strong> olästa meddelanden</span>
-                        }
+                        <div id="headerUnreadArea" style="display:inline-block;">
+                            @* Only show text when there are unread messages *@
+                            <span class="unread-text" style="@(hasUnread ? "" : "display:none;")">Du har <strong id="headerUnreadCount">@unreadCount</strong> olästa meddelanden</span>
+                        </div>
 
                         <span class="user-email">@userEmail</span>
                     }
@@ -89,7 +111,7 @@
                     <span class="link-text">Sök CV</span>
                 </a>
 
-                <a class="sidebar-link @Active("Projects")" asp-controller="Projects" asp-action="Index">
+                <a class="sidebar-link @(Context?.Request?.Path.Value?.Equals("/Projects", StringComparison.OrdinalIgnoreCase) == true ? "active" : "")" asp-controller="Projects" asp-action="Index">
                     <span class="link-icon">📁</span>
                     <span class="link-text">Alla projekt</span>
                 </a>
@@ -111,6 +133,12 @@
                         <span class="link-icon">👤</span>
                         <span class="link-text">Mitt CV</span>
                     </a>
+
+                    <a class="sidebar-link @ActivePathStartsWith("/Projects/Create")" asp-controller="Projects" asp-action="Create">
+                        <span class="link-icon">🧩</span>
+                        <span class="link-text">Skapa projekt</span>
+                    </a>
+
                     <a class="sidebar-link @Active("Messages")" asp-controller="Messages" asp-action="Index">
                         <span class="link-icon">💬</span>
                         <span class="link-text">Meddelanden</span>
@@ -134,6 +162,49 @@
         <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
         <main class="app-main" role="main">
+            <div class="space-background" aria-hidden="true">
+                <svg width="0" height="0" style="position: absolute;">
+                    <defs>
+                        <path id="northStarShape" d="M10 0 L12 8 L20 10 L12 12 L10 20 L8 12 L0 10 L8 8 Z" fill="#FFFFFF" />
+
+                        
+                        <path id="geminiStarShape" fill="#F8F8FF" opacity="1.000000" stroke="none" d=" M404.422729,286.330872   C403.151978,288.073212 402.086517,289.534271 400.073456,292.294708   C455.670532,295.564514 509.861572,301.798462 563.166565,314.871307   C558.758484,317.515411 553.867737,318.062988 549.170837,319.046906   C516.568970,325.876526 483.633789,330.613190 450.513763,333.995270   C436.113800,335.465698 421.638336,336.196930 407.197174,337.264282   C405.251953,337.408081 402.871063,336.859619 401.927612,339.156036   C401.057129,341.274719 403.174835,342.374756 404.285614,343.710785   C417.819427,359.989044 430.147614,377.153625 441.876099,394.759338   C442.686859,395.976379 443.694519,397.159332 443.462189,399.885132   C422.136139,386.667633 402.637390,371.809509 382.960754,356.457306   C379.203308,411.326538 372.663818,465.309235 360.389923,519.019653   C356.128143,513.663635 348.218231,469.012695 344.404877,438.336517   C341.022369,411.126343 338.871246,383.826111 336.649323,355.485504   C316.493103,370.890869 297.680298,386.611359 276.041656,398.525116   C288.122711,377.051453 303.529999,358.040131 319.133484,337.795197   C263.410919,334.841370 209.269562,327.963928 155.864349,315.996033   C155.845047,315.377228 155.825745,314.758423 155.806458,314.139618   C162.683075,312.660248 169.541550,311.089722 176.439590,309.718018   C200.929901,304.848175 225.604523,301.114014 250.389359,298.141296   C270.044464,295.783813 289.780487,294.248779 309.530365,292.916595   C310.859772,292.826965 312.205261,292.883728 313.521576,292.709015   C317.475494,292.184082 318.155396,290.709106 315.688324,287.508087   C311.013580,281.442566 306.115265,275.549377 301.440399,269.483948   C292.996948,258.528992 285.134644,247.158432 277.586853,235.570953   C276.879669,234.485260 275.856781,233.511032 275.928558,230.874649   C287.063599,236.964798 296.735748,244.223999 306.421295,251.403687   C316.295563,258.723267 325.921844,266.377350 336.803680,274.769562   C339.921448,219.097198 346.506042,164.857864 359.471191,111.411469   C372.788971,164.756348 379.032867,219.014389 382.184021,275.029907   C402.688599,259.000305 421.795349,243.358063 443.500702,231.109131   C432.385803,250.785172 418.635040,268.507324 404.422729,286.330872  z" />
+
+                        <filter id="whiteLaserGlow" x="-100%" y="-100%" width="300%" height="300%">
+                            <feDropShadow dx="0" dy="0" stdDeviation="1.2" flood-color="#FFFFFF" flood-opacity="1" />
+                            <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#FFFFFF" flood-opacity="0.7" />
+                        </filter>
+
+                        
+                        <filter id="mintLaserGlow" x="-100%" y="-100%" width="300%" height="300%">
+                            <feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#7FFFD4" flood-opacity="0.9" />
+                            <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#7FFFD4" flood-opacity="0.5" />
+                        </filter>
+
+                       
+                        <linearGradient id="shootingStarMintGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#7FFFD4" stop-opacity="0.0" />
+                            <stop offset="30%" stop-color="#7FFFD4" stop-opacity="0.55" />
+                            <stop offset="100%" stop-color="#7FFFD4" stop-opacity="0.0" />
+                        </linearGradient>
+
+                        <linearGradient id="shootingStarGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0" />
+                            <stop offset="100%" stop-color="#FFFFFF" stop-opacity="1" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+
+                <div id="starsContainer" class="stars-container"></div>
+            </div>
+
+            @if (Active("Home") == "active")
+            {
+                <div class="space-moon" aria-hidden="true">
+                    <img src="~/images/svg/space/moon.svg" alt="" />
+                </div>
+            }
+
             <div class="main-inner">
                 @RenderBody()
 
@@ -146,8 +217,55 @@
         </main>
     </div>
 
+    @* Toast notifications *@
+    @if (!string.IsNullOrWhiteSpace(toastMessage))
+    {
+        <div class="toast-wrap" aria-live="polite">
+            <div class="toast" data-toast>
+                <div class="toast-ico" aria-hidden="true">i</div>
+
+                <div class="toast-content">
+                    <div>
+                        @if (!string.IsNullOrWhiteSpace(toastTitle))
+                        {
+                            <p class="toast-title">@toastTitle</p>
+                        }
+                        <div class="toast-msg">@toastMessage</div>
+                    </div>
+
+                    <div class="toast-actions">
+                        <button class="toast-ok" type="button" data-toast-close>Ok</button>
+                    </div>
+                </div>
+
+                <button class="toast-close" type="button" aria-label="Stäng" data-toast-close>×</button>
+            </div>
+        </div>
+
+        @* Clear TempData toasts only if they were sourced from TempData *@
+        @if (ViewData["ToastMessage"] is null)
+        {
+            TempData.Remove("ToastTitle");
+            TempData.Remove("ToastMessage");
+        }
+    }
+
+    <div class="circle" aria-hidden="true"></div>
+
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/pages/formValidationUi.js" asp-append-version="true"></script>
+    <script src="~/js/cursor-click.js" asp-append-version="true"></script>
+    <script src="~/js/mouse-circle.js" asp-append-version="true"></script>
+    <script src="~/js/space-background.js" asp-append-version="true"></script>
+    <script src="~/js/toast.js" asp-append-version="true"></script>
+    <script src="~/js/placeholder-clear.js" asp-append-version="true"></script>
+    @if (string.Equals(ViewContext.RouteData.Values["controller"]?.ToString(), "Home", StringComparison.OrdinalIgnoreCase)
+       && string.Equals(ViewContext.RouteData.Values["action"]?.ToString(), "Index", StringComparison.OrdinalIgnoreCase))
+    {
+        <script src="~/js/space-meteor.js" asp-append-version="true"></script>
+        <script src="~/js/space-ufo.js" asp-append-version="true"></script>
+    }
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

@@ -12,6 +12,11 @@
     --active-bg: rgba(0, 0, 0, 0.10);
     --mint: #7fffd4;
     --mint-soft: rgba(127, 255, 212, 0.18);
+    --space-text: #F8F8FF;
+    --header-icon-size: 97px;
+    --sb-track-color: transparent;
+    --sb-thumb-color: #7FFFD4;
+    --sb-thumb-hover: #98FFEB;
 }
 
 html,
@@ -81,6 +86,7 @@ p {
     align-items: center;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
     z-index: 1000;
+    overflow: visible;
 }
 
 .header-content {
@@ -88,11 +94,13 @@ p {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    overflow: visible;
 }
 
 .header-left {
     display: flex;
     align-items: center;
+    min-width: 0;
 }
 
 .hamburger-btn {
@@ -140,13 +148,20 @@ p {
     display: flex;
     align-items: center;
     gap: 12px;
+    flex-wrap: nowrap;
+    overflow: visible;
 }
 
-.icon-mail {
-    width: 26px;
-    height: 26px;
-    opacity: 0.85;
+.icon-sleepingnocco {
+    width: var(--header-icon-size);
+    height: var(--header-icon-size);
+    opacity: 0.9;
     flex-shrink: 0;
+    display: block;
+    margin-top: calc((var(--header-height) - var(--header-icon-size)) / 2);
+    margin-bottom: calc((var(--header-height) - var(--header-icon-size)) / 2);
+
+    transform: translateY(calc(var(--header-icon-size) * -0.05));
 }
 
 .unread-text {
@@ -155,6 +170,7 @@ p {
     color: var(--text-color);
     opacity: 0.85;
     white-space: nowrap;
+    line-height: 1;
 }
 
 .unread-text strong {
@@ -167,6 +183,7 @@ p {
     color: var(--text-color);
     opacity: 0.9;
     white-space: nowrap;
+    line-height: 1;
 }
 
 .app-sidebar {
@@ -244,11 +261,12 @@ p {
     overflow-x: hidden;
     height: 100%;
     scrollbar-width: thin;
-    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
 }
 
+
 .app-main::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
 }
 
 .app-main::-webkit-scrollbar-track {
@@ -256,12 +274,18 @@ p {
 }
 
 .app-main::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
+    background-color: var(--sb-thumb-color);
     border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    filter:
+        drop-shadow(0 0 2px #7FFFD4)
+        drop-shadow(0 0 6px #7FFFD4);
 }
 
 .app-main::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.3);
+    background-color: var(--sb-thumb-hover);
+    filter: drop-shadow(0 0 10px #7FFFD4);
 }
 
 .main-inner {
@@ -274,18 +298,18 @@ p {
 .app-footer {
     margin-top: auto;
     padding-top: 40px;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid rgba(248, 248, 255, 0.35);
 }
 
 .footer-content {
     text-align: center;
     font-size: 13px;
-    color: rgba(0, 0, 0, 0.6);
+    color: rgba(248, 248, 255, 0.80);
     padding-bottom: 20px;
 }
 
 .footer-content a {
-    color: var(--text-color);
+    color: var(--space-text);
     text-decoration: none;
     font-weight: 500;
     transition: opacity 0.2s ease;
@@ -313,6 +337,7 @@ p {
         --shell-padding-sides: 8px;
         --shell-gap: 8px;
         --header-height: 60px;
+        --header-icon-size: 97px;
     }
 
     .app-shell {
@@ -328,17 +353,22 @@ p {
         display: flex;
     }
 
+    .icon-sleepingnocco {
+        display: none !important;
+    }
+
     .user-email {
-        display: none;
+        display: none !important;
     }
 
     .unread-text {
-        font-size: 13px;
+        font-size: 12px;
+        white-space: normal;
+        text-align: right;
     }
 
-    .icon-mail {
-        width: 22px;
-        height: 22px;
+    .header-user-area {
+        gap: 8px;
     }
 
     .app-sidebar {
@@ -388,12 +418,14 @@ p {
     .app-footer {
         margin-top: auto;
         padding-top: 30px;
+        border-top: 1px solid rgba(248, 248, 255, 0.35);
     }
 
     .footer-content {
         font-size: 12px;
         padding: 0 10px;
         padding-bottom: 16px;
+        color: rgba(248, 248, 255, 0.80);
     }
 
     h1 {

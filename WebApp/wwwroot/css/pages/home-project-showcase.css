@@ -1,0 +1,33 @@
+.home-project-showcase {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.home-project-showcase .home-project-showcase__cardwrap {
+    width: min(100%, 360px);
+}
+
+
+.home-project-showcase .projects-doc {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.home-project-showcase .projects-doc-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.home-project-showcase .projects-doc-bottom {
+    margin-top: auto;
+    padding-top: 14px;
+}
+
+
+.home-project-showcase .projects-doc-sep {
+    margin: 70px auto 10px;
+}

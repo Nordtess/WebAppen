@@ -1,0 +1,160 @@
+:root {
+    --space-mint: #7FFFD4;
+    --space-purple-1: #3a225f;
+    --space-purple-2: #150a24;
+}
+
+
+.app-main {
+    position: relative;
+}
+
+
+.main-inner {
+    min-height: 100%;
+    position: relative;
+    z-index: 10;
+}
+
+
+.space-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    border-radius: inherit;
+    overflow: visible;
+    background: linear-gradient(180deg, var(--space-mint) -10%, var(--space-purple-1) 40%, var(--space-purple-2) 100%);
+}
+
+.stars-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: visible;
+}
+
+.space-background svg {
+    position: absolute;
+}
+
+@keyframes whiteTwinkle {
+    0%, 100% {
+        opacity: 0.22;
+        transform: scale(0.75) rotate(0deg);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.18) rotate(5deg);
+    }
+}
+
+.laser-star {
+    position: absolute;
+    filter: url(#whiteLaserGlow);
+    animation: whiteTwinkle infinite ease-in-out;
+    transform-origin: center;
+    opacity: 0.22;
+    transform: scale(0.75) rotate(0deg);
+    animation-fill-mode: both;
+    will-change: transform, opacity;
+}
+
+
+
+.space-moon {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    z-index: 6;
+    pointer-events: none;
+}
+
+.space-moon img {
+    width: 308px;
+    height: 308px;
+    opacity: 0.95;
+    display: block;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+
+@media (max-width: 800px) {
+    .space-moon {
+        top: 12px;
+        right: 12px;
+    }
+
+    .space-moon img {
+        width: 227px;
+        height: 227px;
+    }
+
+   
+    .space-moon,
+    #meteorLayer,
+    #ufoLayer {
+        display: none;
+    }
+}
+
+
+#meteorLayer {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.space-meteor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+
+    background-image: url('/images/svg/space/meteor.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+}
+
+
+
+#ufoLayer {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.space-ufo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+
+    background-image: url('/images/svg/space/ufo.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+}
+

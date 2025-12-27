@@ -1,0 +1,268 @@
+﻿@model WebApp.Controllers.InspectCvController.InspectCvViewModel
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/inspectcv.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pages/mycv-projects.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "CV";
+
+    var avatarSrc = string.IsNullOrWhiteSpace(Model.ProfileImagePath)
+        ? Url.Content("~/images/bannersandicons/cvplaceholder2.png")
+        : Url.Content(Model.ProfileImagePath);
+
+    var headline = string.IsNullOrWhiteSpace(Model.Headline)
+        ? "Systemvetenskap • Fullstack"
+        : Model.Headline;
+
+    var privacyText = Model.IsPrivate
+        ? $"{Model.FirstName} har en privat profil"
+        : $"{Model.FirstName} har en publik profil";
+
+    // "Liknande" => OR match (at least one of my skills)
+    var findSimilarUrl = Url.Action("Index", "SearchCv", new { mode = "similar" });
+}
+
+<div class="cv-page">
+    <div class="cv-banner" aria-label="CV-banner">
+        <img src="~/images/bannersandicons/inspectcv.png" alt="Banner" class="cv-banner-img" />
+    </div>
+
+    <div class="inspectcv-readonly-note">
+        <div>@privacyText</div>
+    </div>
+
+    <div class="cv-card">
+        <div class="cv-topbar">
+            <div class="cv-visits">
+                Antal besök: <span class="cv-visits-num">@Model.VisitCount</span>
+            </div>
+
+            <div class="inspectcv-actions">
+                <a class="btn-secondary-custom" href="@findSimilarUrl" style="text-decoration:none;">Hitta liknande personer</a>
+                <a class="btn-secondary-custom" href="@Url.Action("Export", "InspectCv", new { userId = Model.UserId })" style="text-decoration:none;">Export profile (XML)</a>
+            </div>
+        </div>
+
+        <div class="cv-divider"></div>
+
+        <div class="cv-grid">
+            <div class="cv-left">
+                <div class="cv-profile-card">
+                    <div class="cv-avatar" aria-label="Profilbild">
+                        <img class="cv-avatar-img" src="@avatarSrc" alt="Profilbild" />
+                    </div>
+
+                    <div class="cv-hero-text">
+                        <div class="cv-name">@Model.FullName</div>
+                        <div class="cv-role">@headline</div>
+                    </div>
+                </div>
+
+                <section class="cv-box">
+                    <h3 class="cv-box-title">Kontakt</h3>
+
+                    <div class="cv-contact-list">
+                        <div class="cv-contact-item">
+                            <span class="cv-contact-ico">✉</span>
+                            <div>
+                                <div class="cv-contact-k">Email</div>
+                                <div class="cv-contact-v">@Model.Email</div>
+                            </div>
+                        </div>
+
+                        <div class="cv-contact-item">
+                            <span class="cv-contact-ico">📍</span>
+                            <div>
+                                <div class="cv-contact-k">Plats</div>
+                                <div class="cv-contact-v">@Model.City</div>
+                            </div>
+                        </div>
+
+                        <div class="cv-contact-item">
+                            <span class="cv-contact-ico">☎</span>
+                            <div>
+                                <div class="cv-contact-k">Telefon</div>
+                                <div class="cv-contact-v">@Model.Phone</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="cv-box">
+                    <h3 class="cv-box-title">Kompetenser</h3>
+                    <div class="cv-skill-grid">
+                        @if (Model.Skills is { Length: > 0 })
+                        {
+                            foreach (var skill in Model.Skills)
+                            {
+                                <span class="cv-skill-pill">@skill</span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="cv-paragraph cv-paragraph-muted">Inga kompetenser ännu.</span>
+                        }
+                    </div>
+                </section>
+            </div>
+
+            <div class="cv-right">
+                <section class="cv-box">
+                    <h3 class="cv-box-title">Profil</h3>
+                    @if (!string.IsNullOrWhiteSpace(Model.AboutMe))
+                    {
+                        <p class="cv-paragraph">@Model.AboutMe</p>
+                    }
+                    else
+                    {
+                        <p class="cv-paragraph cv-paragraph-muted">Ingen profiltext ännu.</p>
+                    }
+                </section>
+
+                <section class="cv-box">
+                    <h3 class="cv-box-title">Utbildningar</h3>
+
+                    @if (Model.Educations is { Count: > 0 })
+                    {
+                        foreach (var e in Model.Educations)
+                        {
+                            <div class="cv-item">
+                                <div class="cv-item-title">@e.School</div>
+                                <div class="cv-item-sub">@e.Years &#8226; @e.Program</div>
+                                @if (!string.IsNullOrWhiteSpace(e.Note))
+                                {
+                                    <div class="cv-item-sub cv-item-muted">@e.Note</div>
+                                }
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="cv-paragraph cv-paragraph-muted">Inga utbildningar tillagda ännu.</p>
+                    }
+                </section>
+
+                <section class="cv-box">
+                    <h3 class="cv-box-title">Tidigare erfarenhet</h3>
+
+                    @if (Model.Experiences is { Count: > 0 })
+                    {
+                        foreach (var ex in Model.Experiences)
+                        {
+                            <div class="cv-item">
+                                <div class="cv-item-title">@ex.Company</div>
+                                <div class="cv-item-sub">@ex.Years &#8226; @ex.Role</div>
+                                @if (!string.IsNullOrWhiteSpace(ex.Description))
+                                {
+                                    <div class="cv-item-sub cv-item-muted">@ex.Description</div>
+                                }
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="cv-paragraph cv-paragraph-muted">Ingen erfarenhet tillagd ännu.</p>
+                    }
+                </section>
+
+                <section class="cv-box">
+                    <div class="mycv-projects-header">
+                        <h3 class="cv-box-title" style="margin: 0;">Projekt</h3>
+                    </div>
+
+                    <div class="mycv-projects-card">
+                        <div class="mycv-projects-grid">
+                            @if (Model.Projects is null || Model.Projects.Count == 0)
+                            {
+                                <div class="mycv-projects-empty">Inga projekt valda ännu.</div>
+                            }
+                            else
+                            {
+                                foreach (var p in Model.Projects.Take(4))
+                                {
+                                    <a class="mycv-project-card" href="@Url.Action("Details", "Projects", new { id = p.Id })" aria-label="Visa projekt: @p.Title">
+                                        <div class="mycv-project-doc">
+                                            <div class="mycv-project-doc-top">
+                                                <div class="mycv-project-doc-grid">
+                                                    <div class="mycv-project-doc-avatar" aria-hidden="true">
+                                                        <img src="@(string.IsNullOrWhiteSpace(p.ImagePath) ? "/images/projects/rocketship.png" : p.ImagePath)" alt="" />
+                                                    </div>
+
+                                                    <div class="mycv-project-doc-center">
+                                                        <div class="mycv-project-doc-title">@p.Title</div>
+                                                        <div class="mycv-project-doc-createdby">Skapare: @p.CreatedBy</div>
+                                                        <div class="mycv-project-doc-meta">Skapad: @p.CreatedUtc.ToString("yyyy-MM-dd")</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="mycv-project-doc-body">
+                                                @if (!string.IsNullOrWhiteSpace(p.ShortDescription))
+                                                {
+                                                    <div class="mycv-project-pill">
+                                                        <div class="mycv-project-pill__text">@p.ShortDescription</div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="mycv-project-pill mycv-project-pill--muted">
+                                                        <div class="mycv-project-pill__text">Ingen kort beskrivning.</div>
+                                                    </div>
+                                                }
+
+                                                @if (p.TechKeys is { Length: > 0 })
+                                                {
+                                                    <div class="mycv-project-doc-bottom">
+                                                        <div class="mycv-project-doc-sep" aria-hidden="true"></div>
+                                                        <div class="mycv-project-doc-tech" aria-label="Tech stack">
+                                                            @foreach (var key in p.TechKeys)
+                                                            {
+                                                                <span class="mycv-project-doc-tech-tile">
+                                                                    <img class="mycv-project-doc-tech-icon" src="~/images/svg/techstack/@(key).svg" alt="@key" />
+                                                                </span>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                     </a>
+                                }
+                            }
+                        </div>
+                    </div>
+                </section>
+
+                <section class="cv-box">
+                    <h3 class="inspectcv-message-title">Meddelande</h3>
+
+                    <details class="inspectcv-message-panel">
+                        <summary class="btn-primary-custom inspectcv-message-summary">Skicka meddelande</summary>
+
+                        <div class="inspectcv-help">Skickar till @Model.FullName</div>
+
+                        <form method="post" class="inspectcv-form" asp-action="SendMessage" asp-controller="InspectCv" asp-route-userId="@Model.UserId">
+                            @Html.AntiForgeryToken()
+
+                            <div class="inspectcv-form-row">
+                                <label class="inspectcv-label" for="SenderName">Ditt namn</label>
+                                <input class="inspectcv-input" id="SenderName" name="SenderName" value="@Model.MessagePrefillName" @(Model.MessageNameReadonly ? "readonly" : "") required />
+                            </div>
+
+                            <div class="inspectcv-form-row">
+                                <label class="inspectcv-label" for="Body">Meddelande</label>
+                                <textarea class="inspectcv-textarea" id="Body" name="Body" minlength="1" maxlength="500" required></textarea>
+                                <div class="inspectcv-help">1–500 tecken</div>
+                            </div>
+
+                            <button type="submit" class="btn-secondary-custom">Skicka</button>
+                        </form>
+                    </details>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

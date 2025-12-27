@@ -1,14 +1,19 @@
-﻿@{
+﻿@model WebApp.Controllers.HomeIndexVm
+
+@{
     ViewData["Title"] = "Home";
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/pages/home.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pages/projects.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pages/home-project-showcase.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pages/searchcv.css" asp-append-version="true" />
 }
 
 <div class="home-page">
     <div class="home-hero">
-        <img class="home-logo" src="~/images/logos/logo.png" alt="NotLinkedIn logo" />
+        <img class="home-logo" src="~/images/svg/icons/logo.svg" alt="NotLinkedIn logo" />
         <h1 class="home-h1">Välkommen till NotLinkedIn!</h1>
     </div>
 
@@ -87,103 +92,127 @@
         <div class="home-card-body home-cv-body">
             <div class="cv-carousel" data-carousel="cv">
                 <div class="carousel-nav-zone left">
-                    <button class="cv-nav cv-nav--prev" type="button" aria-label="Föregående profil">‹</button>
+                    @await Html.PartialAsync("_CarouselNavButtons")
                 </div>
 
                 <div class="cv-stage" aria-label="Karusell med CV-profiler">
-                    <a class="cv-slide is-active" href="#" data-href="#" aria-label="Öppna profil: Jamie Larsson">
-                        <div class="cv-mini">
-                            <div class="cv-mini-top">
-                                <div class="cv-mini-avatar">JL</div>
-                                <div class="cv-mini-id">
-                                    <div class="cv-mini-name">Jamie Larsson</div>
-                                    <div class="cv-mini-role">Systemvetenskap • Fullstack</div>
+                    @{ 
+                        // Hantera null och fallback till tom lista
+                        var cvs = Model.LatestPublicCvs ?? new List<WebApp.Controllers.HomeIndexVm.CvCardVm>();
+                        if (cvs.Count == 0)
+                        {
+                            <a class="cv-slide is-active" href="#" data-href="#" aria-label="Inga profiler">
+                                <div class="cv-mini">
+                                    <div class="cv-mini-top">
+                                        <div class="cv-mini-avatar">?</div>
+                                        <div class="cv-mini-id">
+                                            <div class="cv-mini-name">Inga publika CV</div>
+                                            <div class="cv-mini-role">Det finns inga publika profiler ännu.</div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
+                        }
+                        else
+                        {
+                            for (var i = 0; i < cvs.Count; i++)
+                            {
+                                var cv = cvs[i];
+                                var isActive = i == 0;
 
-                            <div class="cv-mini-meta">
-                                <span class="cv-mini-dot">📍</span>
-                                <span class="cv-mini-loc">Örebro</span>
-                            </div>
+                                // Välj avatar eller fallback-bild
+                                var avatarSrc = string.IsNullOrWhiteSpace(cv.ProfileImagePath)
+                                    ? Url.Content("~/images/bannersandicons/cvplaceholder2.png")
+                                    : Url.Content(cv.ProfileImagePath);
 
-                            <div class="cv-mini-chips">
-                                <span class="cv-chip">ASP.NET</span>
-                                <span class="cv-chip">MVC</span>
-                                <span class="cv-chip">SQL</span>
-                                <span class="cv-chip">C#</span>
-                            </div>
+                                // Använd rubrik eller default-texter
+                                var headline = string.IsNullOrWhiteSpace(cv.Headline)
+                                    ? "Systemvetenskap • Fullstack"
+                                    : cv.Headline;
 
-                            <p class="cv-mini-desc">
-                                Ren layout med tydliga sektioner: om mig, utbildning, erfarenhet och projekt – redo att kopplas mot SQL.
-                            </p>
-                        </div>
-                    </a>
+                                // Trunkera "about" för att hålla korta kort i karusellen
+                                var about = string.IsNullOrWhiteSpace(cv.AboutMe) ? "" : cv.AboutMe.Trim();
+                                if (about.Length > 120) about = about[..120] + "…";
 
-                    <a class="cv-slide" href="#" data-href="#" aria-label="Öppna profil: Alva Svensson">
-                        <div class="cv-mini">
-                            <div class="cv-mini-top">
-                                <div class="cv-mini-avatar">AS</div>
-                                <div class="cv-mini-id">
-                                    <div class="cv-mini-name">Alva Svensson</div>
-                                    <div class="cv-mini-role">Frontend • UI/UX</div>
-                                </div>
-                            </div>
+                                <a class="cv-slide @(isActive ? "is-active" : "")" href="/InspectCV/@cv.UserId" data-href="/InspectCV/@cv.UserId" aria-label="Öppna CV: @cv.FullName">
+                                    <div class="searchcv-card">
+                                        <div class="searchcv-doc">
+                                            <div class="searchcv-doc-top">
+                                                <div class="searchcv-doc-grid">
+                                                    <div class="searchcv-doc-avatar" aria-hidden="true">
+                                                        <img src="@avatarSrc" alt="" />
+                                                    </div>
 
-                            <div class="cv-mini-meta">
-                                <span class="cv-mini-dot">📍</span>
-                                <span class="cv-mini-loc">Stockholm</span>
-                            </div>
+                                                    <div class="searchcv-doc-center">
+                                                        <div class="searchcv-doc-title">@cv.FullName</div>
+                                                        <div class="searchcv-doc-sub">@headline</div>
+                                                        <div class="searchcv-doc-meta">
+                                                            <span class="searchcv-dot" aria-hidden="true">📍</span>
+                                                            <span>@(string.IsNullOrWhiteSpace(cv.City) ? "—" : cv.City)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                            <div class="cv-mini-chips">
-                                <span class="cv-chip">HTML</span>
-                                <span class="cv-chip">CSS</span>
-                                <span class="cv-chip">JavaScript</span>
-                                <span class="cv-chip">Figma</span>
-                            </div>
+                                            <div class="searchcv-doc-body">
+                                                @if (!string.IsNullOrWhiteSpace(about))
+                                                {
+                                                    <div class="searchcv-about">@about</div>
+                                                }
 
-                            <p class="cv-mini-desc">
-                                Fokus på tydlig presentation och visuell hierarki – lätt att skanna, lätt att minnas.
-                            </p>
-                        </div>
-                    </a>
+                                                @if (cv.Educations is { Length: > 0 })
+                                                {
+                                                    <div class="searchcv-lines" aria-label="Utbildningar">
+                                                        <div class="searchcv-lines-title">Utbildning</div>
+                                                        @foreach (var line in cv.Educations)
+                                                        {
+                                                            <div class="searchcv-line">@line</div>
+                                                        }
+                                                    </div>
+                                                }
 
-                    <a class="cv-slide" href="#" data-href="#" aria-label="Öppna profil: Elias Karlsson">
-                        <div class="cv-mini">
-                            <div class="cv-mini-top">
-                                <div class="cv-mini-avatar">EK</div>
-                                <div class="cv-mini-id">
-                                    <div class="cv-mini-name">Elias Karlsson</div>
-                                    <div class="cv-mini-role">Backend • Databaser</div>
-                                </div>
-                            </div>
+                                                @if (cv.Experiences is { Length: > 0 })
+                                                {
+                                                    <div class="searchcv-lines" aria-label="Erfarenheter">
+                                                        <div class="searchcv-lines-title">Erfarenhet</div>
+                                                        @foreach (var line in cv.Experiences)
+                                                        {
+                                                            <div class="searchcv-line">@line</div>
+                                                        }
+                                                    </div>
+                                                }
 
-                            <div class="cv-mini-meta">
-                                <span class="cv-mini-dot">📍</span>
-                                <span class="cv-mini-loc">Göteborg</span>
-                            </div>
+                                                <div class="searchcv-doc-bottom">
+                                                    <div class="searchcv-skills" aria-label="Kompetenser">
+                                                        @if (cv.Skills is { Length: > 0 })
+                                                        {
+                                                            foreach (var s in cv.Skills.Take(8))
+                                                            {
+                                                                <span class="searchcv-skill">@s</span>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="searchcv-skill searchcv-skill--muted">Inga kompetenser</span>
+                                                        }
+                                                    </div>
 
-                            <div class="cv-mini-chips">
-                                <span class="cv-chip">C#</span>
-                                <span class="cv-chip">SQL</span>
-                                <span class="cv-chip">API</span>
-                                <span class="cv-chip">Azure</span>
-                            </div>
-
-                            <p class="cv-mini-desc">
-                                Byggd för rekryterare: snabb överblick, smarta taggar och balanserad fokus på innehåll.
-                            </p>
-                        </div>
-                    </a>
+                                                    <div class="searchcv-doc-sep" aria-hidden="true"></div>
+                                                    <div class="searchcv-doc-foot">
+                                                        <span><strong>@cv.ProjectCount</strong> projekt på CV</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            }
+                        }
+                    }
                 </div>
 
                 <div class="carousel-nav-zone right">
-                    <button class="cv-nav cv-nav--next" type="button" aria-label="Nästa profil">›</button>
-                </div>
-
-                <div class="cv-dots" aria-label="Välj profil">
-                    <button class="cv-dot is-active" type="button" aria-label="Visa profil 1"></button>
-                    <button class="cv-dot" type="button" aria-label="Visa profil 2"></button>
-                    <button class="cv-dot" type="button" aria-label="Visa profil 3"></button>
+                    @await Html.PartialAsync("_CarouselNavButtonRight")
                 </div>
             </div>
         </div>
@@ -199,6 +228,8 @@
     </p>
 
     <section class="home-card home-project-card">
+        <img class="home-project-badge" src="~/images/checklatestfix.png" alt="" aria-hidden="true" />
+
         <div class="home-banner" aria-hidden="true">
             <img class="home-banner-img home-banner-img--project"
                  src="~/images/bannersandicons/projectsexample.png"
@@ -206,26 +237,80 @@
         </div>
 
         <div class="home-card-body home-project-body">
-            <article class="project-spotlight" aria-label="Senast upplagda projektet">
-                <div class="project-title">NotLinkedIn — WebApp</div>
-                <div class="project-sub">Upplagt: 2025-12-18 • av Jamie Larsson</div>
+            <div class="home-project-showcase">
+                @if (Model.LatestProject is null)
+                {
+                    <div class="projects-empty">Inga projekt finns ännu.</div>
+                }
+                else
+                {
+                    var p = Model.LatestProject;
+                    <div class="home-project-showcase__cardwrap">
+                        <a class="projects-card" href="@Url.Action("Details", "Projects", new { id = p.Id })" aria-label="Visa projekt: @p.Title" style="display:block;">
+                            <div class="projects-doc">
+                                <div class="projects-doc-top">
+                                    <div class="projects-doc-grid">
+                                        <div class="projects-doc-avatar" aria-hidden="true">
+                                            <img src="@(string.IsNullOrWhiteSpace(p.ImagePath) ? "/images/projects/rocketship.png" : p.ImagePath)" alt="" />
+                                        </div>
 
-                <div class="project-chips">
-                    <span class="cv-chip">ASP.NET</span>
-                    <span class="cv-chip">MVC</span>
-                    <span class="cv-chip">SQL</span>
-                </div>
+                                        <div class="projects-doc-center">
+                                            <div class="projects-doc-title">@p.Title</div>
+                                            <div class="projects-doc-createdby">
+                                                Skapare: @(string.IsNullOrWhiteSpace(p.CreatedByName) ? (p.CreatedByEmail ?? "Okänd") : p.CreatedByName)
+                                            </div>
+                                            <div class="projects-doc-meta">Skapad: @p.CreatedUtc.ToString("yyyy-MM-dd")</div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                <p class="project-desc">
-                    Ett webbprojekt där användare kan skapa CV-profiler, koppla projekt och kommunicera via privata meddelanden.
-                    Fokus ligger på ren “Apple-ish” design, tydlig struktur och en upplevelse som känns snabb och professionell.
-                </p>
+                                <div class="projects-doc-body">
+                                    @if (!string.IsNullOrWhiteSpace(p.ShortDescription))
+                                    {
+                                        <div class="projects-doc-desc-card">
+                                            <div class="projects-doc-desc" style="text-align:center;">@p.ShortDescription</div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="projects-doc-desc-card">
+                                            <div class="projects-doc-desc projects-doc-desc--muted" style="text-align:center;">Ingen kort beskrivning.</div>
+                                        </div>
+                                    }
 
-                <div class="project-actions">
-                    <a class="btn-ghost" href="#">Öppna projekt</a>
-                    <a class="btn-ghost" href="#">Se alla projekt</a>
-                </div>
-            </article>
+                                    @if (!string.IsNullOrWhiteSpace(p.Description))
+                                    {
+                                        <div class="projects-doc-desc-card" style="margin-top: 10px;">
+                                            <div class="projects-doc-desc" style="text-align:left;">
+                                                @(p.Description!.Length > 220 ? (p.Description.Substring(0, 220) + "…") : p.Description)
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @if (!string.IsNullOrWhiteSpace(p.TechKeysCsv))
+                                    {
+                                        <div class="projects-doc-bottom">
+                                            <div class="projects-doc-sep" aria-hidden="true"></div>
+                                            <div class="projects-doc-tech" aria-label="Tech stack">
+                                                @foreach (var key in p.TechKeysCsv.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                                                {
+                                                    <span class="projects-doc-tech-tile">
+                                                        <img class="projects-doc-tech-icon" src="~/images/svg/techstack/@(key).svg" alt="@key" />
+                                                    </span>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+
+            <div style="display:flex; justify-content:center; margin-top: 12px;">
+                <a class="btn-secondary-custom" href="@Url.Action("Index", "Projects")">Se alla projekt</a>
+            </div>
         </div>
     </section>
 

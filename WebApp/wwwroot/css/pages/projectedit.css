@@ -1,0 +1,560 @@
+:root {
+    --pe-max: 1100px;
+    --pe-radius: 22px;
+    --pe-border: rgba(0, 0, 0, 0.08);
+    --pe-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+    --pe-banner-h: 190px;
+    --danger: #ff3b30;
+    --mint: rgba(127, 255, 212, 0.22);
+    --mint-strong: rgba(127, 255, 212, 0.42);
+    --pe-purple: rgba(175, 140, 255, 0.22);
+    --pe-purple-strong: rgba(175, 140, 255, 0.48);
+}
+
+.projectedit-page {
+    padding: 22px 18px 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.projectedit-banner {
+    width: 100%;
+    max-width: var(--pe-max);
+    height: var(--pe-banner-h);
+    border-radius: var(--pe-radius);
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.16);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.07), 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.projectedit-banner-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center 20%;
+}
+
+.projectedit-container {
+    width: 100%;
+    max-width: var(--pe-max);
+}
+
+.projectedit-shell {
+    width: 100%;
+}
+
+.projectedit-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 14px;
+}
+
+.projectedit-title {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: -0.2px;
+    color: rgba(248, 248, 255, 0.96);
+}
+
+.projectedit-sub {
+    margin-top: 6px;
+    font-weight: 650;
+    color: rgba(248, 248, 255, 0.84);
+    font-size: 13px;
+}
+
+.projectedit-meta {
+    margin-top: 8px;
+    font-weight: 850;
+    color: rgba(0, 0, 0, 0.74);
+    font-size: 13px;
+}
+
+.projectedit-pill-group {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.projectedit-pill {
+    display: inline-flex;
+    gap: 6px;
+    align-items: baseline;
+    padding: 10px 12px;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 12px 22px rgba(0, 0, 0, 0.06);
+    font-size: 13px;
+    font-weight: 780;
+    color: rgba(0, 0, 0, 0.68);
+}
+
+.projectedit-form {
+    width: 100%;
+}
+
+.projectedit-maincard {
+    border: 1px solid var(--pe-border);
+    border-radius: var(--pe-radius);
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: var(--pe-shadow);
+    padding: 18px;
+    margin-bottom: 16px;
+    min-height: 980px;
+    padding-top: 28px;
+    padding-bottom: 54px;
+    position: relative;
+    background: rgba(255, 255, 255, 0.98);
+}
+
+/* Hero (image only) */
+.projectedit-hero {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    justify-content: flex-start;
+    margin-bottom: 14px;
+}
+
+.projectedit-avatar-wrap {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.projectedit-avatar-tip {
+    order: -1;
+    display: flex;
+    align-items: flex-start;
+    padding-top: 0;
+    margin-top: -25px;
+    margin-bottom: 4px;
+    max-width: 560px;
+}
+
+.projectedit-avatar-tip .projectedit-pill {
+    border-radius: 999px;
+    padding: 8px 12px;
+}
+
+.projectedit-avatar {
+    width: 224px;
+    height: 224px;
+    border-radius: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.10), 0 2px 6px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.projectedit-avatar:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.12);
+}
+
+.projectedit-avatar:active {
+    transform: translateY(-1px) scale(0.995);
+}
+
+.projectedit-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.projectedit-avatar-overlay {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background:
+        radial-gradient(circle at 30% 20%, rgba(127, 255, 212, 0.30), rgba(0, 0, 0, 0) 60%),
+        rgba(0, 0, 0, 0.28);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 240ms ease, transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.projectedit-avatar:hover .projectedit-avatar-overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.projectedit-avatar-overlay-text {
+    font-weight: 900;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.95);
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.20);
+    background: rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(6px);
+}
+
+.projectedit-avatar-picker {
+    position: absolute;
+    top: 34px;
+    left: calc(40% + 10px);
+    width: 520px;
+    height: 224px;
+    overflow: hidden;
+    border-radius: 18px;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 22px 44px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06);
+    padding: 12px;
+    z-index: 10;
+    display: none;
+}
+
+.projectedit-avatar-picker.is-open {
+    display: block;
+}
+
+.projectedit-avatar-picker-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.projectedit-avatar-picker-title {
+    font-weight: 950;
+    color: rgba(0, 0, 0, 0.82);
+}
+
+.projectedit-avatar-picker-close {
+    width: auto;
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: rgba(0, 0, 0, 0.88);
+    color: rgba(255, 255, 255, 0.95);
+    cursor: pointer;
+    font-weight: 900;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
+}
+
+.projectedit-avatar-picker-close:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 22px rgba(0, 0, 0, 0.16);
+    background: rgba(0, 0, 0, 0.94);
+}
+
+.projectedit-avatar-picker-close:active {
+    transform: translateY(0);
+}
+
+.projectedit-avatar-grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 120px;
+    gap: 10px;
+    margin-bottom: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 6px;
+    scroll-snap-type: x mandatory;
+}
+
+.projectedit-avatar-tile {
+    width: 100%;
+    height: 160px;
+    border-radius: 18px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: rgba(255, 255, 255, 0.96);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    overflow: hidden;
+    scroll-snap-align: start;
+}
+
+.projectedit-avatar-tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.projectedit-avatar-tile.is-on {
+    outline: 3px solid var(--mint-strong);
+}
+
+
+.projectedit-card {
+    border-radius: 18px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.06);
+    padding: 16px;
+}
+
+.projectedit-card + .projectedit-card {
+    margin-top: 12px;
+}
+
+.projectedit-card-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.projectedit-card-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 950;
+    letter-spacing: -0.2px;
+}
+
+.projectedit-card-sub {
+    font-size: 12px;
+    font-weight: 850;
+    color: rgba(0, 0, 0, 0.55);
+}
+
+.projectedit-field {
+    display: grid;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.projectedit-label {
+    font-weight: 900;
+    color: rgba(0, 0, 0, 0.78);
+}
+
+.projectedit-input,
+.projectedit-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: rgba(255, 255, 255, 0.97);
+    padding: 10px 12px;
+    font-weight: 800;
+    color: rgba(0, 0, 0, 0.82);
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.06), inset 0 -2px 3px rgba(255, 255, 255, 0.65);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease;
+}
+
+.projectedit-input:focus,
+.projectedit-textarea:focus {
+    outline: none;
+    border-color: rgba(127, 255, 212, 0.70);
+    box-shadow:
+        0 0 0 3px rgba(127, 255, 212, 0.20),
+        0 10px 22px rgba(0, 0, 0, 0.08),
+        inset 0 2px 3px rgba(0, 0, 0, 0.06),
+        inset 0 -2px 3px rgba(255, 255, 255, 0.65);
+}
+
+.projectedit-textarea {
+    resize: vertical;
+    min-height: 200px;
+    line-height: 1.45;
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+.projectedit-help {
+    font-size: 12px;
+    font-weight: 750;
+    color: rgba(0, 0, 0, 0.55);
+}
+
+.projectedit-help-bottom {
+    margin-top: 10px;
+}
+
+.projectedit-error {
+    font-size: 12px;
+    font-weight: 850;
+    color: var(--danger);
+}
+
+.projectedit-under {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.projectedit-counter {
+    font-size: 12px;
+    font-weight: 850;
+    color: rgba(0, 0, 0, 0.48);
+}
+
+.projectedit-sep {
+    height: 1px;
+    background: rgba(0, 0, 0, 0.08);
+    margin: 10px 0;
+}
+
+
+.projectedit-tech-selected {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 10px 0 14px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+}
+
+.projectedit-tech-search {
+    margin: 6px 0 10px;
+}
+
+
+.projectedit-tech-msg {
+    margin: 6px 0 10px;
+}
+
+.projectedit-tech-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.projectedit-tech-tile {
+    height: 56px;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: rgba(255, 255, 255, 0.96);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.10s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.projectedit-tech-tile:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 26px rgba(0, 0, 0, 0.08);
+}
+
+.projectedit-tech-tile.is-on {
+    border-color: rgba(127, 255, 212, 0.70);
+    box-shadow: 0 0 0 3px rgba(127, 255, 212, 0.22), 0 14px 26px rgba(0, 0, 0, 0.08);
+}
+
+.projectedit-tech-icon {
+    width: 26px;
+    height: 26px;
+    display: block;
+}
+
+.projectedit-tech-selected .projectedit-tech-tile {
+    width: 54px;
+    height: 54px;
+    border-radius: 18px;
+}
+
+
+.projectedit-bottom {
+    position: sticky;
+    bottom: 12px;
+    width: 100%;
+}
+
+.projectedit-bottom-inner {
+    max-width: var(--pe-max);
+    margin: 0 auto;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.10);
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.projectedit-bottom-right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.projectedit-tech-msg.is-error {
+    color: var(--danger);
+    font-weight: 900;
+}
+
+@media (max-width: 800px) {
+    .projectedit-hero {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .projectedit-avatar-wrap {
+        width: 100%;
+        align-items: center;
+    }
+
+    .projectedit-avatar-tip {
+        max-width: 100%;
+        width: 100%;
+        justify-content: center;
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+
+    .projectedit-avatar {
+        width: min(260px, 86vw);
+        height: min(260px, 86vw);
+        border-radius: 26px;
+    }
+
+    .projectedit-avatar-picker {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+        max-width: min(560px, 92vw);
+        margin-top: 12px;
+    }
+
+    .projectedit-avatar-grid {
+        grid-auto-columns: 110px;
+    }
+
+    .projectedit-tech-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .projectedit-tech-msg {
+        margin: 6px 0 10px;
+    }
+}
