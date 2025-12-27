@@ -373,20 +373,22 @@ p {
         display: flex;
     }
 
+    .icon-sleepingnocco {
+        display: none !important;
+    }
+
     .user-email {
-        display: none;
+        display: none !important;
     }
 
     .unread-text {
-        font-size: 13px;
+        font-size: 12px;
+        white-space: normal;
+        text-align: right;
     }
 
-    .icon-sleepingnocco {
-        width: var(--header-icon-size);
-        height: var(--header-icon-size);
-
-        margin-top: calc((var(--header-height) - var(--header-icon-size)) / 2);
-        margin-bottom: calc((var(--header-height) - var(--header-icon-size)) / 2);
+    .header-user-area {
+        gap: 8px;
     }
 
     .app-sidebar {

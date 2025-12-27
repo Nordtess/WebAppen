@@ -1,11 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
+using System.Xml.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Domain.Entities;
 using WebApp.Domain.Identity;
 using WebApp.Infrastructure.Data;
+using WebApp.Models.Export;
 
 namespace WebApp.Controllers;
 
@@ -173,6 +175,123 @@ public sealed class InspectCvController : Controller
         };
 
         return View("InspectCV", vm);
+    }
+
+    // GET: /InspectCV/{userId}/Export
+    [HttpGet("{userId}/Export")]
+    public async Task<IActionResult> Export(string userId)
+    {
+        var user = await _db.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId);
+        if (user is null) return NotFound();
+        if (user.IsDeactivated) return NotFound();
+
+        // Keep same privacy guard as viewing the page.
+        if (user.IsProfilePrivate && !(User.Identity?.IsAuthenticated == true))
+        {
+            return Forbid();
+        }
+
+        var link = await _db.ApplicationUserProfiles.AsNoTracking().FirstOrDefaultAsync(x => x.UserId == userId);
+        var profile = link is null
+            ? null
+            : await _db.Profiler.AsNoTracking().FirstOrDefaultAsync(p => p.Id == link.ProfileId);
+
+        // Full CV data (export should include existing profile data).
+        var educations = link is null
+            ? new List<ExportEducationDto>()
+            : await _db.Utbildningar.AsNoTracking()
+                .Where(x => x.ProfileId == link.ProfileId)
+                .OrderBy(x => x.SortOrder)
+                .Select(x => new ExportEducationDto
+                {
+                    School = x.School,
+                    Program = x.Program,
+                    Years = x.Years,
+                    Note = x.Note
+                })
+                .ToListAsync();
+
+        var experiences = link is null
+            ? new List<ExportExperienceDto>()
+            : await _db.Erfarenheter.AsNoTracking()
+                .Where(x => x.ProfileId == link.ProfileId)
+                .OrderBy(x => x.SortOrder)
+                .Select(x => new ExportExperienceDto
+                {
+                    Company = x.Company,
+                    Role = x.Role,
+                    Years = x.Years,
+                    Description = x.Description
+                })
+                .ToListAsync();
+
+        // Selected projects from profile.
+        var selectedProjectIds = ParseSelectedProjectIds(profile?.SelectedProjectsJson);
+        var exportProjects = new List<ExportProjectDto>();
+
+        if (selectedProjectIds.Length > 0)
+        {
+            var projects = await _db.Projekt.AsNoTracking()
+                .Where(p => selectedProjectIds.Contains(p.Id))
+                .ToListAsync();
+
+            var map = projects.ToDictionary(p => p.Id);
+            foreach (var id in selectedProjectIds)
+            {
+                if (!map.TryGetValue(id, out var p)) continue;
+
+                exportProjects.Add(new ExportProjectDto
+                {
+                    ProjectId = p.Id,
+                    Title = p.Titel,
+                    ShortDescription = p.KortBeskrivning,
+                    Description = p.Beskrivning,
+                    CreatedUtc = p.CreatedUtc,
+                    ImagePath = p.ImagePath,
+                    TechKeys = ParseCsv(p.TechStackKeysCsv).ToList()
+                });
+            }
+        }
+
+        var dto = new ExportProfileDto
+        {
+            User = new ExportUserDto
+            {
+                UserId = user.Id,
+                FirstName = user.FirstName ?? string.Empty,
+                LastName = user.LastName ?? string.Empty,
+                City = user.City,
+                Email = user.Email,
+                Phone = user.PhoneNumberDisplay ?? user.PhoneNumber
+            },
+            Cv = new ExportCvDto
+            {
+                Headline = profile?.Headline,
+                AboutMe = profile?.AboutMe,
+                ProfileImagePath = profile?.ProfileImagePath ?? user.ProfileImagePath,
+                Skills = ParseSkills(profile?.SkillsCsv).ToList(),
+                Educations = educations,
+                Experiences = experiences
+            },
+            Projects = exportProjects
+        };
+
+        var serializer = new XmlSerializer(typeof(ExportProfileDto));
+
+        await using var ms = new MemoryStream();
+        await using (var writer = new StreamWriter(ms, new System.Text.UTF8Encoding(encoderShouldEmitUTF8Identifier: false), leaveOpen: true))
+        {
+            serializer.Serialize(writer, dto);
+        }
+
+        ms.Position = 0;
+
+        var safeName = (user.FirstName + "_" + user.LastName).Trim('_');
+        if (string.IsNullOrWhiteSpace(safeName)) safeName = "profile";
+        safeName = string.Concat(safeName.Select(ch => char.IsLetterOrDigit(ch) ? ch : '_'));
+
+        var fileName = $"notlinkedin_profile_{safeName}_{DateTime.UtcNow:yyyyMMdd_HHmm}.xml";
+        return File(ms.ToArray(), "application/xml", fileName);
     }
 
     // POST: /InspectCV/{userId}/SendMessage
