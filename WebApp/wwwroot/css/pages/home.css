@@ -115,7 +115,7 @@
 
 .home-cv-body {
     /* allow nav zones to sit inside the card without being clipped */
-    padding: 18px 18px 22px;
+    padding: 90px 90px 90px;  /* var 18px 18px 22px */
     overflow: visible;
 }
 
