@@ -246,6 +246,7 @@ public sealed class ProjectsController : Controller
                                 from prof in profs.DefaultIfEmpty()
                                 where pu.ProjectId == id
                                 where pu.UserId != project.CreatedByUserId
+                                where !u.IsDeactivated
                                 select new { u.Id, u.FirstName, u.LastName, u.City, u.IsProfilePrivate, Headline = prof != null ? prof.Headline : null };
 
         if (!isLoggedIn)
