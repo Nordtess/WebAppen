@@ -1,9 +1,11 @@
 (function () {
+    // Skapar och renderar statiska "stjärnor" i bakgrunden som täcker .app-main höjd.
     const main = document.querySelector('.app-main');
     const bg = document.querySelector('.app-main .space-background');
     const container = document.getElementById('starsContainer');
     if (!main || !bg || !container) return;
 
+    // Synkronisera bakgrundselementens höjd med huvudens innehållshöjd
     function syncHeight() {
         const h = Math.max(main.scrollHeight, main.clientHeight);
         bg.style.height = `${h}px`;
@@ -11,6 +13,7 @@
         return h;
     }
 
+    // Enkel deterministisk PRNG (mulberry32) för stabil placering mellan sidladdningar
     function mulberry32(seed) {
         return function () {
             let t = (seed += 0x6D2B79F5);
@@ -27,6 +30,7 @@
         return Math.max(min, Math.min(max, v));
     }
 
+    // Skapa ett SVG-element för en stjärna och lägg till i container
     function createStar({ size, topPx, leftPct, useId, viewBox }) {
         const star = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         star.classList.add('laser-star');
@@ -51,9 +55,8 @@
         const hPx = syncHeight();
         const isMobile = window.matchMedia && window.matchMedia('(max-width: 800px)').matches;
 
-        // Height-based density model (stars per 1000px of scrollable height).
-        // This reduces "cramped" stars on short pages.
-        // Caps protect performance on very tall pages.
+        // Höjdbaserad densitetsmodell: antal stjärnor per 1000px sida.
+        // Begränsa antal för att undvika överbelastning på korta eller mycket långa sidor.
         const densityPer1000 = isMobile ? 38 : 48;
         const minStars = isMobile ? 35 : 50;
         const maxStars = isMobile ? 80 : 130;
@@ -88,9 +91,8 @@
             });
         }
 
-        // Improve first-load smoothness:
-        // 1) Force a layout pass so styles are applied before animation timing is tweaked.
-        // 2) Use negative delays so each star appears mid-animation rather than all starting at 0%.
+        // Förbättra visuell start genom att tvinga layout och använda negativa delays
+        // så att varje stjärna visas mitt i sin animation istället för alla från 0%.
         const stars = container.querySelectorAll('.laser-star');
         void container.offsetHeight;
 
@@ -108,6 +110,7 @@
         initStars();
     });
 
+    // Om ResizeObserver finns, uppdatera höjd när main eller dess inner förändras
     if ('ResizeObserver' in window) {
         const ro = new ResizeObserver(() => {
             syncHeight();
@@ -117,6 +120,7 @@
         if (inner) ro.observe(inner);
     }
 
+    // När webfont-laddning är klar: justera höjden (failsafe catch för äldre UA)
     if (document.fonts && document.fonts.ready) {
         document.fonts.ready.then(() => syncHeight()).catch(() => { });
     }

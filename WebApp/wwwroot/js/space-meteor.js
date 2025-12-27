@@ -2,10 +2,10 @@
     const main = document.querySelector('.app-main');
     if (!main) return;
 
-    // Mobile perf: skip entirely.
+    // Hoppa över funktionen på mindre skärmar av prestandaskäl
     if (window.matchMedia && window.matchMedia('(max-width: 800px)').matches) return;
 
-    // Ensure a layer exists (kept separate from .space-background so it draws above it).
+    // Säkerställ att ett lager finns för meteorer (ligger ovanför bakgrunden)
     let layer = document.getElementById('meteorLayer');
     if (!layer) {
         layer = document.createElement('div');
@@ -14,7 +14,7 @@
         main.insertBefore(layer, main.firstChild);
     }
 
-    // Prevent multiple instances if the script is loaded twice.
+    // Undvik flera schemalagda instanser om skriptet laddas om
     if (window.__spaceMeteorTimer) {
         clearTimeout(window.__spaceMeteorTimer);
         window.__spaceMeteorTimer = null;
@@ -29,21 +29,19 @@
         const height = main.clientHeight;
         const scrollTop = main.scrollTop;
 
-        // Start from top-right of the *visible* viewport inside app-main.
+        // Startposition i det synliga viewport-området (höger-övre hörn)
         const startX = Math.max(0, width - 10);
         const startY = scrollTop + 10;
 
-        // Travel diagonally down-left across the viewport.
-        const endX = -260; // enough to fully exit even with wide SVG
-
-        // Slightly less aggressive than "past the bottom" but still a steep diagonal.
+        // Slutposition (tillräckligt vänster för att helt lämna viewport)
+        const endX = -260;
         const endY = scrollTop + height * 0.88;
 
         const meteor = document.createElement('div');
         meteor.className = 'space-meteor';
         meteor.setAttribute('aria-hidden', 'true');
 
-        // Keep the meteor reasonably sized; SVG has width/height set but we'll control via CSS pixels.
+        // Storlek kontrolleras via CSS; satt som fallback
         meteor.style.width = '420px';
         meteor.style.height = '225px';
 
@@ -61,10 +59,12 @@
             }
         );
 
+        // Ta bort element när animationen är klar (och en säkerhets-timer)
         anim.addEventListener('finish', () => meteor.remove());
         window.setTimeout(() => meteor.remove(), TRAVEL_MS + 500);
     }
 
+    // Schemalägg nästa meteor med given fördröjning (rekursiv timeout)
     function scheduleNext(delayMs) {
         window.__spaceMeteorTimer = window.setTimeout(() => {
             shootMeteor();
@@ -72,6 +72,6 @@
         }, delayMs);
     }
 
-    // Start 2s after load, then every 20s.
+    // Starta efter initial fördröjning, därefter med fast intervall
     scheduleNext(INITIAL_DELAY_MS);
 })();

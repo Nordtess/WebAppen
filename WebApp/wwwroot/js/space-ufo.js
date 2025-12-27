@@ -1,11 +1,11 @@
 (function () {
+    // Hoppa över på små skärmar för att undvika prestandapåverkan på mobila enheter
     const main = document.querySelector('.app-main');
     if (!main) return;
 
-    // Mobile perf: skip entirely.
     if (window.matchMedia && window.matchMedia('(max-width: 800px)').matches) return;
 
-    // Ensure a layer exists.
+    // Säkerställ att ett lager för UFO:n finns ovanför innehållet
     let layer = document.getElementById('ufoLayer');
     if (!layer) {
         layer = document.createElement('div');
@@ -14,7 +14,7 @@
         main.insertBefore(layer, main.firstChild);
     }
 
-    // Prevent multiple instances if the script is loaded twice.
+    // Förhindra flera schemaläggningar om skriptet körs flera gånger
     if (window.__spaceUfoTimer) {
         clearTimeout(window.__spaceUfoTimer);
         window.__spaceUfoTimer = null;
@@ -29,10 +29,10 @@
         const height = main.clientHeight;
         const scrollTop = main.scrollTop;
 
-        // Upper-middle-ish of visible viewport.
+        // Placera UFO:t i övre delen av den synliga viewporten
         const y = scrollTop + height * 0.22;
 
-        // Start slightly off-screen left, end off-screen right.
+        // Start utanför vänsterkanten, slut utanför högerkanten
         const startX = -260;
         const endX = width + 260;
 
@@ -40,7 +40,7 @@
         ufo.className = 'space-ufo';
         ufo.setAttribute('aria-hidden', 'true');
 
-        // Size can be tweaked later.
+        // Fallback-storlek; primärt styrt via CSS
         ufo.style.width = '180px';
         ufo.style.height = '120px';
 
@@ -58,10 +58,12 @@
             }
         );
 
+        // Ta bort elementet när animationen är klar; extra fallback-timer för säker rensning
         anim.addEventListener('finish', () => ufo.remove());
         window.setTimeout(() => ufo.remove(), TRAVEL_MS + 500);
     }
 
+    // Schemalägg nästa flygning (rekursiv timeout)
     function scheduleNext(delayMs) {
         window.__spaceUfoTimer = window.setTimeout(() => {
             flyUfo();
@@ -69,6 +71,6 @@
         }, delayMs);
     }
 
-    // Start 7s after load, then every 20s.
+    // Starta efter initial fördröjning och fortsätt med jämnt intervall
     scheduleNext(INITIAL_DELAY_MS);
 })();
