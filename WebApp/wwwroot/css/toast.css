@@ -1,4 +1,5 @@
-/* ~100% larger */
+
+.toast {
     max-width: min(900px, calc(100vw - 28px));
     width: min(900px, calc(100vw - 28px));
     padding: 24px 28px;
