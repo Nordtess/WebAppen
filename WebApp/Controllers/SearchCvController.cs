@@ -6,11 +6,6 @@ using WebApp.ViewModels;
 
 namespace WebApp.Controllers;
 
-/// <summary>
-/// Söksida för CV:er. Endast en GET-endpoint som söker användare och deras profiler
-/// baserat på namn, färdigheter och stad. Stöder "similar"-läge som använder
-/// den inloggade användarens färdigheter för matchning.
-/// </summary>
 public sealed class SearchCvController : Controller
 {
     private readonly ApplicationDbContext _db;
@@ -32,52 +27,19 @@ public sealed class SearchCvController : Controller
         var nameQuery = (name ?? string.Empty).Trim();
         var skillsQuery = (skills ?? string.Empty).Trim();
         var cityQuery = (city ?? string.Empty).Trim();
-
         var useSimilarMode = string.Equals(mode, "similar", StringComparison.OrdinalIgnoreCase);
 
-        // Om "similar"-läge och användaren är inloggad: använd användarens egna färdigheter
-        if (useSimilarMode && isLoggedIn)
-        {
-            var meId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!string.IsNullOrWhiteSpace(meId))
-            {
-                var myLink = await _db.ApplicationUserProfiles.AsNoTracking().FirstOrDefaultAsync(x => x.UserId == meId);
-                if (myLink is not null)
-                {
-                    var myProfile = await _db.Profiler.AsNoTracking().FirstOrDefaultAsync(p => p.Id == myLink.ProfileId);
-                    skillsQuery = string.Join(' ', ParseSkills(myProfile?.SkillsCsv));
-                }
-            }
-        }
-
-        // I normalt läge krävs att alla tokens matchar (AND). I "similar"-läge räcker någon matchning (OR).
-        var requireAllSkills = !useSimilarMode;
-
-        var skillTokens = ParseSkillTokens(skillsQuery);
-
-        // Basfråga: endast aktiva användare.
         var usersQuery = _db.Users.AsNoTracking().Where(u => !u.IsDeactivated);
-
-        // Dölj den inloggade användarens egen CV i resultatet.
         if (isLoggedIn)
         {
             var viewerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!string.IsNullOrWhiteSpace(viewerId))
-            {
-                usersQuery = usersQuery.Where(u => u.Id != viewerId);
-            }
+            if (!string.IsNullOrWhiteSpace(viewerId)) usersQuery = usersQuery.Where(u => u.Id != viewerId);
         }
-
-        // Sekretessregel: om ej inloggad visa endast icke-privata profiler.
-        if (!isLoggedIn)
-        {
-            usersQuery = usersQuery.Where(u => !u.IsProfilePrivate);
-        }
+        if (!isLoggedIn) usersQuery = usersQuery.Where(u => !u.IsProfilePrivate);
 
         if (!string.IsNullOrWhiteSpace(nameQuery))
         {
             var likeAnywhere = $"%{nameQuery}%";
-
             usersQuery = usersQuery.Where(u =>
                 (u.FirstName != null && EF.Functions.Like(u.FirstName, likeAnywhere)) ||
                 (u.LastName != null && EF.Functions.Like(u.LastName, likeAnywhere)) ||
@@ -92,7 +54,6 @@ public sealed class SearchCvController : Controller
             usersQuery = usersQuery.Where(u => u.City != null && EF.Functions.Like(u.City, likeAnywhere));
         }
 
-        // Left joins mot profil-tabeller för att kunna filtrera på färdigheter och läsa profilfält.
         var rows = from u in usersQuery
                    join link in _db.ApplicationUserProfiles.AsNoTracking() on u.Id equals link.UserId into links
                    from link in links.DefaultIfEmpty()
@@ -100,36 +61,7 @@ public sealed class SearchCvController : Controller
                    from p in profiles.DefaultIfEmpty()
                    select new { u, link, p };
 
-        // Filtrering på färdigheter: om inga tokens görs ingen filtrering.
-        if (skillTokens.Count > 0)
-        {
-            rows = rows.Where(x => x.p != null && x.p.SkillsCsv != null);
-
-            if (requireAllSkills)
-            {
-                // AND över varje token
-                foreach (var token in skillTokens)
-                {
-                    var likeAnywhere = $"%{token}%";
-                    rows = rows.Where(x => EF.Functions.Like(x.p!.SkillsCsv!, likeAnywhere));
-                }
-            }
-            else
-            {
-                // OR över tokens: bygg upp en union och gör Distinct för att ta bort dubbletter.
-                var tokenRows = rows.Where(x => false);
-                foreach (var token in skillTokens)
-                {
-                    var likeAnywhere = $"%{token}%";
-                    tokenRows = tokenRows.Concat(rows.Where(x => EF.Functions.Like(x.p!.SkillsCsv!, likeAnywhere)));
-                }
-
-                rows = tokenRows.Distinct();
-            }
-        }
-
         const int max = 60;
-
         var list = await rows
             .OrderBy(x => x.u.FirstName)
             .ThenBy(x => x.u.LastName)
@@ -142,18 +74,13 @@ public sealed class SearchCvController : Controller
                 x.u.City,
                 x.u.IsProfilePrivate,
                 UserAvatar = x.u.ProfileImagePath,
-
                 Headline = x.p == null ? null : x.p.Headline,
                 AboutMe = x.p == null ? null : x.p.AboutMe,
                 ProfileAvatar = x.p == null ? null : x.p.ProfileImagePath,
-                SkillsCsv = x.p == null ? null : x.p.SkillsCsv,
-                SelectedProjectsJson = x.p == null ? null : x.p.SelectedProjectsJson,
-
                 ProfileId = x.link == null ? (int?)null : x.link.ProfileId
             })
             .ToListAsync();
 
-        // Batch-ladda utbildning och erfarenheter för de profiler vi hittade (för att undvika N+1).
         var profileIds = list.Where(x => x.ProfileId != null).Select(x => x.ProfileId!.Value).Distinct().ToArray();
 
         var eduByProfile = profileIds.Length == 0
@@ -182,6 +109,20 @@ public sealed class SearchCvController : Controller
                         g => g.Key,
                         g => g.Select(x => (x.Company, x.Role, x.Years)).ToList()));
 
+        var userIds = list.Select(x => x.Id).Distinct().ToArray();
+        var compByUser = userIds.Length == 0
+            ? new Dictionary<string, string[]>()
+            : await (from link in _db.ApplicationUserProfiles.AsNoTracking()
+                     join uc in _db.AnvandarKompetenser.AsNoTracking() on link.UserId equals uc.UserId
+                     join c in _db.Kompetenskatalog.AsNoTracking() on uc.CompetenceId equals c.Id
+                     where userIds.Contains(link.UserId)
+                     orderby c.SortOrder
+                     select new { link.UserId, c.Name })
+                .ToListAsync()
+                .ContinueWith(t => t.Result
+                    .GroupBy(x => x.UserId)
+                    .ToDictionary(g => g.Key, g => g.Select(x => x.Name).Distinct(StringComparer.OrdinalIgnoreCase).ToArray()));
+
         var vm = new SearchCvVm
         {
             NameQuery = nameQuery,
@@ -192,11 +133,10 @@ public sealed class SearchCvController : Controller
             Cvs = list.Select(x =>
             {
                 var fullName = string.Join(' ', new[] { x.FirstName, x.LastName }.Where(s => !string.IsNullOrWhiteSpace(s)));
-                var skillsArr = ParseSkills(x.SkillsCsv);
-
                 var pid = x.ProfileId;
                 var edus = pid != null && eduByProfile.TryGetValue(pid.Value, out var eduList) ? eduList : new();
                 var exps = pid != null && expByProfile.TryGetValue(pid.Value, out var expList) ? expList : new();
+                var skillsArr = compByUser.TryGetValue(x.Id, out var arr) ? arr : Array.Empty<string>();
 
                 return new SearchCvVm.CvCardVm
                 {
@@ -208,7 +148,7 @@ public sealed class SearchCvController : Controller
                     ProfileImagePath = !string.IsNullOrWhiteSpace(x.ProfileAvatar) ? x.ProfileAvatar : x.UserAvatar,
                     AboutMe = x.AboutMe,
                     Skills = skillsArr,
-                    ProjectCount = ParseSelectedProjectCount(x.SelectedProjectsJson),
+                    ProjectCount = 0,
                     Educations = edus.Take(2).Select(e => $"{e.Years} • {e.Program}").ToArray(),
                     Experiences = exps.Take(2).Select(e => $"{e.Years} • {e.Role} @ {e.Company}").ToArray()
                 };
@@ -216,47 +156,5 @@ public sealed class SearchCvController : Controller
         };
 
         return View("SearchCV", vm);
-    }
-
-    // Delar upp söksträngen i unika tokens (komma- och mellanslagsseparerade).
-    private static List<string> ParseSkillTokens(string raw)
-    {
-        if (string.IsNullOrWhiteSpace(raw)) return new List<string>();
-
-        var tokens = raw
-            .Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-            .Select(t => t.Trim())
-            .Where(t => !string.IsNullOrWhiteSpace(t))
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .ToList();
-
-        return tokens;
-    }
-
-    // Parsar CSV med färdigheter och returnerar unika element.
-    private static string[] ParseSkills(string? csv)
-    {
-        if (string.IsNullOrWhiteSpace(csv)) return Array.Empty<string>();
-
-        return csv.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-            .Where(s => !string.IsNullOrWhiteSpace(s))
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .ToArray();
-    }
-
-    // Avläser antal valda projekt från JSON (säkert; felhanterar ogiltig JSON).
-    private static int ParseSelectedProjectCount(string? json)
-    {
-        if (string.IsNullOrWhiteSpace(json)) return 0;
-
-        try
-        {
-            var ids = System.Text.Json.JsonSerializer.Deserialize<int[]>(json, new System.Text.Json.JsonSerializerOptions(System.Text.Json.JsonSerializerDefaults.Web));
-            return ids?.Length ?? 0;
-        }
-        catch
-        {
-            return 0;
-        }
     }
 }

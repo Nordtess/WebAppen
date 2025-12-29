@@ -101,11 +101,6 @@
                                                 <div class="searchcv-doc-meta">
                                                     <span class="searchcv-dot" aria-hidden="true">📍</span>
                                                     <span>@(string.IsNullOrWhiteSpace(cv.City) ? "—" : cv.City)</span>
-
-                                                    @if (isLoggedIn && cv.IsPrivate)
-                                                    {
-                                                        <span class="searchcv-private-pill" title="Privat profil">Privat</span>
-                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -117,46 +112,14 @@
                                             <div class="searchcv-about">@about</div>
                                         }
 
-                                        @if (cv.Educations is { Length: > 0 })
-                                        {
-                                            <div class="searchcv-lines" aria-label="Utbildningar">
-                                                <div class="searchcv-lines-title">Utbildning</div>
-                                                @foreach (var line in cv.Educations)
-                                                {
-                                                    <div class="searchcv-line">@line</div>
-                                                }
-                                            </div>
-                                        }
-
-                                        @if (cv.Experiences is { Length: > 0 })
-                                        {
-                                            <div class="searchcv-lines" aria-label="Erfarenheter">
-                                                <div class="searchcv-lines-title">Erfarenhet</div>
-                                                @foreach (var line in cv.Experiences)
-                                                {
-                                                    <div class="searchcv-line">@line</div>
-                                                }
-                                            </div>
-                                        }
-
                                         <div class="searchcv-doc-bottom">
                                             <div class="searchcv-skills" aria-label="Kompetenser">
-                                                @if (cv.Skills is { Length: > 0 })
-                                                {
-                                                    foreach (var s in cv.Skills.Take(8))
-                                                    {
-                                                        <span class="searchcv-skill">@s</span>
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    <span class="searchcv-skill searchcv-skill--muted">Inga kompetenser</span>
-                                                }
+                                                @await Html.PartialAsync("_CompetencePills", cv.Skills)
                                             </div>
 
                                             <div class="searchcv-doc-sep" aria-hidden="true"></div>
                                             <div class="searchcv-doc-foot">
-                                                <span><strong>@cv.ProjectCount</strong> projekt på CV</span>
+                                                <span></span>
                                             </div>
                                         </div>
                                     </div>
