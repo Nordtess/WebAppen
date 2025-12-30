@@ -54,36 +54,49 @@
                     }
 
                     <div class="searchcv-search-main">
-                        <input class="searchcv-input" type="text" name="name" value="@Model.NameQuery" placeholder="Sök på namn…" />
-                        <input class="searchcv-input" type="text" name="city" value="@Model.CityQuery" placeholder="Stad (ex: Örebro)…" />
+                        <input class="searchcv-input" type="text" name="name" value="@(Model.IsSimilarMode ? "" : Model.NameQuery)" placeholder="@(Model.IsSimilarMode ? "Endast i vanlig sök" : "Sök på namn…")" @(Model.IsSimilarMode ? "disabled" : string.Empty) />
+                        <input class="searchcv-input" type="text" name="city" value="@(Model.IsSimilarMode ? "" : Model.CityQuery)" placeholder="@(Model.IsSimilarMode ? "Endast i vanlig sök" : "Stad (ex: Örebro)…")" @(Model.IsSimilarMode ? "disabled" : string.Empty) />
 
                         <div class="searchcv-skillpicker">
-                            <button type="button" class="searchcv-input searchcv-skillbtn" id="openSkillModal">Välj kompetenser…</button>
-                            <input type="hidden" name="skillIds" id="skillIds" value="@string.Join(",", Model.SelectedSkillIds)" />
+                            <button type="button" class="searchcv-input searchcv-skillbtn" id="openSkillModal" @(Model.IsSimilarMode ? "disabled" : string.Empty)>Välj kompetenser…</button>
+                            @if (!Model.IsSimilarMode)
+                            {
+                                <input type="hidden" name="skillIds" id="skillIds" value="@string.Join(",", Model.SelectedSkillIds)" />
+                            }
+                            else
+                            {
+                                <span class="searchcv-chip-muted" style="font-size:12px;">Endast i vanlig sök</span>
+                            }
                         </div>
                     </div>
 
                     <div class="searchcv-selected-row">
                         <div class="searchcv-selected-skills" id="selectedSkillSummary">
-                            @{
-                                var selectedNames = Model.SelectedSkillNames ?? Array.Empty<string>();
-                                var topNames = selectedNames.Take(4).ToArray();
-                                var rest = selectedNames.Length - topNames.Length;
-                            }
-                            @if (selectedNames.Length == 0)
+                            @if (Model.IsSimilarMode)
                             {
-                                <span class="searchcv-chip-muted">Inga valda kompetenser</span>
+                                <span class="searchcv-chip-muted">Visar liknande personer baserat på kompetenser.</span>
                             }
                             else
                             {
-                                <span class="searchcv-chip-title">Valda:</span>
-                                @foreach (var s in topNames)
+                                var selectedNames = Model.SelectedSkillNames ?? Array.Empty<string>();
+                                var topNames = selectedNames.Take(4).ToArray();
+                                var rest = selectedNames.Length - topNames.Length;
+
+                                if (selectedNames.Length == 0)
                                 {
-                                    <span class="searchcv-chip">@s</span>
+                                    <span class="searchcv-chip-muted">Inga valda kompetenser</span>
                                 }
-                                @if (rest > 0)
+                                else
                                 {
-                                    <span class="searchcv-chip-more">+@rest fler</span>
+                                    <span class="searchcv-chip-title">Valda:</span>
+                                    @foreach (var s in topNames)
+                                    {
+                                        <span class="searchcv-chip">@s</span>
+                                    }
+                                    @if (rest > 0)
+                                    {
+                                        <span class="searchcv-chip-more">+@rest fler</span>
+                                    }
                                 }
                             }
                         </div>
@@ -119,14 +132,16 @@
                             <a class="btn-secondary-custom" style="text-decoration:none;" href="@Url.Action("Index", "SearchCv", new { mode = "similar", source = "me" })">Hitta liknande personer</a>
                         }
 
-                        <button type="button" class="btn-secondary-custom" id="clearSkills" style="text-decoration:none;">Rensa kompetenser</button>
+                        @if (!Model.IsSimilarMode)
+                        {
+                            <button type="button" class="btn-secondary-custom" id="clearSkills" style="text-decoration:none;">Rensa kompetenser</button>
+                        }
 
                         @if (!string.IsNullOrWhiteSpace(Model.NameQuery) || Model.SelectedSkillIds.Length > 0 || !string.IsNullOrWhiteSpace(Model.CityQuery) || Model.Mode == "similar")
                         {
                             if (Model.IsSimilarMode)
                             {
-                                <a class="btn-secondary-custom" style="text-decoration:none;" href="@Url.Action("Index", "SearchCv", new { mode = Model.Mode, source = Model.Source, sourceUserId = Model.SourceUserId })">Återställ filter</a>
-                                <a class="btn-secondary-custom" style="text-decoration:none;" href="@Url.Action("Index", "SearchCv")">Till vanlig sök</a>
+                                <a class="btn-secondary-custom" style="text-decoration:none;" href="@Url.Action("Index", "SearchCv")">Byt till vanlig sök</a>
                             }
                             else
                             {
@@ -247,75 +262,75 @@
     </div>
 </div>
 
-@{
+@if (!Model.IsSimilarMode)
+{
     var topCompetences = Model.Competences.Where(c => c.IsTopList).OrderBy(c => c.SortOrder).ToList();
     var groupedCompetences = Model.Competences
         .Where(c => !c.IsTopList)
         .Select(c => new { Item = c, SafeCategory = NormalizeCategory(c.Category) })
         .GroupBy(c => c.SafeCategory)
         .OrderBy(g => g.Key);
-}
-
-<div id="searchcv-skills-modal" class="editcv-modal" aria-hidden="true">
-    <div class="editcv-modal__backdrop" data-searchcv-modal-close></div>
-    <div class="editcv-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="searchcv-skills-title">
-        <div class="editcv-modal__header">
-            <div class="editcv-modal__title" id="searchcv-skills-title">Välj kompetenser</div>
-            <div class="editcv-modal__counter" id="searchcv-competences-counter">0/10</div>
-            <button type="button" class="editcv-modal__close" data-searchcv-modal-close aria-label="Stäng">×</button>
-        </div>
-        <div class="editcv-modal__hint">Tips: Välj kompetenser för att smalna av sökningen. Resultatet visar endast personer som har samtliga valda kompetenser.</div>
-        <div class="editcv-modal__body">
-            <input type="text" class="editcv-modal__search" id="skillFilter" placeholder="Sök kompetens…" />
-            <div class="editcv-picker__list" id="skillList">
-                @if (topCompetences.Count > 0)
-                {
-                    <details class="editcv-picker__group" data-group="Topplista" open>
-                        <summary class="editcv-picker__group-title">Topplista</summary>
-                        <div class="editcv-picker__rows">
-                            @foreach (var c in topCompetences)
-                            {
-                                var isChecked = Model.SelectedSkillIds.Contains(c.Id);
-                                <label class="editcv-picker__row" data-name="@c.Name">
-                                    <input type="checkbox" value="@c.Id" class="editcv-picker__chk competence-chk" @(isChecked ? "checked" : null) />
-                                    <span class="editcv-picker__content">
-                                        <span class="editcv-picker__title">@c.Name</span>
-                                    </span>
-                                </label>
-                            }
-                        </div>
-                    </details>
-                }
-
-                @foreach (var group in groupedCompetences)
-                {
-                    <details class="editcv-picker__group" data-group="@group.Key">
-                        <summary class="editcv-picker__group-title">@group.Key</summary>
-                        <div class="editcv-picker__rows">
-                            @foreach (var entry in group.OrderBy(x => x.Item.SortOrder))
-                            {
-                                var c = entry.Item;
-                                var isChecked = Model.SelectedSkillIds.Contains(c.Id);
-                                <label class="editcv-picker__row" data-name="@c.Name">
-                                    <input type="checkbox" value="@c.Id" class="editcv-picker__chk competence-chk" @(isChecked ? "checked" : null) />
-                                    <span class="editcv-picker__content">
-                                        <span class="editcv-picker__title">@c.Name</span>
-                                    </span>
-                                </label>
-                            }
-                        </div>
-                    </details>
-                }
+    <div id="searchcv-skills-modal" class="editcv-modal" aria-hidden="true">
+        <div class="editcv-modal__backdrop" data-searchcv-modal-close></div>
+        <div class="editcv-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="searchcv-skills-title">
+            <div class="editcv-modal__header">
+                <div class="editcv-modal__title" id="searchcv-skills-title">Välj kompetenser</div>
+                <div class="editcv-modal__counter" id="searchcv-competences-counter">0/10</div>
+                <button type="button" class="editcv-modal__close" data-searchcv-modal-close aria-label="Stäng">×</button>
             </div>
-        </div>
-        <div class="editcv-modal__footer">
-            <button type="button" class="btn-secondary-custom" data-searchcv-modal-close>Avbryt</button>
-            <div class="editcv-modal__actions">
-                <button type="button" class="btn-primary-custom" id="applySkills">Använd</button>
+            <div class="editcv-modal__hint">Tips: Välj kompetenser för att smalna av sökningen. Resultatet visar endast personer som har samtliga valda kompetenser.</div>
+            <div class="editcv-modal__body">
+                <input type="text" class="editcv-modal__search" id="skillFilter" placeholder="Sök kompetens…" />
+                <div class="editcv-picker__list" id="skillList">
+                    @if (topCompetences.Count > 0)
+                    {
+                        <details class="editcv-picker__group" data-group="Topplista" open>
+                            <summary class="editcv-picker__group-title">Topplista</summary>
+                            <div class="editcv-picker__rows">
+                                @foreach (var c in topCompetences)
+                                {
+                                    var isChecked = Model.SelectedSkillIds.Contains(c.Id);
+                                    <label class="editcv-picker__row" data-name="@c.Name">
+                                        <input type="checkbox" value="@c.Id" class="editcv-picker__chk competence-chk" @(isChecked ? "checked" : null) />
+                                        <span class="editcv-picker__content">
+                                            <span class="editcv-picker__title">@c.Name</span>
+                                        </span>
+                                    </label>
+                                }
+                            </div>
+                        </details>
+                    }
+
+                    @foreach (var group in groupedCompetences)
+                    {
+                        <details class="editcv-picker__group" data-group="@group.Key">
+                            <summary class="editcv-picker__group-title">@group.Key</summary>
+                            <div class="editcv-picker__rows">
+                                @foreach (var entry in group.OrderBy(x => x.Item.SortOrder))
+                                {
+                                    var c = entry.Item;
+                                    var isChecked = Model.SelectedSkillIds.Contains(c.Id);
+                                    <label class="editcv-picker__row" data-name="@c.Name">
+                                        <input type="checkbox" value="@c.Id" class="editcv-picker__chk competence-chk" @(isChecked ? "checked" : null) />
+                                        <span class="editcv-picker__content">
+                                            <span class="editcv-picker__title">@c.Name</span>
+                                        </span>
+                                    </label>
+                                }
+                            </div>
+                        </details>
+                    }
+                </div>
+            </div>
+            <div class="editcv-modal__footer">
+                <button type="button" class="btn-secondary-custom" data-searchcv-modal-close>Avbryt</button>
+                <div class="editcv-modal__actions">
+                    <button type="button" class="btn-primary-custom" id="applySkills">Använd</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
 
 @section Scripts {
     <script>
@@ -496,4 +511,4 @@
             updateCounter();
         })();
     </script>
-}
+}}
