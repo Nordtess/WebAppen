@@ -764,44 +764,59 @@
 
         if (open) {
             const focusEl = compModal.querySelector(".editcv-modal__close");
-            if (focusEl instanceof HTMLElement) focusEl.focus();
+            focusEl?.focus();
         }
     }
 
-    function getCheckedIds() {
-        if (!compPicker) return [];
+    function getAllCompetenceCheckboxes() {
+        return Array.from(compPicker?.querySelectorAll("input.competence-chk") ?? []);
+    }
+
+    function getUniqueSelectedIds() {
         const seen = new Set();
-        return Array.from(compPicker.querySelectorAll("input.competence-chk:checked"))
-            .map((c) => Number(c.value))
-            .filter((n) => Number.isFinite(n) && !seen.has(n) && seen.add(n));
+        for (const cb of getAllCompetenceCheckboxes()) {
+            if (!(cb instanceof HTMLInputElement)) continue;
+            if (!cb.checked) continue;
+            seen.add(cb.value);
+        }
+        return seen;
     }
 
     function getCheckedNames() {
-        if (!compPicker) return [];
         const seen = new Set();
         const names = [];
-        Array.from(compPicker.querySelectorAll("input.competence-chk:checked")).forEach((cb) => {
-            const val = Number(cb.value);
-            if (!Number.isFinite(val) || seen.has(val)) return;
-            seen.add(val);
+        for (const cb of getAllCompetenceCheckboxes()) {
+            if (!(cb instanceof HTMLInputElement)) continue;
+            if (!cb.checked) continue;
+            if (seen.has(cb.value)) continue;
+            seen.add(cb.value);
             const name = (cb.closest(".editcv-picker__row")?.getAttribute("data-name") || "").trim();
             if (name) names.push(name);
-        });
+        }
         return names;
+    }
+
+    function syncSameIdCheckboxes(value, isChecked) {
+        const target = getAllCompetenceCheckboxes().filter(cb => cb.value === value);
+        target.forEach(cb => { cb.checked = isChecked; });
     }
 
     function rebuildHiddenIds() {
         if (!selectedContainer) return;
         selectedContainer.innerHTML = "";
-
-        const ids = getCheckedIds();
-        for (const id of ids) {
+        for (const id of getUniqueSelectedIds()) {
             const input = document.createElement("input");
             input.type = "hidden";
             input.name = "SelectedCompetenceIds";
-            input.value = String(id);
+            input.value = id;
             selectedContainer.appendChild(input);
         }
+    }
+
+    function updateCompetenceCounter() {
+        if (!compCounter) return;
+        const count = getUniqueSelectedIds().size;
+        compCounter.textContent = `${count}`;
     }
 
     function renderCompetencePills() {
@@ -812,7 +827,6 @@
         const top = names.slice(0, 4);
         const rest = names.length - top.length;
 
-        // Samma struktur som din partial (så styling matchar)
         const grid = document.createElement("div");
         grid.className = "cv-skill-grid";
 
@@ -837,37 +851,39 @@
         host.appendChild(grid);
     }
 
-    function updateCompetenceUi() {
-        if (!compPicker) return;
+    function enforceCompetenceLimit(changedValue) {
+        const uniqueSelected = getUniqueSelectedIds();
+        const limitReached = uniqueSelected.size >= MAX_COMPETENCES;
 
-        const checks = Array.from(compPicker.querySelectorAll("input.competence-chk"));
-        const checkedValues = new Set(checks.filter((c) => c.checked).map((c) => c.value));
-        const limitReached = checkedValues.size >= MAX_COMPETENCES;
-
-        for (const cb of checks) {
+        getAllCompetenceCheckboxes().forEach(cb => {
             const row = cb.closest(".editcv-picker__row");
             if (cb.checked) {
                 cb.disabled = false;
                 row?.classList.remove("is-disabled");
-                continue;
+            } else {
+                const shouldDisable = limitReached && !uniqueSelected.has(cb.value);
+                cb.disabled = shouldDisable;
+                row?.classList.toggle("is-disabled", shouldDisable);
             }
-            const shouldDisable = limitReached && !checkedValues.has(cb.value);
-            cb.disabled = shouldDisable;
-            row?.classList.toggle("is-disabled", shouldDisable);
+        });
+
+        if (limitReached && changedValue && !uniqueSelected.has(changedValue)) {
+            syncSameIdCheckboxes(changedValue, false);
         }
+    }
 
+    function updateCompetenceUi() {
         rebuildHiddenIds();
-        if (compCounter) compCounter.textContent = String(checkedValues.size);
-
+        updateCompetenceCounter();
         renderCompetencePills();
 
-        // Bara smutsa vid riktiga ändringar
         if (!compInit) markDirty();
     }
 
     function openCompetenceModal() {
         compInit = true;
         setCompModalOpen(true);
+        enforceCompetenceLimit();
         updateCompetenceUi();
         compInit = false;
     }
@@ -878,7 +894,11 @@
 
     openCompBtn?.addEventListener("click", openCompetenceModal);
     closeCompBtn?.addEventListener("click", closeCompetenceModal);
-    closeCompBtnFooter?.addEventListener("click", closeCompetenceModal);
+    closeCompBtnFooter?.addEventListener("click", () => {
+        // Spara valen till hidden och stäng
+        updateCompetenceUi();
+        closeCompetenceModal();
+    });
     if (compBackdrop instanceof HTMLElement) compBackdrop.addEventListener("click", closeCompetenceModal);
 
     document.addEventListener("keydown", (e) => {
@@ -892,22 +912,20 @@
         if (!(t instanceof HTMLInputElement)) return;
         if (!t.classList.contains("competence-chk")) return;
 
-        syncCompetenceCheckboxes(t.value, t.checked);
+        syncSameIdCheckboxes(t.value, t.checked);
 
-        const checkedValues = new Set(
-            Array.from(compPicker.querySelectorAll("input.competence-chk:checked")).map((c) => c.value)
-        );
-        if (checkedValues.size > MAX_COMPETENCES) {
-            syncCompetenceCheckboxes(t.value, false);
+        // Stoppa 11:e unika valet
+        const uniqueSelected = getUniqueSelectedIds();
+        if (uniqueSelected.size > MAX_COMPETENCES) {
+            syncSameIdCheckboxes(t.value, false);
         }
 
-        compInit = false;
+        enforceCompetenceLimit(t.value);
         updateCompetenceUi();
     });
 
     clearCompBtn?.addEventListener("click", () => {
-        if (!compPicker) return;
-        compPicker.querySelectorAll("input.competence-chk:checked").forEach((cb) => (cb.checked = false));
+        getAllCompetenceCheckboxes().forEach(cb => { cb.checked = false; cb.disabled = false; cb.closest(".editcv-picker__row")?.classList.remove("is-disabled"); });
         compInit = false;
         updateCompetenceUi();
     });
@@ -923,6 +941,7 @@
 
     // Init kompetenser utan dirty
     compInit = true;
+    enforceCompetenceLimit();
     updateCompetenceUi();
     compInit = false;
 
