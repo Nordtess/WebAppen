@@ -1,0 +1,2013 @@
+{
+  "competences": [
+    {
+      "name": "C#",
+      "category": "Programmeringsspr\u00E5k",
+      "sortOrder": 0,
+      "isTopList": true,
+      "normalizedName": "C#"
+    },
+    {
+      "name": ".NET",
+      "category": "Backend",
+      "sortOrder": 0,
+      "isTopList": true,
+      "normalizedName": ".NET"
+    },
+    {
+      "name": "ASP.NET Core",
+      "category": "Backend",
+      "sortOrder": 1,
+      "isTopList": true,
+      "normalizedName": "ASP.NET CORE"
+    },
+    {
+      "name": "MVC",
+      "category": "Backend",
+      "sortOrder": 2,
+      "isTopList": true,
+      "normalizedName": "MVC"
+    },
+    {
+      "name": "EF Core",
+      "category": "Backend",
+      "sortOrder": 4,
+      "isTopList": true,
+      "normalizedName": "EF CORE"
+    },
+    {
+      "name": "LINQ",
+      "category": "Backend",
+      "sortOrder": 5,
+      "isTopList": true,
+      "normalizedName": "LINQ"
+    },
+    {
+      "name": "SQL",
+      "category": "Programmeringsspr\u00E5k",
+      "sortOrder": 5,
+      "isTopList": true,
+      "normalizedName": "SQL"
+    },
+    {
+      "name": "Git",
+      "category": "DevOps \u0026 Drift",
+      "sortOrder": 0,
+      "isTopList": true,
+      "normalizedName": "GIT"
+    },
+    {
+      "name": "Docker",
+      "category": "DevOps \u0026 Drift",
+      "sortOrder": 3,
+      "isTopList": true,
+      "normalizedName": "DOCKER"
+    },
+    {
+      "name": "Azure",
+      "category": "DevOps \u0026 Drift",
+      "sortOrder": 7,
+      "isTopList": true,
+      "normalizedName": "AZURE"
+    },
+    {
+      "name": "Linux",
+      "category": "DevOps \u0026 Drift",
+      "sortOrder": 5,
+      "isTopList": true,
+      "normalizedName": "LINUX"
+    },
+    {
+      "name": "REST API",
+      "category": "Topplista",
+      "sortOrder": 11,
+      "isTopList": true,
+      "normalizedName": "REST API"
+    },
+    {
+      "name": "Java",
+      "category": "Programmeringsspr\u00E5k",
+      "sortOrder": 1,
+      "isTopList": false,
+      "normalizedName": "JAVA"
+    },
+    {
+      "name": "Python",
+      "category": "Programmeringsspr\u00E5k",
+      "sortOrder": 2,
+      "isTopList": false,
+      "normalizedName": "PYTHON"
+    },
+    {
+      "name": "JavaScript",
+      "category": "Programmeringsspr\u00E5k",
+      "sortOrder": 3,
+      "isTopList": false,
+      "normalizedName": "JAVASCRIPT"
+    },
+    {
+      "name": "TypeScript",
+      "category": "Programmeringsspr\u00E5k",
+      "sortOrder": 4,
+      "isTopList": false,
+      "normalizedName": "TYPESCRIPT"
+    },
+    {
+      "name": "HTML",
+      "category": "Programmeringsspr\u00E5k",
+      "sortOrder": 6,
+      "isTopList": false,
+      "normalizedName": "HTML"
+    },
+    {
+      "name": "CSS",
+      "category": "Programmeringsspr\u00E5k",
+      "sortOrder": 7,
+      "isTopList": false,
+      "normalizedName": "CSS"
+    },
+    {
+      "name": "Bash",
+      "category": "Programmeringsspr\u00E5k",
+      "sortOrder": 8,
+      "isTopList": false,
+      "normalizedName": "BASH"
+    },
+    {
+      "name": "Web API",
+      "category": "Backend",
+      "sortOrder": 3,
+      "isTopList": false,
+      "normalizedName": "WEB API"
+    },
+    {
+      "name": "SignalR",
+      "category": "Backend",
+      "sortOrder": 6,
+      "isTopList": false,
+      "normalizedName": "SIGNALR"
+    },
+    {
+      "name": "React",
+      "category": "Frontend",
+      "sortOrder": 0,
+      "isTopList": false,
+      "normalizedName": "REACT"
+    },
+    {
+      "name": "Vue",
+      "category": "Frontend",
+      "sortOrder": 1,
+      "isTopList": false,
+      "normalizedName": "VUE"
+    },
+    {
+      "name": "Angular",
+      "category": "Frontend",
+      "sortOrder": 2,
+      "isTopList": false,
+      "normalizedName": "ANGULAR"
+    },
+    {
+      "name": "Vite",
+      "category": "Frontend",
+      "sortOrder": 3,
+      "isTopList": false,
+      "normalizedName": "VITE"
+    },
+    {
+      "name": "Tailwind",
+      "category": "Frontend",
+      "sortOrder": 4,
+      "isTopList": false,
+      "normalizedName": "TAILWIND"
+    },
+    {
+      "name": "Bootstrap",
+      "category": "Frontend",
+      "sortOrder": 5,
+      "isTopList": false,
+      "normalizedName": "BOOTSTRAP"
+    },
+    {
+      "name": "SQL Server",
+      "category": "Databaser",
+      "sortOrder": 0,
+      "isTopList": false,
+      "normalizedName": "SQL SERVER"
+    },
+    {
+      "name": "PostgreSQL",
+      "category": "Databaser",
+      "sortOrder": 1,
+      "isTopList": false,
+      "normalizedName": "POSTGRESQL"
+    },
+    {
+      "name": "MySQL",
+      "category": "Databaser",
+      "sortOrder": 2,
+      "isTopList": false,
+      "normalizedName": "MYSQL"
+    },
+    {
+      "name": "SQLite",
+      "category": "Databaser",
+      "sortOrder": 3,
+      "isTopList": false,
+      "normalizedName": "SQLITE"
+    },
+    {
+      "name": "MongoDB",
+      "category": "Databaser",
+      "sortOrder": 4,
+      "isTopList": false,
+      "normalizedName": "MONGODB"
+    },
+    {
+      "name": "Redis",
+      "category": "Databaser",
+      "sortOrder": 5,
+      "isTopList": false,
+      "normalizedName": "REDIS"
+    },
+    {
+      "name": "GitHub",
+      "category": "DevOps \u0026 Drift",
+      "sortOrder": 1,
+      "isTopList": false,
+      "normalizedName": "GITHUB"
+    },
+    {
+      "name": "CI/CD",
+      "category": "DevOps \u0026 Drift",
+      "sortOrder": 2,
+      "isTopList": false,
+      "normalizedName": "CI/CD"
+    },
+    {
+      "name": "Kubernetes",
+      "category": "DevOps \u0026 Drift",
+      "sortOrder": 4,
+      "isTopList": false,
+      "normalizedName": "KUBERNETES"
+    },
+    {
+      "name": "Nginx",
+      "category": "DevOps \u0026 Drift",
+      "sortOrder": 6,
+      "isTopList": false,
+      "normalizedName": "NGINX"
+    },
+    {
+      "name": "AWS",
+      "category": "DevOps \u0026 Drift",
+      "sortOrder": 8,
+      "isTopList": false,
+      "normalizedName": "AWS"
+    },
+    {
+      "name": "xUnit",
+      "category": "Test \u0026 Kvalitet",
+      "sortOrder": 0,
+      "isTopList": false,
+      "normalizedName": "XUNIT"
+    },
+    {
+      "name": "NUnit",
+      "category": "Test \u0026 Kvalitet",
+      "sortOrder": 1,
+      "isTopList": false,
+      "normalizedName": "NUNIT"
+    },
+    {
+      "name": "Integration Tests",
+      "category": "Test \u0026 Kvalitet",
+      "sortOrder": 2,
+      "isTopList": false,
+      "normalizedName": "INTEGRATION TESTS"
+    },
+    {
+      "name": "Unit Tests",
+      "category": "Test \u0026 Kvalitet",
+      "sortOrder": 3,
+      "isTopList": false,
+      "normalizedName": "UNIT TESTS"
+    },
+    {
+      "name": "Logging",
+      "category": "Test \u0026 Kvalitet",
+      "sortOrder": 4,
+      "isTopList": false,
+      "normalizedName": "LOGGING"
+    },
+    {
+      "name": "Serilog",
+      "category": "Test \u0026 Kvalitet",
+      "sortOrder": 5,
+      "isTopList": false,
+      "normalizedName": "SERILOG"
+    },
+    {
+      "name": "OWASP",
+      "category": "S\u00E4kerhet",
+      "sortOrder": 0,
+      "isTopList": false,
+      "normalizedName": "OWASP"
+    },
+    {
+      "name": "HTTPS/TLS",
+      "category": "S\u00E4kerhet",
+      "sortOrder": 1,
+      "isTopList": false,
+      "normalizedName": "HTTPS/TLS"
+    },
+    {
+      "name": "JWT",
+      "category": "S\u00E4kerhet",
+      "sortOrder": 2,
+      "isTopList": false,
+      "normalizedName": "JWT"
+    },
+    {
+      "name": "OAuth2",
+      "category": "S\u00E4kerhet",
+      "sortOrder": 3,
+      "isTopList": false,
+      "normalizedName": "OAUTH2"
+    },
+    {
+      "name": "Clean Architecture",
+      "category": "Arkitektur \u0026 Metoder",
+      "sortOrder": 0,
+      "isTopList": false,
+      "normalizedName": "CLEAN ARCHITECTURE"
+    },
+    {
+      "name": "SOLID",
+      "category": "Arkitektur \u0026 Metoder",
+      "sortOrder": 1,
+      "isTopList": false,
+      "normalizedName": "SOLID"
+    },
+    {
+      "name": "DDD",
+      "category": "Arkitektur \u0026 Metoder",
+      "sortOrder": 2,
+      "isTopList": false,
+      "normalizedName": "DDD"
+    },
+    {
+      "name": "Agile",
+      "category": "Arkitektur \u0026 Metoder",
+      "sortOrder": 3,
+      "isTopList": false,
+      "normalizedName": "AGILE"
+    },
+    {
+      "name": "Scrum",
+      "category": "Arkitektur \u0026 Metoder",
+      "sortOrder": 4,
+      "isTopList": false,
+      "normalizedName": "SCRUM"
+    },
+    {
+      "name": "TDD",
+      "category": "Arkitektur \u0026 Metoder",
+      "sortOrder": 5,
+      "isTopList": false,
+      "normalizedName": "TDD"
+    }
+  ],
+  "profiles": [
+    {
+      "profileKey": "ErikJ@email.com",
+      "ownerEmail": "ErikJ@email.com",
+      "isPublic": true,
+      "headline": "Systemutvecklare",
+      "aboutMe": "En probleml\u00F6sare som \u00E4lskar att bygga skalbara backend-l\u00F6sningar och optimera databasfr\u00E5gor.",
+      "profileImagePath": "/uploads/avatars/dd79f9f4-9401-4f83-b060-64f953c3d57d/avatar_20251227205637.png",
+      "selectedProjectsJson": "[16,14,10,9]",
+      "skillsCsv": null,
+      "createdUtc": "2025-12-27T20:22:13.4518152+00:00",
+      "updatedUtc": "2025-12-30T18:39:57.3891741+00:00"
+    },
+    {
+      "profileKey": "SofiaA@email.com",
+      "ownerEmail": "SofiaA@email.com",
+      "isPublic": true,
+      "headline": "Cloud Architect",
+      "aboutMe": "Specialist p\u00E5 molninfrastruktur med fokus p\u00E5 s\u00E4kerhet och automatiserade fl\u00F6den.",
+      "profileImagePath": "/uploads/avatars/e6b0f316-e8f4-4cbc-9fd5-505ff41bd478/avatar_20251227202959.png",
+      "selectedProjectsJson": "[10,9,8,7]",
+      "skillsCsv": null,
+      "createdUtc": "2025-12-27T20:28:05.3307989+00:00",
+      "updatedUtc": "2025-12-30T18:39:36.9136227+00:00"
+    },
+    {
+      "profileKey": "MarcusB@email.com",
+      "ownerEmail": "MarcusB@email.com",
+      "isPublic": true,
+      "headline": "Data Scientist",
+      "aboutMe": "Brinner f\u00F6r att omvandla r\u00E5data till insikter genom avancerad maskininl\u00E4rning.",
+      "profileImagePath": "/uploads/avatars/c4208194-cff5-4169-b96e-17e1998a405e/avatar_20251227203411.png",
+      "selectedProjectsJson": "[12,11]",
+      "skillsCsv": null,
+      "createdUtc": "2025-12-27T20:32:00.6946235+00:00",
+      "updatedUtc": "2025-12-30T18:39:17.7708839+00:00"
+    },
+    {
+      "profileKey": "EmmaL@email.com",
+      "ownerEmail": "EmmaL@email.com",
+      "isPublic": true,
+      "headline": "UX-utvecklare",
+      "aboutMe": "Kombinerar teknisk kunskap med anv\u00E4ndarcentrerad design f\u00F6r att skapa vackra gr\u00E4nssnitt.",
+      "profileImagePath": "/uploads/avatars/12d56b8e-997d-4a49-b648-43c3ec2075e8/avatar_20251227203813.png",
+      "selectedProjectsJson": "[14,13,12,11]",
+      "skillsCsv": null,
+      "createdUtc": "2025-12-27T20:36:11.450836+00:00",
+      "updatedUtc": "2025-12-30T14:32:57.8911014+00:00"
+    },
+    {
+      "profileKey": "LinusL@email.com",
+      "ownerEmail": "LinusL@email.com",
+      "isPublic": true,
+      "headline": "Fullstack-konsult",
+      "aboutMe": "M\u00E5ngsidig utvecklare som trivs i snabbr\u00F6rliga projekt och agila team.",
+      "profileImagePath": "/uploads/avatars/03d28257-c094-4176-8ef9-901ad268b990/avatar_20251227204136.png",
+      "selectedProjectsJson": "[16,15,12,11]",
+      "skillsCsv": null,
+      "createdUtc": "2025-12-27T20:40:00.1423404+00:00",
+      "updatedUtc": "2025-12-30T18:38:54.9818942+00:00"
+    },
+    {
+      "profileKey": "OskarN@email.com",
+      "ownerEmail": "OskarN@email.com",
+      "isPublic": true,
+      "headline": "DevOps Engineer",
+      "aboutMe": "Fokuserad p\u00E5 att brygga gapet mellan utveckling och drift genom CI/CD-pipelines.",
+      "profileImagePath": "/uploads/avatars/ee340d54-dd28-4324-a775-3340f21ad943/avatar_20251227204430.png",
+      "selectedProjectsJson": "[16,15,14]",
+      "skillsCsv": null,
+      "createdUtc": "2025-12-27T20:43:05.3654722+00:00",
+      "updatedUtc": "2025-12-30T18:38:30.0486087+00:00"
+    },
+    {
+      "profileKey": "ViktorH@email.com",
+      "ownerEmail": "ViktorH@email.com",
+      "isPublic": true,
+      "headline": "Datavetare",
+      "aboutMe": "Expert p\u00E5 algoritmer och datastrukturer med ett stort intresse f\u00F6r cybers\u00E4kerhet.",
+      "profileImagePath": "/uploads/avatars/df2163e9-6458-4fcb-8622-387293f07fa2/avatar_20251227204657.png",
+      "selectedProjectsJson": "[16,15,14,13]",
+      "skillsCsv": null,
+      "createdUtc": "2025-12-27T20:45:29.6512526+00:00",
+      "updatedUtc": "2025-12-30T18:37:57.5686791+00:00"
+    },
+    {
+      "profileKey": "SimonB@email.com",
+      "ownerEmail": "SimonB@email.com",
+      "isPublic": true,
+      "headline": "App-utvecklare",
+      "aboutMe": "Skapar s\u00F6ml\u00F6sa mobila upplevelser f\u00F6r b\u00E5de iOS och Android med hj\u00E4lp av modern teknik.",
+      "profileImagePath": "/uploads/avatars/c870a97f-e9ef-4ae3-925a-42685499227c/avatar_20251227204916.png",
+      "selectedProjectsJson": "[15,14,12,7]",
+      "skillsCsv": null,
+      "createdUtc": "2025-12-27T20:47:51.9258985+00:00",
+      "updatedUtc": "2025-12-30T18:37:28.6874302+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "ownerEmail": "AntonS@email.com",
+      "isPublic": true,
+      "headline": "Inbyggda System-utvecklare",
+      "aboutMe": "Programmerar h\u00E5rdvarun\u00E4ra system med fokus p\u00E5 prestanda och energieffektivitet.",
+      "profileImagePath": "/uploads/avatars/8b3ca6e5-079a-452d-9bc2-99239beb8e5c/avatar_20251227205155.png",
+      "selectedProjectsJson": "[16,15,14,13]",
+      "skillsCsv": null,
+      "createdUtc": "2025-12-27T20:50:26.4813514+00:00",
+      "updatedUtc": "2025-12-30T18:36:31.7342602+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "ownerEmail": "FilipE@email.com",
+      "isPublic": true,
+      "headline": "IT-Strateg",
+      "aboutMe": "Hj\u00E4lper f\u00F6retag att genomf\u00F6ra digitala transformationer och v\u00E4lja r\u00E4tt teknikstack.",
+      "profileImagePath": "/uploads/avatars/46642e6e-8a45-41c4-9749-2081622b5f78/avatar_20251227205404.png",
+      "selectedProjectsJson": "[16,15]",
+      "skillsCsv": null,
+      "createdUtc": "2025-12-27T20:52:47.2582399+00:00",
+      "updatedUtc": "2025-12-30T09:19:30.9567164+00:00"
+    }
+  ],
+  "educations": [
+    {
+      "profileKey": "FilipE@email.com",
+      "school": "G\u00F6teborgs Universitet",
+      "program": "Management",
+      "years": "2017 - 2018",
+      "note": "60Hp Magister.",
+      "sortOrder": 0,
+      "createdUtc": "2025-12-30T09:19:30.7267585+00:00",
+      "updatedUtc": "2025-12-30T09:19:30.7267585+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "school": "G\u00F6teborgs Universitet",
+      "program": "Systemvetenskap",
+      "years": "2014 - 2017",
+      "note": "180Hp Kandidat.",
+      "sortOrder": 1,
+      "createdUtc": "2025-12-30T09:19:30.7267585+00:00",
+      "updatedUtc": "2025-12-30T09:19:30.7267585+00:00"
+    },
+    {
+      "profileKey": "EmmaL@email.com",
+      "school": "Hyper Island",
+      "program": "Frontend Design",
+      "years": "2022 - 2023",
+      "note": "Yrkesh\u00F6gskoleexamen",
+      "sortOrder": 0,
+      "createdUtc": "2025-12-30T14:32:57.8438993+00:00",
+      "updatedUtc": "2025-12-30T14:32:57.8438993+00:00"
+    },
+    {
+      "profileKey": "EmmaL@email.com",
+      "school": "Link\u00F6pings Universitet",
+      "program": "Medieteknik",
+      "years": "2019 - 2022",
+      "note": "180Hp Kandidat",
+      "sortOrder": 1,
+      "createdUtc": "2025-12-30T14:32:57.8438993+00:00",
+      "updatedUtc": "2025-12-30T14:32:57.8438993+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "school": "Halmstad H\u00F6gskola",
+      "program": "Inbyggda System",
+      "years": "2019 - 2021",
+      "note": "120Hp Master.",
+      "sortOrder": 0,
+      "createdUtc": "2025-12-30T18:36:31.5584614+00:00",
+      "updatedUtc": "2025-12-30T18:36:31.5584614+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "school": "Halmstad H\u00F6gskola",
+      "program": "Elektroteknik",
+      "years": "2016 - 2019",
+      "note": "180Hp Kandidat.",
+      "sortOrder": 1,
+      "createdUtc": "2025-12-30T18:36:31.5584614+00:00",
+      "updatedUtc": "2025-12-30T18:36:31.5584614+00:00"
+    },
+    {
+      "profileKey": "SimonB@email.com",
+      "school": "It-H\u00F6gskolan",
+      "program": "App-Utveckling",
+      "years": "2022 - 2023",
+      "note": "Yrkesh\u00F6gskoleexamen",
+      "sortOrder": 0,
+      "createdUtc": "2025-12-30T18:37:28.64444+00:00",
+      "updatedUtc": "2025-12-30T18:37:28.64444+00:00"
+    },
+    {
+      "profileKey": "SimonB@email.com",
+      "school": "Malm\u00F6 Universitet",
+      "program": "Datavetenskap Och Mobil Applikationsutveckling",
+      "years": "2019 - 2022",
+      "note": "180Hp Kandidat",
+      "sortOrder": 1,
+      "createdUtc": "2025-12-30T18:37:28.64444+00:00",
+      "updatedUtc": "2025-12-30T18:37:28.64444+00:00"
+    },
+    {
+      "profileKey": "ViktorH@email.com",
+      "school": "Ume\u00E5 Universitet",
+      "program": "Informationss\u00E4kerhet",
+      "years": "2020 - 2022",
+      "note": "120Hp Master",
+      "sortOrder": 0,
+      "createdUtc": "2025-12-30T18:37:57.5268025+00:00",
+      "updatedUtc": "2025-12-30T18:37:57.5268025+00:00"
+    },
+    {
+      "profileKey": "ViktorH@email.com",
+      "school": "Ume\u00E5 Universitet",
+      "program": "Datavetenskap",
+      "years": "2017 - 2020",
+      "note": "180Hp Kandidat",
+      "sortOrder": 1,
+      "createdUtc": "2025-12-30T18:37:57.5268025+00:00",
+      "updatedUtc": "2025-12-30T18:37:57.5268025+00:00"
+    },
+    {
+      "profileKey": "OskarN@email.com",
+      "school": "Lunds Universitet",
+      "program": "N\u00E4tverksteknik",
+      "years": "2018 - 2019",
+      "note": "Specialisering.",
+      "sortOrder": 0,
+      "createdUtc": "2025-12-30T18:38:30.0101835+00:00",
+      "updatedUtc": "2025-12-30T18:38:30.0101835+00:00"
+    },
+    {
+      "profileKey": "OskarN@email.com",
+      "school": "Lunds Tekniska H\u00F6gskola",
+      "program": "Datateknik",
+      "years": "2015 - 2018",
+      "note": "180Hp Kandidat",
+      "sortOrder": 1,
+      "createdUtc": "2025-12-30T18:38:30.0101835+00:00",
+      "updatedUtc": "2025-12-30T18:38:30.0101835+00:00"
+    },
+    {
+      "profileKey": "LinusL@email.com",
+      "school": "\u00D6rebro Universitet",
+      "program": "Informatik",
+      "years": "2021 - 2022",
+      "note": "Magisterexamen",
+      "sortOrder": 0,
+      "createdUtc": "2025-12-30T18:38:54.9393214+00:00",
+      "updatedUtc": "2025-12-30T18:38:54.9393214+00:00"
+    },
+    {
+      "profileKey": "LinusL@email.com",
+      "school": "\u00D6rebro Universitet",
+      "program": "Systemvetenskap",
+      "years": "2018 - 2021",
+      "note": "180Hp Kandidat",
+      "sortOrder": 1,
+      "createdUtc": "2025-12-30T18:38:54.9393214+00:00",
+      "updatedUtc": "2025-12-30T18:38:54.9393214+00:00"
+    },
+    {
+      "profileKey": "MarcusB@email.com",
+      "school": "Uppsala Universitet",
+      "program": "Till\u00E4mpad Ai",
+      "years": "2019 - 2021",
+      "note": "120Hp Master",
+      "sortOrder": 0,
+      "createdUtc": "2025-12-30T18:39:17.7279742+00:00",
+      "updatedUtc": "2025-12-30T18:39:17.7279742+00:00"
+    },
+    {
+      "profileKey": "MarcusB@email.com",
+      "school": "Uppsala Universitet",
+      "program": "Systemvetenskap",
+      "years": "2016 - 2019",
+      "note": "180Hp Kandidat",
+      "sortOrder": 1,
+      "createdUtc": "2025-12-30T18:39:17.7279742+00:00",
+      "updatedUtc": "2025-12-30T18:39:17.7279742+00:00"
+    },
+    {
+      "profileKey": "SofiaA@email.com",
+      "school": "Chalmers",
+      "program": "Cloud Computing",
+      "years": "2020 - 2022",
+      "note": "120Hp Master",
+      "sortOrder": 0,
+      "createdUtc": "2025-12-30T18:39:36.875913+00:00",
+      "updatedUtc": "2025-12-30T18:39:36.875913+00:00"
+    },
+    {
+      "profileKey": "SofiaA@email.com",
+      "school": "Chalmers",
+      "program": "Informationsteknik",
+      "years": "2017 - 2020",
+      "note": "180Hp Kandidat",
+      "sortOrder": 1,
+      "createdUtc": "2025-12-30T18:39:36.875913+00:00",
+      "updatedUtc": "2025-12-30T18:39:36.875913+00:00"
+    },
+    {
+      "profileKey": "ErikJ@email.com",
+      "school": "Kth",
+      "program": "Programvaruteknik",
+      "years": "2021 - 2023",
+      "note": "120Hp Master",
+      "sortOrder": 0,
+      "createdUtc": "2025-12-30T18:39:57.3516675+00:00",
+      "updatedUtc": "2025-12-30T18:39:57.3516675+00:00"
+    },
+    {
+      "profileKey": "ErikJ@email.com",
+      "school": "Kth",
+      "program": "Datateknik",
+      "years": "2018 - 2021",
+      "note": "180Hp Kandidat",
+      "sortOrder": 1,
+      "createdUtc": "2025-12-30T18:39:57.3516675+00:00",
+      "updatedUtc": "2025-12-30T18:39:57.3516675+00:00"
+    }
+  ],
+  "experiences": [
+    {
+      "profileKey": "FilipE@email.com",
+      "company": "Seb",
+      "role": "Verksamhetsanalytiker",
+      "years": "2017 - 2019",
+      "description": "Kravst\u00E4llning f\u00F6r digitala plattformar.",
+      "sortOrder": 0,
+      "createdUtc": "2025-12-30T09:19:30.8775505+00:00",
+      "updatedUtc": "2025-12-30T09:19:30.8775505+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "company": "Avanza",
+      "role": "It-Strateg",
+      "years": "2019 - P\u00E5g\u00E5ende",
+      "description": "Ansvarig f\u00F6r roadmap f\u00F6r nya banktj\u00E4nster.",
+      "sortOrder": 1,
+      "createdUtc": "2025-12-30T09:19:30.8775505+00:00",
+      "updatedUtc": "2025-12-30T09:19:30.8775505+00:00"
+    },
+    {
+      "profileKey": "EmmaL@email.com",
+      "company": "Ikea",
+      "role": "Ux-Praktikant",
+      "years": "2021 - 2022",
+      "description": "Design av interna logistiksystem.",
+      "sortOrder": 0,
+      "createdUtc": "2025-12-30T14:32:57.8626298+00:00",
+      "updatedUtc": "2025-12-30T14:32:57.8626298+00:00"
+    },
+    {
+      "profileKey": "EmmaL@email.com",
+      "company": "H\u0026M Group",
+      "role": "Frontend-Utvecklare",
+      "years": "2023 - P\u00E5g\u00E5ende",
+      "description": "Implementering av nya e-handelsfunktioner.",
+      "sortOrder": 1,
+      "createdUtc": "2025-12-30T14:32:57.8626298+00:00",
+      "updatedUtc": "2025-12-30T14:32:57.8626298+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "company": "Husqvarna",
+      "role": "Inbyggd Mjukvaruutvecklare",
+      "years": "2019 - 2021",
+      "description": "Programmering av robotgr\u00E4sklippare.",
+      "sortOrder": 0,
+      "createdUtc": "2025-12-30T18:36:31.6795028+00:00",
+      "updatedUtc": "2025-12-30T18:36:31.6795028+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "company": "Autoliv",
+      "role": "Systemutvecklare",
+      "years": "2021 - P\u00E5g\u00E5ende",
+      "description": "Mjukvara f\u00F6r krockkuddesensorer.",
+      "sortOrder": 1,
+      "createdUtc": "2025-12-30T18:36:31.6795028+00:00",
+      "updatedUtc": "2025-12-30T18:36:31.6795028+00:00"
+    },
+    {
+      "profileKey": "SimonB@email.com",
+      "company": "Northvolt",
+      "role": "Junior App-Utvecklare",
+      "years": "2022 - 2023",
+      "description": "Utvecklade interna monitoreringsverktyg.",
+      "sortOrder": 0,
+      "createdUtc": "2025-12-30T18:37:28.6648573+00:00",
+      "updatedUtc": "2025-12-30T18:37:28.6648573+00:00"
+    },
+    {
+      "profileKey": "SimonB@email.com",
+      "company": "Storytel",
+      "role": "Mobilutvecklare",
+      "years": "2023 - P\u00E5g\u00E5ende",
+      "description": "F\u00F6rb\u00E4ttring av ljudboksspelaren i appen.",
+      "sortOrder": 1,
+      "createdUtc": "2025-12-30T18:37:28.6648573+00:00",
+      "updatedUtc": "2025-12-30T18:37:28.6648573+00:00"
+    },
+    {
+      "profileKey": "ViktorH@email.com",
+      "company": "Knowit",
+      "role": "S\u00E4kerhetskonsult",
+      "years": "2020 - 2022",
+      "description": "Genomf\u00F6rande av penetrationstester.",
+      "sortOrder": 0,
+      "createdUtc": "2025-12-30T18:37:57.5469675+00:00",
+      "updatedUtc": "2025-12-30T18:37:57.5469675+00:00"
+    },
+    {
+      "profileKey": "ViktorH@email.com",
+      "company": "Polisen",
+      "role": "It-Forensiker",
+      "years": "2022 - P\u00E5g\u00E5ende",
+      "description": "Analys av digitala sp\u00E5r och kryptering.",
+      "sortOrder": 1,
+      "createdUtc": "2025-12-30T18:37:57.5469675+00:00",
+      "updatedUtc": "2025-12-30T18:37:57.5469675+00:00"
+    },
+    {
+      "profileKey": "OskarN@email.com",
+      "company": "Telia",
+      "role": "Systemadministrat\u00F6r",
+      "years": "2018 - 2020",
+      "description": "Drift av molnbaserade kommunikationstj\u00E4nster.",
+      "sortOrder": 0,
+      "createdUtc": "2025-12-30T18:38:30.0307866+00:00",
+      "updatedUtc": "2025-12-30T18:38:30.0307866+00:00"
+    },
+    {
+      "profileKey": "OskarN@email.com",
+      "company": "King",
+      "role": "Devops Specialist",
+      "years": "2020 - P\u00E5g\u00E5ende",
+      "description": "Automatisering av servermilj\u00F6er f\u00F6r spel.",
+      "sortOrder": 1,
+      "createdUtc": "2025-12-30T18:38:30.0307866+00:00",
+      "updatedUtc": "2025-12-30T18:38:30.0307866+00:00"
+    },
+    {
+      "profileKey": "LinusL@email.com",
+      "company": "Abb",
+      "role": "Systemtestare",
+      "years": "2021 - 2022",
+      "description": "Automatiserad testning av industrirobotar.",
+      "sortOrder": 0,
+      "createdUtc": "2025-12-30T18:38:54.9587789+00:00",
+      "updatedUtc": "2025-12-30T18:38:54.9587789+00:00"
+    },
+    {
+      "profileKey": "LinusL@email.com",
+      "company": "Netlight",
+      "role": "It-Konsult",
+      "years": "2022 - P\u00E5g\u00E5ende",
+      "description": "Uppdrag som fullstack-utvecklare hos banker.",
+      "sortOrder": 1,
+      "createdUtc": "2025-12-30T18:38:54.9587789+00:00",
+      "updatedUtc": "2025-12-30T18:38:54.9587789+00:00"
+    },
+    {
+      "profileKey": "MarcusB@email.com",
+      "company": "Scania",
+      "role": "Forskningsassistent",
+      "years": "2019 - 2021",
+      "description": "Analys av sensordata f\u00F6r autonoma fordon.",
+      "sortOrder": 0,
+      "createdUtc": "2025-12-30T18:39:17.7482605+00:00",
+      "updatedUtc": "2025-12-30T18:39:17.7482605+00:00"
+    },
+    {
+      "profileKey": "MarcusB@email.com",
+      "company": "Klarna",
+      "role": "Data Analyst",
+      "years": "2021 - P\u00E5g\u00E5ende",
+      "description": "Utvecklade algoritmer f\u00F6r kreditbed\u00F6mning.",
+      "sortOrder": 1,
+      "createdUtc": "2025-12-30T18:39:17.7482605+00:00",
+      "updatedUtc": "2025-12-30T18:39:17.7482605+00:00"
+    },
+    {
+      "profileKey": "SofiaA@email.com",
+      "company": "Capgemini",
+      "role": "Molnkonsult",
+      "years": "2020 - 2022",
+      "description": "Migrering av on-premise system till molnet.",
+      "sortOrder": 0,
+      "createdUtc": "2025-12-30T18:39:36.8956905+00:00",
+      "updatedUtc": "2025-12-30T18:39:36.8956905+00:00"
+    },
+    {
+      "profileKey": "SofiaA@email.com",
+      "company": "Volvo Cars",
+      "role": "Cloud Engineer",
+      "years": "2022 - P\u00E5g\u00E5ende",
+      "description": "Hantering av Azure-milj\u00F6er f\u00F6r uppkopplade bilar.",
+      "sortOrder": 1,
+      "createdUtc": "2025-12-30T18:39:36.8956905+00:00",
+      "updatedUtc": "2025-12-30T18:39:36.8956905+00:00"
+    },
+    {
+      "profileKey": "ErikJ@email.com",
+      "company": "Ericsson",
+      "role": "Junior Utvecklare",
+      "years": "2021 - 2023",
+      "description": "Underh\u00E5ll av n\u00E4tverkssystem",
+      "sortOrder": 0,
+      "createdUtc": "2025-12-30T18:39:57.3703676+00:00",
+      "updatedUtc": "2025-12-30T18:39:57.3703676+00:00"
+    },
+    {
+      "profileKey": "ErikJ@email.com",
+      "company": "Spotify",
+      "role": "Backend-Utvecklare",
+      "years": "2023 - P\u00E5g\u00E5ende",
+      "description": "Utvecklade mikrotj\u00E4nster f\u00F6r streaming",
+      "sortOrder": 1,
+      "createdUtc": "2025-12-30T18:39:57.3703676+00:00",
+      "updatedUtc": "2025-12-30T18:39:57.3703676+00:00"
+    }
+  ],
+  "userCompetences": [
+    {
+      "email": "LinusL@email.com",
+      "competenceNormalizedName": "C#"
+    },
+    {
+      "email": "LinusL@email.com",
+      "competenceNormalizedName": ".NET"
+    },
+    {
+      "email": "LinusL@email.com",
+      "competenceNormalizedName": "ASP.NET CORE"
+    },
+    {
+      "email": "LinusL@email.com",
+      "competenceNormalizedName": "MVC"
+    },
+    {
+      "email": "LinusL@email.com",
+      "competenceNormalizedName": "EF CORE"
+    },
+    {
+      "email": "LinusL@email.com",
+      "competenceNormalizedName": "LINQ"
+    },
+    {
+      "email": "LinusL@email.com",
+      "competenceNormalizedName": "SQL"
+    },
+    {
+      "email": "LinusL@email.com",
+      "competenceNormalizedName": "GIT"
+    },
+    {
+      "email": "LinusL@email.com",
+      "competenceNormalizedName": "DOCKER"
+    },
+    {
+      "email": "LinusL@email.com",
+      "competenceNormalizedName": "LINUX"
+    },
+    {
+      "email": "EmmaL@email.com",
+      "competenceNormalizedName": "C#"
+    },
+    {
+      "email": "EmmaL@email.com",
+      "competenceNormalizedName": ".NET"
+    },
+    {
+      "email": "EmmaL@email.com",
+      "competenceNormalizedName": "ASP.NET CORE"
+    },
+    {
+      "email": "EmmaL@email.com",
+      "competenceNormalizedName": "SQL"
+    },
+    {
+      "email": "EmmaL@email.com",
+      "competenceNormalizedName": "DOCKER"
+    },
+    {
+      "email": "EmmaL@email.com",
+      "competenceNormalizedName": "AZURE"
+    },
+    {
+      "email": "EmmaL@email.com",
+      "competenceNormalizedName": "REST API"
+    },
+    {
+      "email": "FilipE@email.com",
+      "competenceNormalizedName": "C#"
+    },
+    {
+      "email": "FilipE@email.com",
+      "competenceNormalizedName": ".NET"
+    },
+    {
+      "email": "FilipE@email.com",
+      "competenceNormalizedName": "ASP.NET CORE"
+    },
+    {
+      "email": "FilipE@email.com",
+      "competenceNormalizedName": "MVC"
+    },
+    {
+      "email": "FilipE@email.com",
+      "competenceNormalizedName": "EF CORE"
+    },
+    {
+      "email": "FilipE@email.com",
+      "competenceNormalizedName": "LINQ"
+    },
+    {
+      "email": "FilipE@email.com",
+      "competenceNormalizedName": "GIT"
+    },
+    {
+      "email": "FilipE@email.com",
+      "competenceNormalizedName": "WEB API"
+    },
+    {
+      "email": "FilipE@email.com",
+      "competenceNormalizedName": "SIGNALR"
+    },
+    {
+      "email": "AntonS@email.com",
+      "competenceNormalizedName": "C#"
+    },
+    {
+      "email": "AntonS@email.com",
+      "competenceNormalizedName": ".NET"
+    },
+    {
+      "email": "AntonS@email.com",
+      "competenceNormalizedName": "GIT"
+    },
+    {
+      "email": "AntonS@email.com",
+      "competenceNormalizedName": "MYSQL"
+    },
+    {
+      "email": "AntonS@email.com",
+      "competenceNormalizedName": "MONGODB"
+    },
+    {
+      "email": "",
+      "competenceNormalizedName": "C#"
+    },
+    {
+      "email": "",
+      "competenceNormalizedName": ".NET"
+    },
+    {
+      "email": "",
+      "competenceNormalizedName": "ASP.NET CORE"
+    },
+    {
+      "email": "",
+      "competenceNormalizedName": "MVC"
+    },
+    {
+      "email": "",
+      "competenceNormalizedName": "GIT"
+    },
+    {
+      "email": "MarcusB@email.com",
+      "competenceNormalizedName": "ASP.NET CORE"
+    },
+    {
+      "email": "MarcusB@email.com",
+      "competenceNormalizedName": "MVC"
+    },
+    {
+      "email": "MarcusB@email.com",
+      "competenceNormalizedName": "LINQ"
+    },
+    {
+      "email": "MarcusB@email.com",
+      "competenceNormalizedName": "WEB API"
+    },
+    {
+      "email": "SimonB@email.com",
+      "competenceNormalizedName": ".NET"
+    },
+    {
+      "email": "SimonB@email.com",
+      "competenceNormalizedName": "AZURE"
+    },
+    {
+      "email": "SimonB@email.com",
+      "competenceNormalizedName": "NGINX"
+    },
+    {
+      "email": "ErikJ@email.com",
+      "competenceNormalizedName": ".NET"
+    },
+    {
+      "email": "ErikJ@email.com",
+      "competenceNormalizedName": "ASP.NET CORE"
+    },
+    {
+      "email": "ErikJ@email.com",
+      "competenceNormalizedName": "MVC"
+    },
+    {
+      "email": "ViktorH@email.com",
+      "competenceNormalizedName": "LINQ"
+    },
+    {
+      "email": "ViktorH@email.com",
+      "competenceNormalizedName": "CSS"
+    },
+    {
+      "email": "SofiaA@email.com",
+      "competenceNormalizedName": "MVC"
+    },
+    {
+      "email": "SofiaA@email.com",
+      "competenceNormalizedName": "DOCKER"
+    },
+    {
+      "email": "OskarN@email.com",
+      "competenceNormalizedName": "LINUX"
+    },
+    {
+      "email": "OskarN@email.com",
+      "competenceNormalizedName": "KUBERNETES"
+    }
+  ],
+  "projects": [
+    {
+      "projectKey": "NebulaSync|2025-12-27T20:25:11.1457477\u002B00:00",
+      "titel": "NebulaSync",
+      "kortBeskrivning": "En decentraliserad filsynkroniseringstj\u00E4nst f\u00F6r distribuerade team.",
+      "beskrivning": "NebulaSync \u00E4r byggt p\u00E5 en P2P-arkitektur som eliminerar behovet av centrala servrar. Genom att anv\u00E4nda IPFS (InterPlanetary File System) kan team dela stora m\u00E4ngder data globalt med minimal latens. Projektet fokuserar p\u00E5 extrem datas\u00E4kerhet genom \u0022zero-knowledge\u0022-kryptering, vilket inneb\u00E4r att endast anv\u00E4ndaren har tillg\u00E5ng till sina dekrypteringsnycklar.",
+      "techStackKeysCsv": "python,java,javascript,dotnet",
+      "imagePath": "/images/projects/rocketship.png",
+      "createdByEmail": "ErikJ@email.com",
+      "createdUtc": "2025-12-27T20:25:11.1457477+00:00",
+      "updatedUtc": "2025-12-27T20:25:11.1457477+00:00"
+    },
+    {
+      "projectKey": "CodeWhisperer AI|2025-12-27T20:25:31.7670051\u002B00:00",
+      "titel": "CodeWhisperer AI",
+      "kortBeskrivning": "En realtidsanalysator f\u00F6r kodkvalitet och teknisk skuld.",
+      "beskrivning": "Detta verktyg anv\u00E4nder maskininl\u00E4rning f\u00F6r att skanna igenom stora kodbaser och identifiera m\u00F6nster som leder till teknisk skuld. Till skillnad fr\u00E5n vanliga linters ger CodeWhisperer AI kontextuella f\u00F6rslag p\u00E5 refaktorering och f\u00F6ruts\u00E4ger vilka delar av koden som l\u00F6per st\u00F6rst risk att drabbas av buggar vid n\u00E4sta uppdatering.",
+      "techStackKeysCsv": "dotnet,javascript,mongodb,typescript",
+      "imagePath": "/images/projects/aigarden.png",
+      "createdByEmail": "ErikJ@email.com",
+      "createdUtc": "2025-12-27T20:25:31.7670051+00:00",
+      "updatedUtc": "2025-12-27T20:25:37.7099447+00:00"
+    },
+    {
+      "projectKey": "OrbitOS|2025-12-27T20:27:28.0428964\u002B00:00",
+      "titel": "OrbitOS",
+      "kortBeskrivning": "Ett minimalistiskt realtidsoperativsystem f\u00F6r IoT-enheter.",
+      "beskrivning": "OrbitOS \u00E4r utvecklat i Rust med fokus p\u00E5 minness\u00E4kerhet och extremt l\u00E5g resursf\u00F6rbrukning. Det \u00E4r designat f\u00F6r att k\u00F6ras p\u00E5 mikrokontroller i milj\u00F6er d\u00E4r stabilitet \u00E4r kritiskt, s\u00E5som satellitkommunikation eller industriella sensorsystem. Operativsystemet st\u00F6djer \u0022hot-swapping\u0022 av moduler utan att systemet beh\u00F6ver startas om.",
+      "techStackKeysCsv": "ruby,python,cplusplus,typescript",
+      "imagePath": "/images/projects/cloudisland.png",
+      "createdByEmail": "SofiaA@email.com",
+      "createdUtc": "2025-12-27T20:27:28.0428964+00:00",
+      "updatedUtc": "2025-12-27T20:27:28.0428964+00:00"
+    },
+    {
+      "projectKey": "CryptoCortex|2025-12-27T20:27:52.4929220\u002B00:00",
+      "titel": "CryptoCortex",
+      "kortBeskrivning": "En visualiseringsplattform f\u00F6r transaktioner p\u00E5 blockkedjan.",
+      "beskrivning": "CryptoCortex g\u00F6r det m\u00F6jligt att se pengafl\u00F6den i realtid genom komplexa grafer och 3D-modeller. Verktyget anv\u00E4nds fr\u00E4mst f\u00F6r att sp\u00E5ra misst\u00E4nkt aktivitet och f\u00F6rst\u00E5 hur likviditet r\u00F6r sig mellan olika decentraliserade b\u00F6rser (DEX). Systemet kan hantera miljoner noder samtidigt utan att prestandan p\u00E5verkas.",
+      "techStackKeysCsv": "javascript,swift,ruby,csharp",
+      "imagePath": "/images/projects/datamine.png",
+      "createdByEmail": "SofiaA@email.com",
+      "createdUtc": "2025-12-27T20:27:52.492922+00:00",
+      "updatedUtc": "2025-12-27T20:27:52.492922+00:00"
+    },
+    {
+      "projectKey": "GreenStack Optimizer|2025-12-27T20:31:23.5948232\u002B00:00",
+      "titel": "GreenStack Optimizer",
+      "kortBeskrivning": "M\u00E4ter och minskar koldioxidavtrycket fr\u00E5n molnbaserade applikationer.",
+      "beskrivning": "GreenStack \u00E4r en agent som k\u00F6rs i Kubernetes-kluster och analyserar energif\u00F6rbrukningen f\u00F6r varje mikrotj\u00E4nst. Genom att integrera med molnleverant\u00F6rers API:er kan den automatiskt flytta arbetslaster till datacenter som f\u00F6r tillf\u00E4llet drivs av 100% f\u00F6rnybar energi eller skala ner tj\u00E4nster under tider med h\u00F6g belastning p\u00E5 eln\u00E4tet.",
+      "techStackKeysCsv": "ruby,dotnet,java,javascript",
+      "imagePath": "/images/projects/securityfortress.png",
+      "createdByEmail": "MarcusB@email.com",
+      "createdUtc": "2025-12-27T20:31:23.5948232+00:00",
+      "updatedUtc": "2025-12-27T20:31:23.5948232+00:00"
+    },
+    {
+      "projectKey": "QuantumSafe Messenger|2025-12-27T20:31:53.1987377\u002B00:00",
+      "titel": "QuantumSafe Messenger",
+      "kortBeskrivning": "En meddelandeapp skyddad mot framtida kvantdator-attacker.",
+      "beskrivning": "Denna applikation anv\u00E4nder post-kvant-kryptografi (PQC) f\u00F6r att s\u00E4kra kommunikation. Medan dagens kryptering kan kn\u00E4ckas av framtida kvantdatorer, anv\u00E4nder QuantumSafe algoritmer baserade p\u00E5 matematiska problem som \u00E4r resistenta \u00E4ven mot kvantprocessorer. Projektet inkluderar \u00E4ven ett protokoll f\u00F6r sj\u00E4lvf\u00F6rst\u00F6rande meddelanden lagrade i distribuerade n\u00E4tverk.",
+      "techStackKeysCsv": "python,react,dotnet,csharp",
+      "imagePath": "/images/projects/rocketship.png",
+      "createdByEmail": "MarcusB@email.com",
+      "createdUtc": "2025-12-27T20:31:53.1987377+00:00",
+      "updatedUtc": "2025-12-27T20:31:53.1987377+00:00"
+    },
+    {
+      "projectKey": "SentinelVision|2025-12-27T20:35:05.6478559\u002B00:00",
+      "titel": "SentinelVision",
+      "kortBeskrivning": "Autonomt \u00F6vervakningssystem f\u00F6r datacenter med datorseende.",
+      "beskrivning": "SentinelVision anv\u00E4nder kameror och AI f\u00F6r att uppt\u00E4cka fysiska avvikelser i serverhallar, som t.ex. r\u00F6kutveckling, obeh\u00F6rig personal eller l\u00F6sa kablar. Genom att kombinera termisk analys med r\u00F6relsedetektering kan systemet varna tekniker innan h\u00E5rdvarufel uppst\u00E5r p\u00E5 grund av \u00F6verhettning.",
+      "techStackKeysCsv": "dotnet,java,javascript,typescript",
+      "imagePath": "/images/projects/cloudisland.png",
+      "createdByEmail": "EmmaL@email.com",
+      "createdUtc": "2025-12-27T20:35:05.6478559+00:00",
+      "updatedUtc": "2025-12-27T20:35:05.6478559+00:00"
+    },
+    {
+      "projectKey": "Hydra API Gateway|2025-12-27T20:35:23.7734133\u002B00:00",
+      "titel": "Hydra API Gateway",
+      "kortBeskrivning": "En h\u00F6gpresterande gateway f\u00F6r hantering av miljontals API-anrop.",
+      "beskrivning": "Hydra \u00E4r skriven i Go och optimerad f\u00F6r extremt h\u00F6g genomstr\u00F6mning med l\u00E5g overhead. Den hanterar autentisering, hastighetsbegr\u00E4nsning (rate limiting) och automatisk dokumentationsgenerering via Swagger/OpenAPI. Dess unika egenskap \u00E4r f\u00F6rm\u00E5gan att dynamiskt skugga trafik till testmilj\u00F6er f\u00F6r s\u00E4ker verifiering av nya releaser.",
+      "techStackKeysCsv": "ruby,react",
+      "imagePath": "/images/projects/datamine.png",
+      "createdByEmail": "EmmaL@email.com",
+      "createdUtc": "2025-12-27T20:35:23.7734133+00:00",
+      "updatedUtc": "2025-12-27T20:35:23.7734133+00:00"
+    },
+    {
+      "projectKey": "EchoLocate JS|2025-12-27T20:39:31.2177878\u002B00:00",
+      "titel": "EchoLocate JS",
+      "kortBeskrivning": "Ett ramverk f\u00F6r att bygga tillg\u00E4ngliga ljudgr\u00E4nssnitt p\u00E5 webben.",
+      "beskrivning": "EchoLocate hj\u00E4lper utvecklare att skapa webbupplevelser som styrs helt via ljud och r\u00F6st, utan att tumma p\u00E5 prestanda. Det anv\u00E4nder Web Audio API f\u00F6r att skapa rumsligt ljud (spatial audio) som guidar synskadade anv\u00E4ndare genom komplexa webbapplikationer. Ramverket inkluderar f\u00E4rdiga komponenter f\u00F6r r\u00F6ststyrda formul\u00E4r och menyer.",
+      "techStackKeysCsv": "ruby,swift,react,dotnet",
+      "imagePath": "/images/projects/rocketship.png",
+      "createdByEmail": "LinusL@email.com",
+      "createdUtc": "2025-12-27T20:39:31.2177878+00:00",
+      "updatedUtc": "2025-12-27T20:39:31.2177878+00:00"
+    },
+    {
+      "projectKey": "DeepBlue DB|2025-12-27T20:39:49.4925005\u002B00:00",
+      "titel": "DeepBlue DB",
+      "kortBeskrivning": "En distribuerad databas optimerad f\u00F6r tidsseriedata.",
+      "beskrivning": "DeepBlue \u00E4r designad f\u00F6r att lagra miljarder datapunkter per sekund fr\u00E5n t.ex. aktiemarknader eller vetenskapliga instrument. Den anv\u00E4nder en unik komprimeringsalgoritm som minskar lagringsbehovet med upp till 90% j\u00E4mf\u00F6rt med traditionella SQL-databaser. Dessutom erbjuder den inbyggda funktioner f\u00F6r statistisk analys direkt i fr\u00E5gespr\u00E5ket.",
+      "techStackKeysCsv": "python,javascript",
+      "imagePath": "/images/projects/aigarden.png",
+      "createdByEmail": "LinusL@email.com",
+      "createdUtc": "2025-12-27T20:39:49.4925005+00:00",
+      "updatedUtc": "2025-12-27T20:39:49.4925005+00:00"
+    }
+  ],
+  "projectMemberships": [
+    {
+      "projectKey": "NebulaSync|2025-12-27T20:25:11.1457477\u002B00:00",
+      "email": "ErikJ@email.com",
+      "connectedUtc": "2025-12-27T20:25:11.1457477+00:00"
+    },
+    {
+      "projectKey": "CodeWhisperer AI|2025-12-27T20:25:31.7670051\u002B00:00",
+      "email": "ErikJ@email.com",
+      "connectedUtc": "2025-12-27T20:25:31.7670051+00:00"
+    },
+    {
+      "projectKey": "OrbitOS|2025-12-27T20:27:28.0428964\u002B00:00",
+      "email": "SofiaA@email.com",
+      "connectedUtc": "2025-12-27T20:27:28.0428964+00:00"
+    },
+    {
+      "projectKey": "CryptoCortex|2025-12-27T20:27:52.4929220\u002B00:00",
+      "email": "SofiaA@email.com",
+      "connectedUtc": "2025-12-27T20:27:52.492922+00:00"
+    },
+    {
+      "projectKey": "NebulaSync|2025-12-27T20:25:11.1457477\u002B00:00",
+      "email": "SofiaA@email.com",
+      "connectedUtc": "2025-12-27T20:27:58.7294154+00:00"
+    },
+    {
+      "projectKey": "CodeWhisperer AI|2025-12-27T20:25:31.7670051\u002B00:00",
+      "email": "SofiaA@email.com",
+      "connectedUtc": "2025-12-27T20:28:03.3075269+00:00"
+    },
+    {
+      "projectKey": "GreenStack Optimizer|2025-12-27T20:31:23.5948232\u002B00:00",
+      "email": "MarcusB@email.com",
+      "connectedUtc": "2025-12-27T20:31:23.5948232+00:00"
+    },
+    {
+      "projectKey": "QuantumSafe Messenger|2025-12-27T20:31:53.1987377\u002B00:00",
+      "email": "MarcusB@email.com",
+      "connectedUtc": "2025-12-27T20:31:53.1987377+00:00"
+    },
+    {
+      "projectKey": "SentinelVision|2025-12-27T20:35:05.6478559\u002B00:00",
+      "email": "EmmaL@email.com",
+      "connectedUtc": "2025-12-27T20:35:05.6478559+00:00"
+    },
+    {
+      "projectKey": "Hydra API Gateway|2025-12-27T20:35:23.7734133\u002B00:00",
+      "email": "EmmaL@email.com",
+      "connectedUtc": "2025-12-27T20:35:23.7734133+00:00"
+    },
+    {
+      "projectKey": "QuantumSafe Messenger|2025-12-27T20:31:53.1987377\u002B00:00",
+      "email": "EmmaL@email.com",
+      "connectedUtc": "2025-12-27T20:35:28.7261534+00:00"
+    },
+    {
+      "projectKey": "GreenStack Optimizer|2025-12-27T20:31:23.5948232\u002B00:00",
+      "email": "EmmaL@email.com",
+      "connectedUtc": "2025-12-27T20:35:33.4038795+00:00"
+    },
+    {
+      "projectKey": "CryptoCortex|2025-12-27T20:27:52.4929220\u002B00:00",
+      "email": "EmmaL@email.com",
+      "connectedUtc": "2025-12-27T20:35:37.3879316+00:00"
+    },
+    {
+      "projectKey": "OrbitOS|2025-12-27T20:27:28.0428964\u002B00:00",
+      "email": "EmmaL@email.com",
+      "connectedUtc": "2025-12-27T20:35:42.3920558+00:00"
+    },
+    {
+      "projectKey": "CodeWhisperer AI|2025-12-27T20:25:31.7670051\u002B00:00",
+      "email": "EmmaL@email.com",
+      "connectedUtc": "2025-12-27T20:35:46.5965596+00:00"
+    },
+    {
+      "projectKey": "NebulaSync|2025-12-27T20:25:11.1457477\u002B00:00",
+      "email": "EmmaL@email.com",
+      "connectedUtc": "2025-12-27T20:35:56.5754229+00:00"
+    },
+    {
+      "projectKey": "EchoLocate JS|2025-12-27T20:39:31.2177878\u002B00:00",
+      "email": "LinusL@email.com",
+      "connectedUtc": "2025-12-27T20:39:31.2177878+00:00"
+    },
+    {
+      "projectKey": "DeepBlue DB|2025-12-27T20:39:49.4925005\u002B00:00",
+      "email": "LinusL@email.com",
+      "connectedUtc": "2025-12-27T20:39:49.4925005+00:00"
+    },
+    {
+      "projectKey": "QuantumSafe Messenger|2025-12-27T20:31:53.1987377\u002B00:00",
+      "email": "LinusL@email.com",
+      "connectedUtc": "2025-12-27T20:41:59.0303768+00:00"
+    },
+    {
+      "projectKey": "GreenStack Optimizer|2025-12-27T20:31:23.5948232\u002B00:00",
+      "email": "LinusL@email.com",
+      "connectedUtc": "2025-12-27T20:42:02.9081778+00:00"
+    },
+    {
+      "projectKey": "DeepBlue DB|2025-12-27T20:39:49.4925005\u002B00:00",
+      "email": "OskarN@email.com",
+      "connectedUtc": "2025-12-27T20:42:55.111051+00:00"
+    },
+    {
+      "projectKey": "EchoLocate JS|2025-12-27T20:39:31.2177878\u002B00:00",
+      "email": "OskarN@email.com",
+      "connectedUtc": "2025-12-27T20:42:58.0989067+00:00"
+    },
+    {
+      "projectKey": "Hydra API Gateway|2025-12-27T20:35:23.7734133\u002B00:00",
+      "email": "OskarN@email.com",
+      "connectedUtc": "2025-12-27T20:43:01.3211143+00:00"
+    },
+    {
+      "projectKey": "DeepBlue DB|2025-12-27T20:39:49.4925005\u002B00:00",
+      "email": "ViktorH@email.com",
+      "connectedUtc": "2025-12-27T20:45:10.6794257+00:00"
+    },
+    {
+      "projectKey": "EchoLocate JS|2025-12-27T20:39:31.2177878\u002B00:00",
+      "email": "ViktorH@email.com",
+      "connectedUtc": "2025-12-27T20:45:15.0919455+00:00"
+    },
+    {
+      "projectKey": "Hydra API Gateway|2025-12-27T20:35:23.7734133\u002B00:00",
+      "email": "ViktorH@email.com",
+      "connectedUtc": "2025-12-27T20:45:18.4609279+00:00"
+    },
+    {
+      "projectKey": "SentinelVision|2025-12-27T20:35:05.6478559\u002B00:00",
+      "email": "ViktorH@email.com",
+      "connectedUtc": "2025-12-27T20:45:22.4735352+00:00"
+    },
+    {
+      "projectKey": "QuantumSafe Messenger|2025-12-27T20:31:53.1987377\u002B00:00",
+      "email": "ViktorH@email.com",
+      "connectedUtc": "2025-12-27T20:45:26.3770911+00:00"
+    },
+    {
+      "projectKey": "NebulaSync|2025-12-27T20:25:11.1457477\u002B00:00",
+      "email": "SimonB@email.com",
+      "connectedUtc": "2025-12-27T20:47:38.7392185+00:00"
+    },
+    {
+      "projectKey": "Hydra API Gateway|2025-12-27T20:35:23.7734133\u002B00:00",
+      "email": "SimonB@email.com",
+      "connectedUtc": "2025-12-27T20:47:42.0204609+00:00"
+    },
+    {
+      "projectKey": "QuantumSafe Messenger|2025-12-27T20:31:53.1987377\u002B00:00",
+      "email": "SimonB@email.com",
+      "connectedUtc": "2025-12-27T20:47:46.4269496+00:00"
+    },
+    {
+      "projectKey": "EchoLocate JS|2025-12-27T20:39:31.2177878\u002B00:00",
+      "email": "SimonB@email.com",
+      "connectedUtc": "2025-12-27T20:47:49.6519276+00:00"
+    },
+    {
+      "projectKey": "DeepBlue DB|2025-12-27T20:39:49.4925005\u002B00:00",
+      "email": "AntonS@email.com",
+      "connectedUtc": "2025-12-27T20:50:01.4251565+00:00"
+    },
+    {
+      "projectKey": "EchoLocate JS|2025-12-27T20:39:31.2177878\u002B00:00",
+      "email": "AntonS@email.com",
+      "connectedUtc": "2025-12-27T20:50:04.2812769+00:00"
+    },
+    {
+      "projectKey": "Hydra API Gateway|2025-12-27T20:35:23.7734133\u002B00:00",
+      "email": "AntonS@email.com",
+      "connectedUtc": "2025-12-27T20:50:07.9822686+00:00"
+    },
+    {
+      "projectKey": "SentinelVision|2025-12-27T20:35:05.6478559\u002B00:00",
+      "email": "AntonS@email.com",
+      "connectedUtc": "2025-12-27T20:50:11.5581508+00:00"
+    },
+    {
+      "projectKey": "QuantumSafe Messenger|2025-12-27T20:31:53.1987377\u002B00:00",
+      "email": "AntonS@email.com",
+      "connectedUtc": "2025-12-27T20:50:14.7003758+00:00"
+    },
+    {
+      "projectKey": "GreenStack Optimizer|2025-12-27T20:31:23.5948232\u002B00:00",
+      "email": "AntonS@email.com",
+      "connectedUtc": "2025-12-27T20:50:18.8760535+00:00"
+    },
+    {
+      "projectKey": "CryptoCortex|2025-12-27T20:27:52.4929220\u002B00:00",
+      "email": "AntonS@email.com",
+      "connectedUtc": "2025-12-27T20:50:24.2318692+00:00"
+    },
+    {
+      "projectKey": "DeepBlue DB|2025-12-27T20:39:49.4925005\u002B00:00",
+      "email": "FilipE@email.com",
+      "connectedUtc": "2025-12-27T20:52:40.7111616+00:00"
+    },
+    {
+      "projectKey": "EchoLocate JS|2025-12-27T20:39:31.2177878\u002B00:00",
+      "email": "FilipE@email.com",
+      "connectedUtc": "2025-12-27T20:52:44.4558274+00:00"
+    },
+    {
+      "projectKey": "OrbitOS|2025-12-27T20:27:28.0428964\u002B00:00",
+      "email": "ErikJ@email.com",
+      "connectedUtc": "2025-12-27T20:55:52.3801276+00:00"
+    },
+    {
+      "projectKey": "CryptoCortex|2025-12-27T20:27:52.4929220\u002B00:00",
+      "email": "ErikJ@email.com",
+      "connectedUtc": "2025-12-27T20:55:55.8299491+00:00"
+    },
+    {
+      "projectKey": "Hydra API Gateway|2025-12-27T20:35:23.7734133\u002B00:00",
+      "email": "ErikJ@email.com",
+      "connectedUtc": "2025-12-27T20:55:59.438332+00:00"
+    },
+    {
+      "projectKey": "DeepBlue DB|2025-12-27T20:39:49.4925005\u002B00:00",
+      "email": "ErikJ@email.com",
+      "connectedUtc": "2025-12-27T20:56:04.4201166+00:00"
+    }
+  ],
+  "messages": [
+    {
+      "subject": "",
+      "body": "Tjenare mannen!",
+      "senderEmail": "FilipE@email.com",
+      "recipientEmail": "ErikJ@email.com",
+      "sentUtc": "2025-12-27T20:54:31.3128306+00:00",
+      "isRead": true,
+      "readUtc": "2025-12-27T20:55:33.1907484+00:00"
+    },
+    {
+      "subject": "",
+      "body": "Hur m\u00E5r du?",
+      "senderEmail": "FilipE@email.com",
+      "recipientEmail": "ErikJ@email.com",
+      "sentUtc": "2025-12-27T20:54:42.0592367+00:00",
+      "isRead": true,
+      "readUtc": "2025-12-27T20:55:35.8258619+00:00"
+    },
+    {
+      "subject": "",
+      "body": "tjena!",
+      "senderEmail": "ErikJ@email.com",
+      "recipientEmail": "FilipE@email.com",
+      "sentUtc": "2025-12-27T20:55:30.8892815+00:00",
+      "isRead": true,
+      "readUtc": "2025-12-27T21:15:43.053065+00:00"
+    },
+    {
+      "subject": "",
+      "body": "Tjenare mannen!",
+      "senderEmail": "EmmaL@email.com",
+      "recipientEmail": "FilipE@email.com",
+      "sentUtc": "2025-12-30T16:28:45.6078474+00:00",
+      "isRead": true,
+      "readUtc": "2025-12-30T16:43:11.2426309+00:00"
+    },
+    {
+      "subject": "",
+      "body": "asdads",
+      "senderEmail": null,
+      "recipientEmail": "FilipE@email.com",
+      "sentUtc": "2025-12-30T16:42:55.3081571+00:00",
+      "isRead": true,
+      "readUtc": "2025-12-30T16:43:12.8271087+00:00"
+    },
+    {
+      "subject": "",
+      "body": "TJENARE!",
+      "senderEmail": "FilipE@email.com",
+      "recipientEmail": "LinusL@email.com",
+      "sentUtc": "2025-12-30T19:32:33.2784234+00:00",
+      "isRead": true,
+      "readUtc": "2025-12-30T19:32:50.9771673+00:00"
+    }
+  ],
+  "profileVisits": [
+    {
+      "profileKey": "ErikJ@email.com",
+      "visitorEmail": "FilipE@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-27T20:54:22.7625257+00:00"
+    },
+    {
+      "profileKey": "ErikJ@email.com",
+      "visitorEmail": "FilipE@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-27T20:54:31.3734564+00:00"
+    },
+    {
+      "profileKey": "ErikJ@email.com",
+      "visitorEmail": "FilipE@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-27T20:54:42.0919534+00:00"
+    },
+    {
+      "profileKey": "ErikJ@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-27T20:54:50.9817567+00:00"
+    },
+    {
+      "profileKey": "ErikJ@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-27T20:55:02.7697057+00:00"
+    },
+    {
+      "profileKey": "MarcusB@email.com",
+      "visitorEmail": "ErikJ@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-27T20:56:21.9465316+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": "ErikJ@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-27T21:00:55.7066423+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "visitorEmail": "ErikJ@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-27T21:01:00.6446678+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-27T21:14:21.5790174+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-27T21:19:10.7964431+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-28T15:17:44.0179093+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-28T15:33:42.161473+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-28T15:33:57.8158393+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-28T15:37:53.7512261+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-28T15:37:57.5047522+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "visitorEmail": "FilipE@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-28T15:38:34.3319782+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "visitorEmail": "FilipE@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-28T15:39:37.2963508+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-29T13:05:10.566226+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "visitorEmail": "FilipE@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T10:03:44.531596+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T10:04:14.0042604+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T10:04:26.5130952+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T10:04:34.7564091+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T10:25:38.7708825+00:00"
+    },
+    {
+      "profileKey": "SimonB@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T11:00:31.0165371+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T11:01:02.7410445+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T11:01:11.1209893+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "visitorEmail": "FilipE@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T11:24:48.0670539+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T11:24:58.5176546+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T11:27:48.4521655+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T11:29:58.2301737+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T11:31:41.1543886+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T11:31:58.3212926+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T11:32:26.4086264+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T11:36:27.9750112+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T11:36:30.5639548+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T12:18:02.7498405+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T12:18:59.1394899+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": "EmmaL@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T14:23:44.792245+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": "EmmaL@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T14:24:15.1571553+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "visitorEmail": "EmmaL@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T14:24:37.9667001+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T14:24:43.0045824+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T14:25:00.272299+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": "EmmaL@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T16:28:36.089231+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": "EmmaL@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T16:28:45.6822843+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": "EmmaL@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T16:28:54.3272295+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": "EmmaL@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T16:30:41.3903642+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "visitorEmail": "EmmaL@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T16:33:02.5475519+00:00"
+    },
+    {
+      "profileKey": "EmmaL@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T16:40:43.3586626+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T16:40:46.710327+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T16:40:49.4565411+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T16:42:47.7660056+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T16:42:55.3336924+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T16:46:29.1179023+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T17:02:36.1297347+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T17:05:31.4994694+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T17:05:39.9793197+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T17:07:14.1997652+00:00"
+    },
+    {
+      "profileKey": "SimonB@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T17:07:19.691742+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T17:07:26.1623827+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T17:09:21.727511+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T17:09:28.9601539+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T17:09:40.8360373+00:00"
+    },
+    {
+      "profileKey": "AntonS@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T17:09:46.4555025+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T17:21:38.7336279+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T17:52:00.6833079+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T17:54:25.4428999+00:00"
+    },
+    {
+      "profileKey": "EmmaL@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T17:54:41.2473255+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": "EmmaL@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T17:55:29.3244812+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T18:01:52.3513291+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T18:02:17.4137471+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T18:16:43.9987908+00:00"
+    },
+    {
+      "profileKey": "EmmaL@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T18:17:00.1632027+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T18:17:06.2442331+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T18:26:25.9892736+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T18:26:35.9839693+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": "AntonS@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T18:36:53.3239951+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": "AntonS@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T18:37:00.085937+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T18:58:07.0772637+00:00"
+    },
+    {
+      "profileKey": "LinusL@email.com",
+      "visitorEmail": "FilipE@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T19:32:26.3901263+00:00"
+    },
+    {
+      "profileKey": "LinusL@email.com",
+      "visitorEmail": "FilipE@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T19:32:33.3453032+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": null,
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T19:33:21.8108371+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": "LinusL@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T19:35:24.3152119+00:00"
+    },
+    {
+      "profileKey": "FilipE@email.com",
+      "visitorEmail": "LinusL@email.com",
+      "visitorIp": "::1",
+      "visitedUtc": "2025-12-30T19:35:47.3131194+00:00"
+    }
+  ]
+}

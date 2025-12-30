@@ -4,6 +4,7 @@ using WebApp.Infrastructure.Data;
 using WebApp.Middleware;
 using WebApp.Infrastructure.Services;
 using WebApp.Services;
+using Infrastructure.Seeding;
 
 namespace WebApp;
 
@@ -36,6 +37,10 @@ public class Program
         // App services (DI)
         builder.Services.AddScoped<IUnreadMessagesService, UnreadMessagesService>();
         builder.Services.AddScoped<AccountDeletionService>();
+        builder.Services.AddScoped<DemoSnapshotSeeder>();
+        builder.Services.AddScoped<DemoSnapshotExporter>();
+
+        var runExport = args.Any(a => string.Equals(a, "seed:export", StringComparison.OrdinalIgnoreCase));
 
         var app = builder.Build();
 
@@ -66,6 +71,21 @@ public class Program
                         logger.LogError(exCtx, "Failed to apply migrations for DbContext {DbContext}", ctxType.FullName);
                         throw;
                     }
+                }
+
+                // Run export command (dev only)
+                if (runExport && app.Environment.IsDevelopment())
+                {
+                    var exporter = scope.ServiceProvider.GetRequiredService<DemoSnapshotExporter>();
+                    exporter.ExportAsync().GetAwaiter().GetResult();
+                    return;
+                }
+
+                // Seed demo snapshot automatically in Development if database is empty
+                if (app.Environment.IsDevelopment())
+                {
+                    var seeder = scope.ServiceProvider.GetRequiredService<DemoSnapshotSeeder>();
+                    seeder.SeedAsync().GetAwaiter().GetResult();
                 }
             }
             catch (Exception ex)
