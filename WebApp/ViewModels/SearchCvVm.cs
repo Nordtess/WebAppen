@@ -40,6 +40,8 @@ public sealed class SearchCvVm
         public int Id { get; init; }
         public string Name { get; init; } = string.Empty;
         public string Category { get; init; } = string.Empty;
+        public bool IsTopList { get; init; }
+        public int SortOrder { get; init; }
     }
 
     public sealed class SkillItemVm

@@ -73,22 +73,39 @@ public class EditCVController : Controller
             .Select(c => c.Name)
             .ToArrayAsync();
 
-        var groupsAll = await _db.Kompetenskatalog
+        var comps = await _db.Kompetenskatalog
             .AsNoTracking()
-            .OrderBy(c => c.Category)
+            .OrderByDescending(c => c.IsTopList)
+            .ThenBy(c => c.Category)
             .ThenBy(c => c.SortOrder)
             .ToListAsync();
 
-        var grouped = groupsAll
+        var groups = new List<EditCvViewModel.CompetenceGroupVm>();
+
+        var topItems = comps.Where(c => c.IsTopList)
+            .OrderBy(c => c.SortOrder)
+            .Select(x => new EditCvViewModel.CompetenceItemVm { Id = x.Id, Name = x.Name })
+            .ToList();
+        if (topItems.Count > 0)
+        {
+            groups.Add(new EditCvViewModel.CompetenceGroupVm
+            {
+                Category = "Topplista",
+                Items = topItems
+            });
+        }
+
+        var categoryGroups = comps
+            .Where(c => !string.IsNullOrWhiteSpace(c.Category))
             .GroupBy(c => c.Category)
-            .OrderBy(g => g.Key == "Topplista" ? 0 : 1)
-            .ThenBy(g => g.Key)
+            .OrderBy(g => g.Key)
             .Select(g => new EditCvViewModel.CompetenceGroupVm
             {
                 Category = g.Key,
-                Items = g.Select(x => new EditCvViewModel.CompetenceItemVm { Id = x.Id, Name = x.Name }).ToList()
-            })
-            .ToList();
+                Items = g.OrderBy(x => x.SortOrder).Select(x => new EditCvViewModel.CompetenceItemVm { Id = x.Id, Name = x.Name }).ToList()
+            });
+
+        groups.AddRange(categoryGroups);
 
         var vm = new EditCvViewModel
         {
@@ -109,7 +126,7 @@ public class EditCVController : Controller
             SelectedProjectIds = selectedIds.Take(4).ToArray(),
             AllMyProjects = allMyProjects,
 
-            CompetenceGroups = grouped,
+            CompetenceGroups = groups,
             SelectedCompetenceIds = selectedCompetenceIds,
             SelectedCompetenceNames = selectedCompetenceNames
         };
@@ -158,22 +175,40 @@ public class EditCVController : Controller
         {
             TempData.Remove("Saved");
 
-            var groupsAll = await _db.Kompetenskatalog
+            var comps = await _db.Kompetenskatalog
                 .AsNoTracking()
-                .OrderBy(c => c.Category)
+                .OrderByDescending(c => c.IsTopList)
+                .ThenBy(c => c.Category)
                 .ThenBy(c => c.SortOrder)
                 .ToListAsync();
 
-            model.CompetenceGroups = groupsAll
+            var groups = new List<EditCvViewModel.CompetenceGroupVm>();
+
+            var topItems = comps.Where(c => c.IsTopList)
+                .OrderBy(c => c.SortOrder)
+                .Select(x => new EditCvViewModel.CompetenceItemVm { Id = x.Id, Name = x.Name })
+                .ToList();
+            if (topItems.Count > 0)
+            {
+                groups.Add(new EditCvViewModel.CompetenceGroupVm
+                {
+                    Category = "Topplista",
+                    Items = topItems
+                });
+            }
+
+            var categoryGroups = comps
+                .Where(c => !string.IsNullOrWhiteSpace(c.Category))
                 .GroupBy(c => c.Category)
-                .OrderBy(g => g.Key == "Topplista" ? 0 : 1)
-                .ThenBy(g => g.Key)
+                .OrderBy(g => g.Key)
                 .Select(g => new EditCvViewModel.CompetenceGroupVm
                 {
                     Category = g.Key,
-                    Items = g.Select(x => new EditCvViewModel.CompetenceItemVm { Id = x.Id, Name = x.Name }).ToList()
-                })
-                .ToList();
+                    Items = g.OrderBy(x => x.SortOrder).Select(x => new EditCvViewModel.CompetenceItemVm { Id = x.Id, Name = x.Name }).ToList()
+                });
+
+            groups.AddRange(categoryGroups);
+            model.CompetenceGroups = groups;
 
             var selectedNames = await _db.Kompetenskatalog
                 .AsNoTracking()

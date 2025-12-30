@@ -148,7 +148,9 @@
                                     <div class="searchcv-doc-body">
                                         @if (!string.IsNullOrWhiteSpace(about))
                                         {
-                                            <div class="searchcv-about">@about</div>
+                                            <div class="about-box">
+                                                <div class="about-text">@about</div>
+                                            </div>
                                         }
 
                                         @if (cv.Educations is { Length: > 0 })
@@ -206,34 +208,56 @@
 </div>
 
 @{
+    var topCompetences = Model.Competences.Where(c => c.IsTopList).OrderBy(c => c.SortOrder).ToList();
     var groupedCompetences = Model.Competences
         .GroupBy(c => string.IsNullOrWhiteSpace(c.Category) ? "Övrigt" : c.Category)
-        .OrderBy(g => string.Equals(g.Key, "Topplista", StringComparison.OrdinalIgnoreCase) ? 0 : 1)
-        .ThenBy(g => g.Key);
+        .OrderBy(g => g.Key);
 }
 
-<div id="searchcv-skills-modal" class="searchcv-modal" aria-hidden="true">
-    <div class="searchcv-modal__backdrop" data-searchcv-modal-close></div>
-    <div class="searchcv-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="searchcv-skills-title">
-        <div class="searchcv-modal__header">
-            <div class="searchcv-modal__title" id="searchcv-skills-title">Välj kompetenser</div>
-            <button type="button" class="searchcv-modal__close" data-searchcv-modal-close aria-label="Stäng">×</button>
+<div id="searchcv-skills-modal" class="editcv-modal" aria-hidden="true">
+    <div class="editcv-modal__backdrop" data-searchcv-modal-close></div>
+    <div class="editcv-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="searchcv-skills-title">
+        <div class="editcv-modal__header">
+            <div class="editcv-modal__title" id="searchcv-skills-title">Välj kompetenser</div>
+            <div class="editcv-modal__counter" id="searchcv-competences-counter">0/10</div>
+            <button type="button" class="editcv-modal__close" data-searchcv-modal-close aria-label="Stäng">×</button>
         </div>
-        <div class="searchcv-modal__body">
-            <input type="text" class="searchcv-modal__search" id="skillFilter" placeholder="Sök kompetens…" />
-            <div class="searchcv-modal__list" id="skillList">
-                @foreach (var group in groupedCompetences)
+        <div class="editcv-modal__hint">Tips: Välj kompetenser för att smalna av sökningen. Resultatet visar endast personer som har samtliga valda kompetenser.</div>
+        <div class="editcv-modal__body">
+            <input type="text" class="editcv-modal__search" id="skillFilter" placeholder="Sök kompetens…" />
+            <div class="editcv-picker__list" id="skillList">
+                @if (topCompetences.Count > 0)
                 {
-                    var isTop = string.Equals(group.Key, "Topplista", StringComparison.OrdinalIgnoreCase);
-                    <details class="searchcv-modal__group" data-group="@group.Key" @(isTop ? "open" : null)>
-                        <summary class="searchcv-modal__group-title">@group.Key</summary>
-                        <div class="searchcv-modal__rows">
-                            @foreach (var c in group)
+                    <details class="editcv-picker__group" data-group="Topplista" open>
+                        <summary class="editcv-picker__group-title">Topplista</summary>
+                        <div class="editcv-picker__rows">
+                            @foreach (var c in topCompetences)
                             {
                                 var isChecked = Model.SelectedSkillIds.Contains(c.Id);
-                                <label class="searchcv-modal__row" data-name="@c.Name">
-                                    <input type="checkbox" value="@c.Id" class="searchcv-modal__chk" @(isChecked ? "checked" : null) />
-                                    <span class="searchcv-modal__label">@c.Name</span>
+                                <label class="editcv-picker__row" data-name="@c.Name">
+                                    <input type="checkbox" value="@c.Id" class="editcv-picker__chk competence-chk" @(isChecked ? "checked" : null) />
+                                    <span class="editcv-picker__content">
+                                        <span class="editcv-picker__title">@c.Name</span>
+                                    </span>
+                                </label>
+                            }
+                        </div>
+                    </details>
+                }
+
+                @foreach (var group in groupedCompetences)
+                {
+                    <details class="editcv-picker__group" data-group="@group.Key">
+                        <summary class="editcv-picker__group-title">@group.Key</summary>
+                        <div class="editcv-picker__rows">
+                            @foreach (var c in group.OrderBy(x => x.SortOrder))
+                            {
+                                var isChecked = Model.SelectedSkillIds.Contains(c.Id);
+                                <label class="editcv-picker__row" data-name="@c.Name">
+                                    <input type="checkbox" value="@c.Id" class="editcv-picker__chk competence-chk" @(isChecked ? "checked" : null) />
+                                    <span class="editcv-picker__content">
+                                        <span class="editcv-picker__title">@c.Name</span>
+                                    </span>
                                 </label>
                             }
                         </div>
@@ -241,9 +265,11 @@
                 }
             </div>
         </div>
-        <div class="searchcv-modal__footer">
+        <div class="editcv-modal__footer">
             <button type="button" class="btn-secondary-custom" data-searchcv-modal-close>Avbryt</button>
-            <button type="button" class="btn-primary-custom" id="applySkills">Använd</button>
+            <div class="editcv-modal__actions">
+                <button type="button" class="btn-primary-custom" id="applySkills">Använd</button>
+            </div>
         </div>
     </div>
 </div>
@@ -260,14 +286,26 @@
             const list = document.getElementById('skillList');
             const clearSkills = document.getElementById('clearSkills');
             const summary = document.getElementById('selectedSkillSummary');
+            const counter = document.getElementById('searchcv-competences-counter');
+            const MAX_COMP = 10;
+
+            const escapeVal = (v) => window.CSS && CSS.escape ? CSS.escape(v) : v.replace(/([\\\[\]#.:"])/g, '\\$1');
 
             function setModal(open) {
                 if (!modal) return;
                 modal.setAttribute('aria-hidden', open ? 'false' : 'true');
-                document.body.classList.toggle('searchcv-modal-open', open);
+                document.body.classList.toggle('editcv-modal-open', open);
                 if (open) {
                     filterInput?.focus();
+                    updateCounter();
+                    enforceLimit();
                 }
+            }
+
+            function updateCounter() {
+                if (!counter || !modal) return;
+                const checkedVals = new Set(Array.from(modal.querySelectorAll('.editcv-picker__chk:checked')).map(cb => cb.value));
+                counter.textContent = `${checkedVals.size}/${MAX_COMP}`;
             }
 
             openBtn?.addEventListener('click', () => setModal(true));
@@ -285,12 +323,12 @@
             filterInput?.addEventListener('input', () => {
                 if (!list) return;
                 const term = filterInput.value.trim().toLowerCase();
-                list.querySelectorAll('.searchcv-modal__row').forEach((row) => {
+                list.querySelectorAll('.editcv-picker__row').forEach((row) => {
                     const name = row.getAttribute('data-name')?.toLowerCase() ?? '';
                     row.style.display = !term || name.includes(term) ? 'flex' : 'none';
                 });
-                list.querySelectorAll('.searchcv-modal__group').forEach((group) => {
-                    const anyVisible = Array.from(group.querySelectorAll('.searchcv-modal__row')).some(r => r instanceof HTMLElement && r.style.display !== 'none');
+                list.querySelectorAll('.editcv-picker__group').forEach((group) => {
+                    const anyVisible = Array.from(group.querySelectorAll('.editcv-picker__row')).some(r => r instanceof HTMLElement && r.style.display !== 'none');
                     group.style.display = anyVisible ? 'block' : 'none';
                 });
             });
@@ -325,17 +363,75 @@
                 }
             }
 
-            applyBtn?.addEventListener('click', () => {
-                if (!modal || !form || !hidden) return;
-                const checked = Array.from(modal.querySelectorAll('.searchcv-modal__chk'))
+            function getCheckedValues() {
+                if (!modal) return [];
+                const seen = new Set();
+                return Array.from(modal.querySelectorAll('.editcv-picker__chk'))
                     .filter((cb) => cb instanceof HTMLInputElement && cb.checked)
                     .map((cb) => cb.value)
-                    .filter(v => !!v);
-                hidden.value = checked.join(',');
-                const names = Array.from(modal.querySelectorAll('.searchcv-modal__chk'))
+                    .filter((v) => !!v && !seen.has(v) && seen.add(v));
+            }
+
+            function getCheckedNames() {
+                if (!modal) return [];
+                const seen = new Set();
+                const names = [];
+                Array.from(modal.querySelectorAll('.editcv-picker__chk'))
                     .filter((cb) => cb instanceof HTMLInputElement && cb.checked)
-                    .map((cb) => cb.closest('.searchcv-modal__row')?.getAttribute('data-name') ?? '')
-                    .filter(n => n);
+                    .forEach((cb) => {
+                        const val = cb.value;
+                        if (seen.has(val)) return;
+                        seen.add(val);
+                        const name = cb.closest('.editcv-picker__row')?.getAttribute('data-name') ?? '';
+                        if (name) names.push(name);
+                    });
+                return names;
+            }
+
+            function syncCheckboxes(value, isChecked) {
+                if (!modal) return;
+                modal.querySelectorAll(`.competence-chk[value="${escapeVal(value)}"]`).forEach((cb) => {
+                    if (cb instanceof HTMLInputElement) cb.checked = isChecked;
+                });
+            }
+
+            function enforceLimit(changedCb) {
+                if (!modal) return;
+                const all = Array.from(modal.querySelectorAll('.editcv-picker__chk'));
+                let checkedSet = new Set(all.filter((cb) => cb instanceof HTMLInputElement && cb.checked).map((cb) => cb.value));
+                if (checkedSet.size > MAX_COMP && changedCb) {
+                    syncCheckboxes(changedCb.value, false);
+                    checkedSet = new Set(all.filter((cb) => cb instanceof HTMLInputElement && cb.checked).map((cb) => cb.value));
+                }
+                const limitReached = checkedSet.size >= MAX_COMP;
+                all.forEach(cb => {
+                    if (!(cb instanceof HTMLInputElement)) return;
+                    const row = cb.closest('.editcv-picker__row');
+                    if (cb.checked) {
+                        cb.disabled = false;
+                        row?.classList.remove('is-disabled');
+                    } else {
+                        const shouldDisable = limitReached && !checkedSet.has(cb.value);
+                        cb.disabled = shouldDisable;
+                        row?.classList.toggle('is-disabled', shouldDisable);
+                    }
+                });
+                updateCounter();
+            }
+
+            modal?.addEventListener('change', (e) => {
+                const t = e.target;
+                if (!(t instanceof HTMLInputElement)) return;
+                if (!t.classList.contains('editcv-picker__chk')) return;
+                syncCheckboxes(t.value, t.checked);
+                enforceLimit(t);
+            });
+
+            applyBtn?.addEventListener('click', () => {
+                if (!modal || !form || !hidden) return;
+                const checkedVals = getCheckedValues();
+                hidden.value = checkedVals.join(',');
+                const names = getCheckedNames();
                 renderSummary(names);
                 setModal(false);
                 form.submit();
@@ -344,12 +440,17 @@
             clearSkills?.addEventListener('click', () => {
                 if (!form || !hidden) return;
                 hidden.value = '';
-                modal?.querySelectorAll('.searchcv-modal__chk').forEach((cb) => {
+                modal?.querySelectorAll('.editcv-picker__chk').forEach((cb) => {
                     if (cb instanceof HTMLInputElement) cb.checked = false;
                 });
+                enforceLimit();
                 renderSummary([]);
                 form.submit();
             });
+
+            // init counter and limit state on load
+            enforceLimit();
+            updateCounter();
         })();
     </script>
 }

@@ -17,6 +17,18 @@ namespace WebApp.Domain.Entities
         [MaxLength(30)]
         public string Category { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Normaliserat namn (UPPER + trim) för unika jämförelser.
+        /// </summary>
+        [Required]
+        [MaxLength(200)]
+        public string NormalizedName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Markerar om kompetensen ska visas i sektionen "Topplista".
+        /// </summary>
+        public bool IsTopList { get; set; }
+
         public int SortOrder { get; set; }
     }
 

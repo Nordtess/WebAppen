@@ -1,14 +1,13 @@
 ﻿using System.Security.Claims;
-using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 using Microsoft.EntityFrameworkCore;
 using WebApp.Infrastructure.Data;
 using WebApp.ViewModels;
 
 namespace WebApp.Controllers;
 
-public sealed class SearchCvController : Controller
+public class SearchCvController : Controller
 {
     private readonly ApplicationDbContext _db;
 
@@ -18,304 +17,229 @@ public sealed class SearchCvController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index(
-        [FromQuery] string? name,
-        [FromQuery] string? city,
-        [FromQuery] string? mode,
-        [FromQuery] string? skillIds,
-        [FromQuery] string? source,
-        [FromQuery] string? sourceUserId)
+    [AllowAnonymous]
+    public async Task<IActionResult> Index([FromQuery] string? name, [FromQuery] string? city, [FromQuery] string? mode = "normal", [FromQuery] string? skillIds = null, [FromQuery] string? source = null, [FromQuery] string? sourceUserId = null)
     {
-        static string Normalize(string s) => s.Trim().ToLowerInvariant();
+        var isLoggedIn = User?.Identity?.IsAuthenticated == true;
+        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        var isLoggedIn = User.Identity?.IsAuthenticated == true;
-
-        var nameQuery = (name ?? string.Empty).Trim();
-        var cityQuery = (city ?? string.Empty).Trim();
         var selectedSkillIds = ParseSkillIds(skillIds);
-        var useSimilarMode = string.Equals(mode, "similar", StringComparison.OrdinalIgnoreCase);
+        var selectedSkillSet = selectedSkillIds.ToHashSet();
 
-        var usersQuery = _db.Users.AsNoTracking().Where(u => !u.IsDeactivated);
-        if (isLoggedIn)
-        {
-            var viewerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!string.IsNullOrWhiteSpace(viewerId)) usersQuery = usersQuery.Where(u => u.Id != viewerId);
-        }
-        if (!isLoggedIn) usersQuery = usersQuery.Where(u => !u.IsProfilePrivate);
+        var isSimilarMode = string.Equals(mode, "similar", StringComparison.OrdinalIgnoreCase);
+        var sourceUser = !string.IsNullOrWhiteSpace(sourceUserId)
+            ? sourceUserId
+            : (string.Equals(source, "me", StringComparison.OrdinalIgnoreCase) ? currentUserId : null);
 
-        if (!string.IsNullOrWhiteSpace(nameQuery))
-        {
-            var likeAnywhere = $"%{nameQuery}%";
-            usersQuery = usersQuery.Where(u =>
-                (u.FirstName != null && EF.Functions.Like(u.FirstName, likeAnywhere)) ||
-                (u.LastName != null && EF.Functions.Like(u.LastName, likeAnywhere)) ||
-                (u.FirstNameNormalized != null && EF.Functions.Like(u.FirstNameNormalized, likeAnywhere.ToUpperInvariant())) ||
-                (u.LastNameNormalized != null && EF.Functions.Like(u.LastNameNormalized, likeAnywhere.ToUpperInvariant())) ||
-                EF.Functions.Like(((u.FirstName ?? "") + " " + (u.LastName ?? "")).Trim(), likeAnywhere));
-        }
-
-        if (!string.IsNullOrWhiteSpace(cityQuery))
-        {
-            var likeAnywhere = $"%{cityQuery}%";
-            usersQuery = usersQuery.Where(u => u.City != null && EF.Functions.Like(u.City, likeAnywhere));
-        }
-
-        var rows = from u in usersQuery
-                   join link in _db.ApplicationUserProfiles.AsNoTracking() on u.Id equals link.UserId into links
-                   from link in links.DefaultIfEmpty()
-                   join p in _db.Profiler.AsNoTracking() on link.ProfileId equals p.Id into profiles
-                   from p in profiles.DefaultIfEmpty()
-                   select new
-                   {
-                       u.Id,
-                       u.FirstName,
-                       u.LastName,
-                       u.City,
-                       u.IsProfilePrivate,
-                       UserAvatar = u.ProfileImagePath,
-                       Headline = p == null ? null : p.Headline,
-                       AboutMe = p == null ? null : p.AboutMe,
-                       ProfileAvatar = p == null ? null : p.ProfileImagePath,
-                       ProfileId = link == null ? (int?)null : link.ProfileId,
-                       SelectedProjectsJson = p == null ? null : p.SelectedProjectsJson
-                   };
-
-        const int max = 60;
-        var list = await rows
-            .OrderBy(x => x.FirstName)
-            .ThenBy(x => x.LastName)
-            .Take(max)
-            .ToListAsync();
-
-        var profileIds = list.Where(x => x.ProfileId != null).Select(x => x.ProfileId!.Value).Distinct().ToArray();
-
-        var eduByProfile = profileIds.Length == 0
-            ? new Dictionary<int, List<(string School, string Program, string Years)>>()
-            : await _db.Utbildningar.AsNoTracking()
-                .Where(e => profileIds.Contains(e.ProfileId))
-                .OrderBy(e => e.SortOrder)
-                .Select(e => new { e.ProfileId, e.School, e.Program, e.Years })
-                .ToListAsync()
-                .ContinueWith(t => t.Result
-                    .GroupBy(x => x.ProfileId)
-                    .ToDictionary(
-                        g => g.Key,
-                        g => g.Select(x => (x.School, x.Program, x.Years)).ToList()));
-
-        var expByProfile = profileIds.Length == 0
-            ? new Dictionary<int, List<(string Company, string Role, string Years)>>()
-            : await _db.Erfarenheter.AsNoTracking()
-                .Where(e => profileIds.Contains(e.ProfileId))
-                .OrderBy(e => e.SortOrder)
-                .Select(e => new { e.ProfileId, e.Company, e.Role, e.Years })
-                .ToListAsync()
-                .ContinueWith(t => t.Result
-                    .GroupBy(x => x.ProfileId)
-                    .ToDictionary(
-                        g => g.Key,
-                        g => g.Select(x => (x.Company, x.Role, x.Years)).ToList()));
-
-        var userIds = list.Select(x => x.Id).Distinct().ToArray();
-        var compByUser = userIds.Length == 0
-            ? new Dictionary<string, string[]>()
-            : await (from link in _db.ApplicationUserProfiles.AsNoTracking()
-                     join uc in _db.AnvandarKompetenser.AsNoTracking() on link.UserId equals uc.UserId
-                     join c in _db.Kompetenskatalog.AsNoTracking() on uc.CompetenceId equals c.Id
-                     where userIds.Contains(link.UserId)
-                     orderby c.SortOrder
-                     select new { link.UserId, c.Name })
-                .ToListAsync()
-                .ContinueWith(t => t.Result
-                    .GroupBy(x => x.UserId)
-                    .ToDictionary(g => g.Key, g => g.Select(x => x.Name).Distinct(StringComparer.OrdinalIgnoreCase).ToArray()));
-
-        var compNamesLowerByUser = compByUser.ToDictionary(
-            kvp => kvp.Key,
-            kvp => kvp.Value.Select(Normalize).Distinct(StringComparer.OrdinalIgnoreCase).ToArray());
-
-        var compIdsByUser = userIds.Length == 0
-            ? new Dictionary<string, int[]>()
-            : await (from link in _db.ApplicationUserProfiles.AsNoTracking()
-                     join uc in _db.AnvandarKompetenser.AsNoTracking() on link.UserId equals uc.UserId
-                     where userIds.Contains(link.UserId)
-                     select new { link.UserId, uc.CompetenceId })
-                .ToListAsync()
-                .ContinueWith(t => t.Result
-                    .GroupBy(x => x.UserId)
-                    .ToDictionary(g => g.Key, g => g.Select(x => x.CompetenceId).Distinct().ToArray()));
-
-        var competenceList = await _db.Kompetenskatalog.AsNoTracking()
-            .OrderBy(c => c.Category)
+        // Hämta katalog med Topplista-flagga
+        var competences = await _db.Kompetenskatalog
+            .AsNoTracking()
+            .OrderByDescending(c => c.IsTopList)
+            .ThenBy(c => c.Category)
             .ThenBy(c => c.SortOrder)
             .Select(c => new SearchCvVm.CompetenceItemVm
             {
                 Id = c.Id,
                 Name = c.Name,
-                Category = c.Category ?? string.Empty
+                Category = c.Category,
+                IsTopList = c.IsTopList,
+                SortOrder = c.SortOrder
             })
             .ToListAsync();
 
-        var nameById = competenceList.ToDictionary(c => c.Id, c => c.Name, EqualityComparer<int>.Default);
+        var nameById = competences.ToDictionary(c => c.Id, c => c.Name);
         var selectedSkillNames = selectedSkillIds
-            .Select(id => nameById.TryGetValue(id, out var n) ? n?.Trim() : null)
-            .Where(n => !string.IsNullOrWhiteSpace(n))
-            .Select(n => n!)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .ToArray();
-        var selectedSkillNamesLower = selectedSkillNames
-            .Select(Normalize)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .Select(id => nameById.TryGetValue(id, out var n) ? n : string.Empty)
+            .Where(s => !string.IsNullOrWhiteSpace(s))
             .ToArray();
 
-        string[] sourceSkillNames = Array.Empty<string>();
-        if (useSimilarMode)
+        int[] sourceSkillIds = Array.Empty<int>();
+        if (isSimilarMode && !string.IsNullOrWhiteSpace(sourceUser))
         {
-            if (string.Equals(source, "me", StringComparison.OrdinalIgnoreCase))
-            {
-                var viewerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (!string.IsNullOrWhiteSpace(viewerId))
-                {
-                    sourceSkillNames = await (from uc in _db.AnvandarKompetenser.AsNoTracking()
-                                              join c in _db.Kompetenskatalog.AsNoTracking() on uc.CompetenceId equals c.Id
-                                              where uc.UserId == viewerId
-                                              select c.Name.Trim())
-                        .ToArrayAsync();
-                }
-            }
-            else if (!string.IsNullOrWhiteSpace(sourceUserId))
-            {
-                sourceSkillNames = await (from uc in _db.AnvandarKompetenser.AsNoTracking()
-                                          join c in _db.Kompetenskatalog.AsNoTracking() on uc.CompetenceId equals c.Id
-                                          where uc.UserId == sourceUserId
-                                          select c.Name.Trim())
-                    .ToArrayAsync();
-            }
+            sourceSkillIds = await _db.AnvandarKompetenser
+                .AsNoTracking()
+                .Where(x => x.UserId == sourceUser)
+                .Select(x => x.CompetenceId)
+                .Distinct()
+                .ToArrayAsync();
         }
-        var sourceSkillNamesLower = sourceSkillNames
-            .Where(n => !string.IsNullOrWhiteSpace(n))
-            .Select(Normalize)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .ToArray();
+
+        if (isSimilarMode && sourceSkillIds.Length == 0)
+        {
+            // Saknar käll-kompetenser: fall tillbaka till normal läge
+            isSimilarMode = false;
+            mode = "normal";
+        }
+
+        var nameTerm = (name ?? string.Empty).Trim().ToLowerInvariant();
+        var cityTerm = (city ?? string.Empty).Trim().ToLowerInvariant();
+
+        var baseQuery = from link in _db.ApplicationUserProfiles.AsNoTracking()
+                        join profile in _db.Profiler.AsNoTracking() on link.ProfileId equals profile.Id
+                        join user in _db.Users.AsNoTracking() on link.UserId equals user.Id
+                        select new
+                        {
+                            link.UserId,
+                            profile,
+                            user
+                        };
+
+        if (!isLoggedIn)
+        {
+            baseQuery = baseQuery.Where(x => x.profile.IsPublic);
+        }
+
+        if (!string.IsNullOrWhiteSpace(sourceUser))
+        {
+            baseQuery = baseQuery.Where(x => x.UserId != sourceUser);
+        }
+
+        if (!string.IsNullOrWhiteSpace(nameTerm))
+        {
+            baseQuery = baseQuery.Where(x => (x.user.FirstName + " " + x.user.LastName).ToLower().Contains(nameTerm));
+        }
+
+        if (!string.IsNullOrWhiteSpace(cityTerm))
+        {
+            baseQuery = baseQuery.Where(x => (x.user.City ?? string.Empty).ToLower().Contains(cityTerm));
+        }
+
+        var list = await baseQuery.ToListAsync();
+        var userIds = list.Select(x => x.UserId).ToArray();
+        var profileIds = list.Select(x => x.profile.Id).ToArray();
+
+        var compByUser = await _db.AnvandarKompetenser
+            .AsNoTracking()
+            .Where(x => userIds.Contains(x.UserId))
+            .GroupBy(x => x.UserId)
+            .ToDictionaryAsync(g => g.Key, g => g.Select(x => x.CompetenceId).Distinct().ToArray());
+
+        var eduLookup = await _db.Utbildningar
+            .AsNoTracking()
+            .Where(e => profileIds.Contains(e.ProfileId))
+            .OrderBy(e => e.SortOrder)
+            .GroupBy(e => e.ProfileId)
+            .ToDictionaryAsync(
+                g => g.Key,
+                g => g.Select(e => $"{e.School} • {e.Program} • {e.Years}").ToArray()
+            );
+
+        var expLookup = await _db.Erfarenheter
+            .AsNoTracking()
+            .Where(e => profileIds.Contains(e.ProfileId))
+            .OrderBy(e => e.SortOrder)
+            .GroupBy(e => e.ProfileId)
+            .ToDictionaryAsync(
+                g => g.Key,
+                g => g.Select(e => $"{e.Company} • {e.Role} • {e.Years}").ToArray()
+            );
 
         var cvs = new List<SearchCvVm.CvCardVm>();
 
-        foreach (var x in list)
+        foreach (var row in list)
         {
-            compNamesLowerByUser.TryGetValue(x.Id, out var userNamesLower);
+            compByUser.TryGetValue(row.UserId, out var compsForUser);
+            compsForUser ??= Array.Empty<int>();
+            var compSet = compsForUser.ToHashSet();
 
-            if (useSimilarMode)
+            if (selectedSkillSet.Count > 0 && !selectedSkillSet.IsSubsetOf(compSet))
             {
-                if (sourceSkillNamesLower.Length == 0) continue;
-                if (userNamesLower is null || userNamesLower.Length == 0) continue;
-                var matchCount = userNamesLower.Intersect(sourceSkillNamesLower, StringComparer.OrdinalIgnoreCase).Count();
-                if (matchCount == 0) continue;
-
-                var fullName = string.Join(' ', new[] { x.FirstName, x.LastName }.Where(s => !string.IsNullOrWhiteSpace(s)));
-                var pid = x.ProfileId;
-                var edus = pid != null && eduByProfile.TryGetValue(pid.Value, out var eduList) ? eduList : new();
-                var exps = pid != null && expByProfile.TryGetValue(pid.Value, out var expList) ? expList : new();
-                var skillsArr = compByUser.TryGetValue(x.Id, out var arr) ? arr : Array.Empty<string>();
-                var projectCount = ParseSelectedProjectIds(x.SelectedProjectsJson).Length;
-
-                cvs.Add(new SearchCvVm.CvCardVm
-                {
-                    UserId = x.Id,
-                    FullName = fullName,
-                    Headline = string.IsNullOrWhiteSpace(x.Headline) ? "" : x.Headline,
-                    City = x.City ?? string.Empty,
-                    IsPrivate = x.IsProfilePrivate,
-                    ProfileImagePath = !string.IsNullOrWhiteSpace(x.ProfileAvatar) ? x.ProfileAvatar : x.UserAvatar,
-                    AboutMe = x.AboutMe,
-                    Skills = skillsArr,
-                    ProjectCount = projectCount,
-                    Educations = edus.Take(1).Select(e => $"{e.Years} • {e.Program}").ToArray(),
-                    Experiences = exps.Take(1).Select(e => $"{e.Years} • {e.Role} @ {e.Company}").ToArray(),
-                    MatchCount = matchCount,
-                    SourceTotal = sourceSkillNamesLower.Length
-                });
+                continue;
             }
-            else
+
+            int? matchCount = null;
+            int? sourceTotal = null;
+            if (isSimilarMode)
             {
-                if (selectedSkillNamesLower.Length > 0)
+                var intersect = compSet.Intersect(sourceSkillIds);
+                matchCount = intersect.Count();
+                sourceTotal = sourceSkillIds.Length;
+                if (matchCount == 0)
                 {
-                    if (userNamesLower is null || userNamesLower.Length == 0) continue;
-                    var userSet = new HashSet<string>(userNamesLower, StringComparer.OrdinalIgnoreCase);
-                    var hasAll = selectedSkillNamesLower.All(id => userSet.Contains(id));
-                    if (!hasAll) continue;
+                    continue;
                 }
-
-                var fullName = string.Join(' ', new[] { x.FirstName, x.LastName }.Where(s => !string.IsNullOrWhiteSpace(s)));
-                var pid = x.ProfileId;
-                var edus = pid != null && eduByProfile.TryGetValue(pid.Value, out var eduList) ? eduList : new();
-                var exps = pid != null && expByProfile.TryGetValue(pid.Value, out var expList) ? expList : new();
-                var skillsArr = compByUser.TryGetValue(x.Id, out var arr) ? arr : Array.Empty<string>();
-                if (selectedSkillNamesLower.Length > 0 && skillsArr.Length == 0) continue;
-                var projectCount = ParseSelectedProjectIds(x.SelectedProjectsJson).Length;
-
-                cvs.Add(new SearchCvVm.CvCardVm
-                {
-                    UserId = x.Id,
-                    FullName = fullName,
-                    Headline = string.IsNullOrWhiteSpace(x.Headline) ? "" : x.Headline,
-                    City = x.City ?? string.Empty,
-                    IsPrivate = x.IsProfilePrivate,
-                    ProfileImagePath = !string.IsNullOrWhiteSpace(x.ProfileAvatar) ? x.ProfileAvatar : x.UserAvatar,
-                    AboutMe = x.AboutMe,
-                    Skills = skillsArr,
-                    ProjectCount = projectCount,
-                    Educations = edus.Take(1).Select(e => $"{e.Years} • {e.Program}").ToArray(),
-                    Experiences = exps.Take(1).Select(e => $"{e.Years} • {e.Role} @ {e.Company}").ToArray()
-                });
             }
+
+            var skillNames = compsForUser
+                .Select(id => nameById.TryGetValue(id, out var n) ? n : null)
+                .Where(n => !string.IsNullOrWhiteSpace(n))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToArray();
+
+            eduLookup.TryGetValue(row.profile.Id, out var edu);
+            expLookup.TryGetValue(row.profile.Id, out var exp);
+
+            cvs.Add(new SearchCvVm.CvCardVm
+            {
+                UserId = row.UserId,
+                FullName = string.Join(' ', new[] { row.user.FirstName, row.user.LastName }.Where(s => !string.IsNullOrWhiteSpace(s))),
+                Headline = row.profile.Headline,
+                City = row.user.City ?? string.Empty,
+                IsPrivate = !row.profile.IsPublic,
+                ProfileImagePath = string.IsNullOrWhiteSpace(row.profile.ProfileImagePath) ? row.user.ProfileImagePath : row.profile.ProfileImagePath,
+                AboutMe = row.profile.AboutMe,
+                Skills = skillNames,
+                Educations = edu ?? Array.Empty<string>(),
+                Experiences = exp ?? Array.Empty<string>(),
+                ProjectCount = ParseProjectIds(row.profile.SelectedProjectsJson).Length,
+                MatchCount = matchCount,
+                SourceTotal = sourceTotal
+            });
         }
 
-        if (useSimilarMode && sourceSkillNamesLower.Length > 0)
+        // Sortera resultat i liknande-läge efter matchningsantal
+        if (isSimilarMode)
         {
             cvs = cvs
                 .OrderByDescending(c => c.MatchCount ?? 0)
                 .ThenBy(c => c.FullName)
                 .ToList();
         }
+        else
+        {
+            cvs = cvs.OrderBy(c => c.FullName).ToList();
+        }
 
         var vm = new SearchCvVm
         {
-            NameQuery = nameQuery,
-            CityQuery = cityQuery,
-            Mode = useSimilarMode ? "similar" : "normal",
+            NameQuery = name ?? string.Empty,
+            CityQuery = city ?? string.Empty,
+            Mode = mode ?? "normal",
             ShowLoginTip = !isLoggedIn,
             SelectedSkillIds = selectedSkillIds,
             SelectedSkillNames = selectedSkillNames,
-            SimilarSourceTotal = useSimilarMode ? sourceSkillNamesLower.Length : 0,
-            SimilarHint = useSimilarMode && sourceSkillNamesLower.Length == 0 ? "Inga kompetenser att matcha på." : (useSimilarMode ? "Visar liknande personer baserat på kompetenser." : string.Empty),
+            SimilarHint = isSimilarMode ? "Visar profiler som matchar dina kompetenser." : string.Empty,
             Source = source,
-            SourceUserId = sourceUserId,
-            Competences = competenceList,
+            SourceUserId = sourceUser,
+            SimilarSourceTotal = sourceSkillIds.Length,
+            Competences = competences,
+            AllSkills = competences.Select(c => new SearchCvVm.SkillItemVm { Id = c.Id, Name = c.Name }).ToList(),
             Cvs = cvs
         };
 
         return View("SearchCV", vm);
     }
 
-    private static int[] ParseSkillIds(string? csv)
+    private static int[] ParseSkillIds(string? skillIds)
     {
-        if (string.IsNullOrWhiteSpace(csv)) return Array.Empty<int>();
-
-        return csv.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+        if (string.IsNullOrWhiteSpace(skillIds)) return Array.Empty<int>();
+        return skillIds
+            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
             .Select(s => int.TryParse(s, out var n) ? n : (int?)null)
-            .Where(n => n.HasValue && n.Value > 0)
+            .Where(n => n.HasValue)
             .Select(n => n!.Value)
             .Distinct()
+            .Take(10)
             .ToArray();
     }
 
-    private static int[] ParseSelectedProjectIds(string? json)
+    private static int[] ParseProjectIds(string? json)
     {
         if (string.IsNullOrWhiteSpace(json)) return Array.Empty<int>();
-
         try
         {
-            var arr = JsonSerializer.Deserialize<int[]>(json, new JsonSerializerOptions(JsonSerializerDefaults.Web));
-            return arr?.Where(n => n > 0).Distinct().ToArray() ?? Array.Empty<int>();
+            var ids = System.Text.Json.JsonSerializer.Deserialize<int[]>(json) ?? Array.Empty<int>();
+            return ids.Distinct().ToArray();
         }
         catch
         {

@@ -125,47 +125,100 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasIndex(x => new { x.UserId, x.CompetenceId })
             .IsUnique();
 
-        // Seed av katalog
-        builder.Entity<Competence>().HasData(CompetenceSeed.GetAll());
+        builder.Entity<Competence>()
+            .Property(c => c.IsTopList)
+            .HasDefaultValue(false);
+
+        builder.Entity<Competence>()
+            .Property(c => c.NormalizedName)
+            .HasMaxLength(200)
+            .HasComputedColumnSql("UPPER(LTRIM(RTRIM([Name])))", stored: true)
+            .ValueGeneratedOnAddOrUpdate();
+
+        builder.Entity<Competence>()
+            .HasIndex(c => c.NormalizedName)
+            .IsUnique();
+
+        // Seed av katalog: en rad per kompetens, "Topplista" styrs av IsTopList
+        builder.Entity<Competence>().HasData(CompetenceSeed.All);
     }
 }
 
 // Enkel seed-hjälpare
 internal static class CompetenceSeed
 {
-    public static Competence[] GetAll()
+    public static Competence[] All { get; } =
     {
-        var id = 1;
-        Competence C(string name, string cat, int sort) => new Competence { Id = id++, Name = name, Category = cat, SortOrder = sort };
+        // Topplista (IsTopList = true) + kategori för ordinarie grupp
+        new() { Id = 1, Name = "C#", Category = "Programmeringsspråk", SortOrder = 0, IsTopList = true },
+        new() { Id = 2, Name = ".NET", Category = "Backend", SortOrder = 0, IsTopList = true },
+        new() { Id = 3, Name = "ASP.NET Core", Category = "Backend", SortOrder = 1, IsTopList = true },
+        new() { Id = 4, Name = "MVC", Category = "Backend", SortOrder = 2, IsTopList = true },
+        new() { Id = 5, Name = "EF Core", Category = "Backend", SortOrder = 4, IsTopList = true },
+        new() { Id = 6, Name = "LINQ", Category = "Backend", SortOrder = 5, IsTopList = true },
+        new() { Id = 7, Name = "SQL", Category = "Programmeringsspråk", SortOrder = 5, IsTopList = true },
+        new() { Id = 8, Name = "Git", Category = "DevOps & Drift", SortOrder = 0, IsTopList = true },
+        new() { Id = 9, Name = "Docker", Category = "DevOps & Drift", SortOrder = 3, IsTopList = true },
+        new() { Id = 10, Name = "Azure", Category = "DevOps & Drift", SortOrder = 7, IsTopList = true },
+        new() { Id = 11, Name = "Linux", Category = "DevOps & Drift", SortOrder = 5, IsTopList = true },
+        new() { Id = 12, Name = "REST API", Category = "Backend", SortOrder = 6, IsTopList = true },
 
-        return new[]
-        {
-            // Topplista
-            C("C#","Topplista", 0), C(".NET","Topplista", 1), C("ASP.NET Core","Topplista", 2), C("MVC","Topplista", 3), C("EF Core","Topplista", 4), C("LINQ","Topplista", 5), C("SQL","Topplista", 6), C("Git","Topplista", 7), C("Docker","Topplista", 8), C("Azure","Topplista", 9), C("Linux","Topplista", 10), C("REST API","Topplista", 11),
+        // Programmeringsspråk
+        new() { Id = 14, Name = "Java", Category = "Programmeringsspråk", SortOrder = 1 },
+        new() { Id = 15, Name = "Python", Category = "Programmeringsspråk", SortOrder = 2 },
+        new() { Id = 16, Name = "JavaScript", Category = "Programmeringsspråk", SortOrder = 3 },
+        new() { Id = 17, Name = "TypeScript", Category = "Programmeringsspråk", SortOrder = 4 },
+        new() { Id = 19, Name = "HTML", Category = "Programmeringsspråk", SortOrder = 6 },
+        new() { Id = 20, Name = "CSS", Category = "Programmeringsspråk", SortOrder = 7 },
+        new() { Id = 21, Name = "Bash", Category = "Programmeringsspråk", SortOrder = 8 },
 
-            // Programmeringsspråk
-            C("C#","Programmeringsspråk", 0), C("Java","Programmeringsspråk", 1), C("Python","Programmeringsspråk", 2), C("JavaScript","Programmeringsspråk", 3), C("TypeScript","Programmeringsspråk", 4), C("SQL","Programmeringsspråk", 5), C("HTML","Programmeringsspråk", 6), C("CSS","Programmeringsspråk", 7), C("Bash","Programmeringsspråk", 8),
+        // Backend
+        new() { Id = 25, Name = "Web API", Category = "Backend", SortOrder = 3 },
+        new() { Id = 28, Name = "SignalR", Category = "Backend", SortOrder = 7 },
 
-            // Backend
-            C(".NET","Backend", 0), C("ASP.NET Core","Backend", 1), C("MVC","Backend", 2), C("Web API","Backend", 3), C("EF Core","Backend", 4), C("LINQ","Backend", 5), C("SignalR","Backend", 6),
+        // Frontend
+        new() { Id = 29, Name = "React", Category = "Frontend", SortOrder = 0 },
+        new() { Id = 30, Name = "Vue", Category = "Frontend", SortOrder = 1 },
+        new() { Id = 31, Name = "Angular", Category = "Frontend", SortOrder = 2 },
+        new() { Id = 32, Name = "Vite", Category = "Frontend", SortOrder = 3 },
+        new() { Id = 33, Name = "Tailwind", Category = "Frontend", SortOrder = 4 },
+        new() { Id = 34, Name = "Bootstrap", Category = "Frontend", SortOrder = 5 },
 
-            // Frontend
-            C("React","Frontend", 0), C("Vue","Frontend", 1), C("Angular","Frontend", 2), C("Vite","Frontend", 3), C("Tailwind","Frontend", 4), C("Bootstrap","Frontend", 5),
+        // Databaser
+        new() { Id = 35, Name = "SQL Server", Category = "Databaser", SortOrder = 0 },
+        new() { Id = 36, Name = "PostgreSQL", Category = "Databaser", SortOrder = 1 },
+        new() { Id = 37, Name = "MySQL", Category = "Databaser", SortOrder = 2 },
+        new() { Id = 38, Name = "SQLite", Category = "Databaser", SortOrder = 3 },
+        new() { Id = 39, Name = "MongoDB", Category = "Databaser", SortOrder = 4 },
+        new() { Id = 40, Name = "Redis", Category = "Databaser", SortOrder = 5 },
 
-            // Databaser
-            C("SQL Server","Databaser", 0), C("PostgreSQL","Databaser", 1), C("MySQL","Databaser", 2), C("SQLite","Databaser", 3), C("MongoDB","Databaser", 4), C("Redis","Databaser", 5),
+        // DevOps & Drift
+        new() { Id = 42, Name = "GitHub", Category = "DevOps & Drift", SortOrder = 1 },
+        new() { Id = 43, Name = "CI/CD", Category = "DevOps & Drift", SortOrder = 2 },
+        new() { Id = 45, Name = "Kubernetes", Category = "DevOps & Drift", SortOrder = 4 },
+        new() { Id = 47, Name = "Nginx", Category = "DevOps & Drift", SortOrder = 6 },
+        new() { Id = 49, Name = "AWS", Category = "DevOps & Drift", SortOrder = 8 },
 
-            // DevOps & Drift
-            C("Git","DevOps & Drift", 0), C("GitHub","DevOps & Drift", 1), C("CI/CD","DevOps & Drift", 2), C("Docker","DevOps & Drift", 3), C("Kubernetes","DevOps & Drift", 4), C("Linux","DevOps & Drift", 5), C("Nginx","DevOps & Drift", 6), C("Azure","DevOps & Drift", 7), C("AWS","DevOps & Drift", 8),
+        // Test & Kvalitet
+        new() { Id = 50, Name = "xUnit", Category = "Test & Kvalitet", SortOrder = 0 },
+        new() { Id = 51, Name = "NUnit", Category = "Test & Kvalitet", SortOrder = 1 },
+        new() { Id = 52, Name = "Integration Tests", Category = "Test & Kvalitet", SortOrder = 2 },
+        new() { Id = 53, Name = "Unit Tests", Category = "Test & Kvalitet", SortOrder = 3 },
+        new() { Id = 54, Name = "Logging", Category = "Test & Kvalitet", SortOrder = 4 },
+        new() { Id = 55, Name = "Serilog", Category = "Test & Kvalitet", SortOrder = 5 },
 
-            // Test & Kvalitet
-            C("xUnit","Test & Kvalitet", 0), C("NUnit","Test & Kvalitet", 1), C("Integration Tests","Test & Kvalitet", 2), C("Unit Tests","Test & Kvalitet", 3), C("Logging","Test & Kvalitet", 4), C("Serilog","Test & Kvalitet", 5),
+        // Säkerhet
+        new() { Id = 56, Name = "OWASP", Category = "Säkerhet", SortOrder = 0 },
+        new() { Id = 57, Name = "HTTPS/TLS", Category = "Säkerhet", SortOrder = 1 },
+        new() { Id = 58, Name = "JWT", Category = "Säkerhet", SortOrder = 2 },
+        new() { Id = 59, Name = "OAuth2", Category = "Säkerhet", SortOrder = 3 },
 
-            // Säkerhet
-            C("OWASP","Säkerhet", 0), C("HTTPS/TLS","Säkerhet", 1), C("JWT","Säkerhet", 2), C("OAuth2","Säkerhet", 3),
-
-            // Arkitektur & Metoder
-            C("Clean Architecture","Arkitektur & Metoder", 0), C("SOLID","Arkitektur & Metoder", 1), C("DDD","Arkitektur & Metoder", 2), C("Agile","Arkitektur & Metoder", 3), C("Scrum","Arkitektur & Metoder", 4), C("TDD","Arkitektur & Metoder", 5),
-        };
-    }
+        // Arkitektur & Metoder
+        new() { Id = 60, Name = "Clean Architecture", Category = "Arkitektur & Metoder", SortOrder = 0 },
+        new() { Id = 61, Name = "SOLID", Category = "Arkitektur & Metoder", SortOrder = 1 },
+        new() { Id = 62, Name = "DDD", Category = "Arkitektur & Metoder", SortOrder = 2 },
+        new() { Id = 63, Name = "Agile", Category = "Arkitektur & Metoder", SortOrder = 3 },
+        new() { Id = 64, Name = "Scrum", Category = "Arkitektur & Metoder", SortOrder = 4 },
+        new() { Id = 65, Name = "TDD", Category = "Arkitektur & Metoder", SortOrder = 5 }
+    };
 }

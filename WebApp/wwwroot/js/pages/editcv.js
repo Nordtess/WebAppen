@@ -770,17 +770,24 @@
 
     function getCheckedIds() {
         if (!compPicker) return [];
+        const seen = new Set();
         return Array.from(compPicker.querySelectorAll("input.competence-chk:checked"))
             .map((c) => Number(c.value))
-            .filter((n) => Number.isFinite(n));
+            .filter((n) => Number.isFinite(n) && !seen.has(n) && seen.add(n));
     }
 
     function getCheckedNames() {
         if (!compPicker) return [];
-        return Array.from(compPicker.querySelectorAll("input.competence-chk:checked"))
-            .map((cb) => cb.closest(".editcv-picker__row")?.getAttribute("data-name") || "")
-            .map((s) => s.trim())
-            .filter(Boolean);
+        const seen = new Set();
+        const names = [];
+        Array.from(compPicker.querySelectorAll("input.competence-chk:checked")).forEach((cb) => {
+            const val = Number(cb.value);
+            if (!Number.isFinite(val) || seen.has(val)) return;
+            seen.add(val);
+            const name = (cb.closest(".editcv-picker__row")?.getAttribute("data-name") || "").trim();
+            if (name) names.push(name);
+        });
+        return names;
     }
 
     function rebuildHiddenIds() {
@@ -834,21 +841,23 @@
         if (!compPicker) return;
 
         const checks = Array.from(compPicker.querySelectorAll("input.competence-chk"));
-        const checkedCount = checks.filter((c) => c.checked).length;
-        const limitReached = checkedCount >= MAX_COMPETENCES;
+        const checkedValues = new Set(checks.filter((c) => c.checked).map((c) => c.value));
+        const limitReached = checkedValues.size >= MAX_COMPETENCES;
 
         for (const cb of checks) {
+            const row = cb.closest(".editcv-picker__row");
             if (cb.checked) {
                 cb.disabled = false;
-                cb.closest(".editcv-picker__row")?.classList.remove("is-disabled");
+                row?.classList.remove("is-disabled");
                 continue;
             }
-            cb.disabled = limitReached;
-            cb.closest(".editcv-picker__row")?.classList.toggle("is-disabled", limitReached);
+            const shouldDisable = limitReached && !checkedValues.has(cb.value);
+            cb.disabled = shouldDisable;
+            row?.classList.toggle("is-disabled", shouldDisable);
         }
 
         rebuildHiddenIds();
-        if (compCounter) compCounter.textContent = String(checkedCount);
+        if (compCounter) compCounter.textContent = String(checkedValues.size);
 
         renderCompetencePills();
 
@@ -883,9 +892,13 @@
         if (!(t instanceof HTMLInputElement)) return;
         if (!t.classList.contains("competence-chk")) return;
 
-        const checked = Array.from(compPicker.querySelectorAll("input.competence-chk:checked"));
-        if (checked.length > MAX_COMPETENCES) {
-            t.checked = false;
+        syncCompetenceCheckboxes(t.value, t.checked);
+
+        const checkedValues = new Set(
+            Array.from(compPicker.querySelectorAll("input.competence-chk:checked")).map((c) => c.value)
+        );
+        if (checkedValues.size > MAX_COMPETENCES) {
+            syncCompetenceCheckboxes(t.value, false);
         }
 
         compInit = false;
