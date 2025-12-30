@@ -125,7 +125,8 @@
                         {
                             if (Model.IsSimilarMode)
                             {
-                                <a class="btn-secondary-custom" style="text-decoration:none;" href="@Url.Action("Index", "SearchCv", new { mode = Model.Mode, source = Model.Source, sourceUserId = Model.SourceUserId })">Rensa</a>
+                                <a class="btn-secondary-custom" style="text-decoration:none;" href="@Url.Action("Index", "SearchCv", new { mode = Model.Mode, source = Model.Source, sourceUserId = Model.SourceUserId })">Återställ filter</a>
+                                <a class="btn-secondary-custom" style="text-decoration:none;" href="@Url.Action("Index", "SearchCv")">Till vanlig sök</a>
                             }
                             else
                             {
