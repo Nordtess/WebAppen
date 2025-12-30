@@ -340,7 +340,9 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    min-height: 2.9em;
+    white-space: normal;
+    box-sizing: border-box;
+    min-height: calc(2 * 1.45em + 20px);
 }
 
 .searchcv-lines {

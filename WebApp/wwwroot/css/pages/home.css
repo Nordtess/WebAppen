@@ -772,3 +772,14 @@
     color: rgba(0, 0, 0, 0.66);
     line-height: 1.2;
 }
+
+.home-cv-card .searchcv-about {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    box-sizing: border-box;
+    min-height: calc(2 * 1.45em + 20px);
+}
