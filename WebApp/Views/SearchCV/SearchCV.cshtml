@@ -93,7 +93,7 @@
                         @if (Model.IsSimilarMode)
                         {
                             <select class="searchcv-input" aria-label="Sortering" disabled>
-                                <option value="match" selected>Best matchning</option>
+                                <option value="match" selected>Bäst matchning</option>
                                 <option value="new">Senast skapade</option>
                                 <option value="old">Äldst först</option>
                                 <option value="az">A-Ö</option>
@@ -123,7 +123,14 @@
 
                         @if (!string.IsNullOrWhiteSpace(Model.NameQuery) || Model.SelectedSkillIds.Length > 0 || !string.IsNullOrWhiteSpace(Model.CityQuery) || Model.Mode == "similar")
                         {
-                            <a class="btn-secondary-custom" style="text-decoration:none;" href="@Url.Action("Index", "SearchCv", new { mode = Model.Mode })">Rensa</a>
+                            if (Model.IsSimilarMode)
+                            {
+                                <a class="btn-secondary-custom" style="text-decoration:none;" href="@Url.Action("Index", "SearchCv", new { mode = Model.Mode, source = Model.Source, sourceUserId = Model.SourceUserId })">Rensa</a>
+                            }
+                            else
+                            {
+                                <a class="btn-secondary-custom" style="text-decoration:none;" href="@Url.Action("Index", "SearchCv")">Rensa</a>
+                            }
                         }
                     </div>
                 </form>
