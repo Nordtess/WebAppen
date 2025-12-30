@@ -449,12 +449,15 @@
         0 12px 24px rgba(0, 0, 0, 0.08);
 }
 
-/* Trunkera 'about' i karusellen till en rad med ellipsis för att hålla kortens höjd konstant */
+/* Apply 2-line clamp for carousel About text as well */
 .cv-stage .searchcv-about,
 .cv-carousel .searchcv-about {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    white-space: nowrap;
     text-overflow: ellipsis;
+    white-space: normal;
 }
 
 .searchcv-skill-more {
