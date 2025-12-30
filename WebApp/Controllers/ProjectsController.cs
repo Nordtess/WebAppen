@@ -54,7 +54,7 @@ public sealed class ProjectsController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index([FromQuery] string? q, [FromQuery] string? sort, [FromQuery] string? scope, [FromQuery] bool? mine)
+    public async Task<IActionResult> Index([FromQuery] string? q, [FromQuery] string? sort, [FromQuery] string? scope, [FromQuery] bool? mine, [FromQuery] string? userId)
     {
         var viewer = await _userManager.GetUserAsync(User);
         var viewerId = viewer?.Id;
@@ -65,7 +65,9 @@ public sealed class ProjectsController : Controller
             scopeKey = "all";
         }
 
-        var onlyMine = (mine ?? false) && viewerId != null;
+        var mineChecked = (mine ?? false) && viewerId != null;
+        var filterUserId = !string.IsNullOrWhiteSpace(userId) ? userId : (mineChecked ? viewerId : null);
+        var onlyMine = mineChecked && string.IsNullOrWhiteSpace(userId);
 
         // Basfråga: join mot skapare för att kunna visa och filtrera på namn/email
         var baseQuery = from p in _db.Projekt.AsNoTracking()
@@ -73,11 +75,11 @@ public sealed class ProjectsController : Controller
                         from u in users.DefaultIfEmpty()
                         select new { p, u };
 
-        if (onlyMine)
+        if (!string.IsNullOrWhiteSpace(filterUserId))
         {
             baseQuery = baseQuery.Where(x =>
-                x.p.CreatedByUserId == viewerId ||
-                _db.ProjektAnvandare.AsNoTracking().Any(pu => pu.ProjectId == x.p.Id && pu.UserId == viewerId));
+                x.p.CreatedByUserId == filterUserId ||
+                _db.ProjektAnvandare.AsNoTracking().Any(pu => pu.ProjectId == x.p.Id && pu.UserId == filterUserId));
         }
 
         if (!string.IsNullOrWhiteSpace(q))
@@ -166,7 +168,8 @@ public sealed class ProjectsController : Controller
             OnlyMine = onlyMine,
             Sort = sortKey,
             ShowLoginTip = !(User.Identity?.IsAuthenticated ?? false),
-            Projects = items
+            Projects = items,
+            FilterUserId = filterUserId
         };
 
         return View("Index", vm);

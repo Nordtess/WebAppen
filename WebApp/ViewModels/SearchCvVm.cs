@@ -16,6 +16,8 @@ public sealed class SearchCvVm
     // "similar" innebär matchning mot en användarprofilens kompetenser.
     public string Mode { get; init; } = "normal";
 
+    public string Sort { get; init; } = string.Empty;
+
     public bool ShowLoginTip { get; init; }
 
     public int[] SelectedSkillIds { get; init; } = Array.Empty<int>();
@@ -72,5 +74,7 @@ public sealed class SearchCvVm
 
         public int? MatchCount { get; init; }
         public int? SourceTotal { get; init; }
+
+        public DateTimeOffset CreatedUtc { get; init; }
     }
 }

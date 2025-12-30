@@ -5,6 +5,16 @@
 
     var isLoggedIn = User?.Identity?.IsAuthenticated == true;
     var bannerSrc = Url.Content("~/images/bannersandicons/allacv2.png");
+    var sortKey = string.IsNullOrWhiteSpace(Model.Sort)
+        ? (Model.IsSimilarMode ? "match" : "new")
+        : Model.Sort.ToLowerInvariant();
+
+    string NormalizeCategory(string? cat)
+    {
+        var trimmed = (cat ?? string.Empty).Trim();
+        if (string.IsNullOrWhiteSpace(trimmed)) return "Övrigt";
+        return string.Equals(trimmed, "topplista", StringComparison.OrdinalIgnoreCase) ? "Övrigt" : trimmed;
+    }
 }
 
 @section Styles {
@@ -80,18 +90,29 @@
                     </div>
 
                     <div class="searchcv-search-right">
+                        <select class="searchcv-input" name="sort" aria-label="Sortering">
+                            @if (Model.IsSimilarMode)
+                            {
+                                <option value="match" selected="@(sortKey == "match")">Bäst matchning</option>
+                            }
+                            <option value="new" selected="@(sortKey == "new")">Senast skapade</option>
+                            <option value="old" selected="@(sortKey == "old")">Äldst först</option>
+                            <option value="az" selected="@(sortKey == "az")">A-Ö</option>
+                            <option value="za" selected="@(sortKey == "za")">Ö-A</option>
+                        </select>
+
                         <button type="submit" class="btn-secondary-custom">Sök</button>
 
                         @if (isLoggedIn)
                         {
-                            <a class="btn-secondary-custom" style="text-decoration:none;" href="@Url.Action("Index", "SearchCv", new { mode = "similar", source = "me" })">Hitta liknande personer</a>
+                            <a class="btn-secondary-custom" style="text-decoration:none;" href="@Url.Action("Index", "SearchCv", new { mode = "similar", source = "me", sort = sortKey })">Hitta liknande personer</a>
                         }
 
                         <button type="button" class="btn-secondary-custom" id="clearSkills" style="text-decoration:none;">Rensa kompetenser</button>
 
                         @if (!string.IsNullOrWhiteSpace(Model.NameQuery) || Model.SelectedSkillIds.Length > 0 || !string.IsNullOrWhiteSpace(Model.CityQuery) || Model.Mode == "similar")
                         {
-                            <a class="btn-secondary-custom" style="text-decoration:none;" href="@Url.Action("Index", "SearchCv")">Rensa</a>
+                            <a class="btn-secondary-custom" style="text-decoration:none;" href="@Url.Action("Index", "SearchCv", new { sort = sortKey })">Rensa</a>
                         }
                     </div>
                 </form>
@@ -210,7 +231,9 @@
 @{
     var topCompetences = Model.Competences.Where(c => c.IsTopList).OrderBy(c => c.SortOrder).ToList();
     var groupedCompetences = Model.Competences
-        .GroupBy(c => string.IsNullOrWhiteSpace(c.Category) ? "Övrigt" : c.Category)
+        .Where(c => !c.IsTopList)
+        .Select(c => new { Item = c, SafeCategory = NormalizeCategory(c.Category) })
+        .GroupBy(c => c.SafeCategory)
         .OrderBy(g => g.Key);
 }
 
@@ -250,8 +273,9 @@
                     <details class="editcv-picker__group" data-group="@group.Key">
                         <summary class="editcv-picker__group-title">@group.Key</summary>
                         <div class="editcv-picker__rows">
-                            @foreach (var c in group.OrderBy(x => x.SortOrder))
+                            @foreach (var entry in group.OrderBy(x => x.Item.SortOrder))
                             {
+                                var c = entry.Item;
                                 var isChecked = Model.SelectedSkillIds.Contains(c.Id);
                                 <label class="editcv-picker__row" data-name="@c.Name">
                                     <input type="checkbox" value="@c.Id" class="editcv-picker__chk competence-chk" @(isChecked ? "checked" : null) />
@@ -289,7 +313,7 @@
             const counter = document.getElementById('searchcv-competences-counter');
             const MAX_COMP = 10;
 
-            const escapeVal = (v) => window.CSS && CSS.escape ? CSS.escape(v) : v.replace(/([\\\[\]#.:"])/g, '\\$1');
+            const escapeVal = (v) => window.CSS && CSS.escape ? CSS.escape(v) : v.replace(/([\\\[\]#.:\"])/g, '\\$1');
 
             function setModal(open) {
                 if (!modal) return;

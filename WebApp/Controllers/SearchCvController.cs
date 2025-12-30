@@ -1,7 +1,9 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApp.Domain.Identity;
 using WebApp.Infrastructure.Data;
 using WebApp.ViewModels;
 
@@ -10,18 +12,20 @@ namespace WebApp.Controllers;
 public class SearchCvController : Controller
 {
     private readonly ApplicationDbContext _db;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public SearchCvController(ApplicationDbContext db)
+    public SearchCvController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
     {
         _db = db;
+        _userManager = userManager;
     }
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> Index([FromQuery] string? name, [FromQuery] string? city, [FromQuery] string? mode = "normal", [FromQuery] string? skillIds = null, [FromQuery] string? source = null, [FromQuery] string? sourceUserId = null)
+    public async Task<IActionResult> Index([FromQuery] string? name, [FromQuery] string? city, [FromQuery] string? mode = "normal", [FromQuery] string? skillIds = null, [FromQuery] string? source = null, [FromQuery] string? sourceUserId = null, [FromQuery] string? sort = null)
     {
         var isLoggedIn = User?.Identity?.IsAuthenticated == true;
-        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var currentUserId = _userManager.GetUserId(User);
 
         var selectedSkillIds = ParseSkillIds(skillIds);
         var selectedSkillSet = selectedSkillIds.ToHashSet();
@@ -87,6 +91,11 @@ public class SearchCvController : Controller
         if (!isLoggedIn)
         {
             baseQuery = baseQuery.Where(x => x.profile.IsPublic);
+        }
+
+        if (!string.IsNullOrWhiteSpace(currentUserId))
+        {
+            baseQuery = baseQuery.Where(x => x.UserId != currentUserId);
         }
 
         if (!string.IsNullOrWhiteSpace(sourceUser))
@@ -183,21 +192,43 @@ public class SearchCvController : Controller
                 Experiences = exp ?? Array.Empty<string>(),
                 ProjectCount = ParseProjectIds(row.profile.SelectedProjectsJson).Length,
                 MatchCount = matchCount,
-                SourceTotal = sourceTotal
+                SourceTotal = sourceTotal,
+                CreatedUtc = row.profile.CreatedUtc
             });
         }
 
-        // Sortera resultat i liknande-läge efter matchningsantal
-        if (isSimilarMode)
+        var sortKeyRaw = sort ?? string.Empty;
+        var sortKey = string.IsNullOrWhiteSpace(sortKeyRaw)
+            ? (isSimilarMode ? "match" : "new")
+            : sortKeyRaw.Trim().ToLowerInvariant();
+
+        var validSort = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "match", "new", "old", "az", "za" };
+        if (!validSort.Contains(sortKey)) sortKey = isSimilarMode ? "match" : "new";
+
+        if (isSimilarMode && sortKey == "match")
         {
             cvs = cvs
                 .OrderByDescending(c => c.MatchCount ?? 0)
+                .ThenByDescending(c => c.CreatedUtc)
                 .ThenBy(c => c.FullName)
                 .ToList();
         }
         else
         {
-            cvs = cvs.OrderBy(c => c.FullName).ToList();
+            IOrderedEnumerable<SearchCvVm.CvCardVm> ordered = sortKey switch
+            {
+                "old" => cvs.OrderBy(c => c.CreatedUtc).ThenBy(c => c.FullName),
+                "az" => cvs.OrderBy(c => c.FullName).ThenByDescending(c => c.CreatedUtc),
+                "za" => cvs.OrderByDescending(c => c.FullName).ThenByDescending(c => c.CreatedUtc),
+                _ => cvs.OrderByDescending(c => c.CreatedUtc).ThenBy(c => c.FullName),
+            };
+
+            if (isSimilarMode)
+            {
+                ordered = ordered.ThenByDescending(c => c.MatchCount ?? 0);
+            }
+
+            cvs = ordered.ToList();
         }
 
         var vm = new SearchCvVm
@@ -205,6 +236,7 @@ public class SearchCvController : Controller
             NameQuery = name ?? string.Empty,
             CityQuery = city ?? string.Empty,
             Mode = mode ?? "normal",
+            Sort = sortKey,
             ShowLoginTip = !isLoggedIn,
             SelectedSkillIds = selectedSkillIds,
             SelectedSkillNames = selectedSkillNames,
