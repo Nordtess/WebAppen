@@ -371,6 +371,8 @@
     align-items: center;
     justify-content: space-between;
     gap: 10px;
+    row-gap: 8px;
+    flex-wrap: wrap;
     margin-bottom: 10px;
 }
 
@@ -380,6 +382,7 @@
     font-weight: 800;
     white-space: nowrap;
     min-width: auto;
+    align-self: flex-start;
 }
 
 .cv-skill-grid .cv-skill-pill--muted {
@@ -395,130 +398,6 @@
     justify-content: flex-start;
 }
 
-.cv-item {
-    padding: 12px;
-    border-radius: 14px;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    background: rgba(255, 255, 255, 0.95);
-    margin-top: 10px;
-}
-
-.cv-item-title {
-    font-weight: 900;
-    color: rgba(0, 0, 0, 0.82);
-}
-
-.cv-item-sub {
-    margin-top: 4px;
-    font-weight: 700;
-    font-size: 13px;
-    color: rgba(0, 0, 0, 0.62);
-}
-
-.cv-item-muted {
-    opacity: 0.95;
-}
-
-.cv-projects {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    margin-top: 12px;
-}
-
-.cv-project {
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 16px;
-    padding: 14px;
-    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.05);
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    will-change: transform, box-shadow;
-    transition:
-        transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
-        box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
-        border-color 0.35s ease;
-}
-
-.cv-project-sep {
-    height: 1px;
-    width: 68%;
-    margin: 12px auto 10px;
-    background: rgba(0, 0, 0, 0.10);
-    flex: 0 0 auto;
-}
-
-.cv-project::before {
-    content: "";
-    position: absolute;
-    inset: -50% -70%;
-    background: radial-gradient(circle at 30% 20%, rgba(127, 255, 212, 0.16), rgba(255, 255, 255, 0) 60%);
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.35s ease, transform 0.35s ease;
-    pointer-events: none;
-}
-
-.cv-project:hover {
-    transform: translateY(-6px) scale(1.012);
-    border-color: rgba(0, 0, 0, 0.22);
-    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.12);
-}
-
-.cv-project:hover::before {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.cv-project-title {
-    font-weight: 950;
-    color: rgba(0, 0, 0, 0.88);
-    text-align: center;
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-    font-size: clamp(14px, 1.6vw, 16px);
-}
-
-.cv-project-desc {
-    margin: 10px 0 0;
-    font-size: clamp(13px, 1.55vw, 14px);
-    color: rgba(0, 0, 0, 0.70);
-    font-weight: 650;
-    line-height: 1.6;
-    text-align: left;
-    word-spacing: normal;
-    hyphens: manual;
-    overflow-wrap: anywhere;
-}
-
-.cv-tech-row {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    padding-bottom: 2px;
-    margin-top: auto;
-}
-
-.cv-tech-tile {
-    width: 32px;
-    height: 32px;
-    border-radius: 12px;
-    border: 1px solid rgba(0, 0, 0, 0.10);
-    background: rgba(255, 255, 255, 0.92);
-    display: grid;
-    place-items: center;
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
-}
-
-.cv-tech-icon {
-    width: 24px;
-    height: 24px;
-    display: block;
-}
-
 .cv-edit-button-container {
     width: 100%;
     max-width: var(--cv-max);
@@ -527,29 +406,29 @@
     margin-top: 8px;
 }
 
-.cv-edit-button-container .btn-primary-custom {
+.cv-edit-button-container .btn-primary-custom,
+.cv-edit-button-container a.btn-primary-custom {
+    background: #fff;
+    color: #000;
+    outline: 1px solid rgba(0, 0, 0, 0.14);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow: 0 0 1em 1em rgba(0, 0, 0, 0.08);
     text-decoration: none;
-    color: #fff;
+}
+
+.cv-edit-button-container .btn-primary-custom svg,
+.cv-edit-button-container a.btn-primary-custom svg {
+    fill: currentColor;
 }
 
 .cv-edit-button-container .btn-primary-custom:hover,
-.cv-edit-button-container .btn-primary-custom:visited {
+.cv-edit-button-container a.btn-primary-custom:hover,
+.cv-edit-button-container .btn-primary-custom:visited,
+.cv-edit-button-container a.btn-primary-custom:visited {
+    background: radial-gradient(circle at bottom, rgba(0, 0, 0, 0.08) 10%, #fff 70%);
+    color: #000;
     text-decoration: none;
-    color: #fff;
 }
-
-.cv-project-link {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-}
-
-.cv-project-link:hover,
-.cv-project-link:visited {
-    text-decoration: none;
-    color: inherit;
-}
-
 
 .cv-tip {
     width: 100%;
