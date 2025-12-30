@@ -447,6 +447,34 @@
     margin-bottom: 6px;
 }
 
+.cv-page .cv-box .cv-item {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 14px;
+    padding: 10px 12px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+    margin-bottom: 10px;
+}
+
+.cv-page .cv-box .cv-item-title {
+    font-size: 14px;
+    font-weight: 900;
+    color: rgba(0, 0, 0, 0.82);
+    margin: 0 0 4px;
+}
+
+.cv-page .cv-box .cv-item-sub {
+    font-size: 12px;
+    font-weight: 800;
+    color: rgba(0, 0, 0, 0.68);
+    line-height: 1.35;
+    margin: 0 0 3px;
+}
+
+.cv-page .cv-box .cv-item-muted {
+    color: rgba(0, 0, 0, 0.55);
+}
+
 @media (max-width: 800px) {
     .cv-banner {
         height: 160px;

@@ -96,9 +96,15 @@
                     <div class="cv-skill-grid">
                         @if (Model.Skills is { Length: > 0 })
                         {
-                            foreach (var skill in Model.Skills)
+                            var total = Model.Skills.Length;
+                            foreach (var skill in Model.Skills.Take(4))
                             {
                                 <span class="cv-skill-pill">@skill</span>
+                            }
+
+                            if (total > 4)
+                            {
+                                <span class="cv-skill-pill cv-skill-pill--muted">+@(total - 4) more</span>
                             }
                         }
                         else
@@ -106,6 +112,7 @@
                             <span class="cv-paragraph cv-paragraph-muted">Inga kompetenser ännu.</span>
                         }
                     </div>
+
                 </section>
             </div>
 
